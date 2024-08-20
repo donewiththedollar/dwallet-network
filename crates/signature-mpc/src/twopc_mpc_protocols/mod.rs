@@ -4,7 +4,7 @@
 use std::collections::{HashMap, HashSet};
 
 pub use commitment::Commitment;
-use crypto_bigint::{Random, U256};
+use crypto_bigint::{NonZero, Random, U256};
 use ecdsa::signature::DigestVerifier;
 use ecdsa::{elliptic_curve::ops::Reduce, hazmat::bits2field, RecoveryId, Signature, VerifyingKey};
 pub use enhanced_maurer::language::EnhancedLanguageStatementAccessors;
@@ -676,9 +676,9 @@ pub fn config_signature_mpc_secret_for_network_for_testing(
     let N = *public_params.plaintext_space_public_parameters().modulus;
     let base = PaillierModulusSizedNumber::random(&mut OsRng);
     let n2 = N * N;
-    base.rem(&n2.into());
+    let base = base.rem(&NonZero::new(n2).unwrap());
     let pub_params = public_params.randomness_space_public_parameters();
-    tiresias_deal_trusted_shares(t, number_of_parties, *public_params.plaintext_space_public_parameters().modulus, secret_key.secret_key, BASE)
+    tiresias_deal_trusted_shares(t, number_of_parties, N, secret_key.secret_key, base)
 }
 
 // A workaround to deserialize to PublicKeyValue - TODO: add from_bytes to PublicKeyValue
