@@ -14133,6 +14133,7 @@ dependencies = [
  "bincode",
  "byteorder",
  "criterion",
+ "crypto-bigint 0.5.5",
  "derivative",
  "derive_more",
  "enum_dispatch",

@@ -14,8 +14,9 @@ pub use signature_mpc::twopc_mpc_protocols::{
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 use std::marker::PhantomData;
+use rand::rngs::OsRng;
 use twopc_mpc::secp256k1::paillier::bulletproofs::PartialDecryptionProof;
-
+use signature_mpc::twopc_mpc_protocols::DecryptionKey;
 use crate::base_types::{ObjectID, ObjectRef};
 use crate::committee::EpochId;
 use crate::crypto::{default_hash, AuthoritySignInfo, AuthorityStrongQuorumSignInfo};
@@ -23,6 +24,8 @@ pub use crate::digests::CheckpointContentsDigest;
 pub use crate::digests::CheckpointDigest;
 use crate::digests::{SignatureMPCMessageDigest, SignatureMPCOutputDigest};
 use crate::error::SuiResult;
+use crypto_bigint::{NonZero, Random};
+
 use crate::message_envelope::{Envelope, Message, UnauthenticatedMessage};
 use crate::{committee::Committee, error::SuiError};
 
@@ -419,3 +422,18 @@ pub enum InitiateSignatureMPCProtocol {
         hash: u8,
     },
 }
+
+pub fn config_signature_mpc_secret_for_network_for_testing(
+    number_of_parties: PartyID,
+) -> (
+    DecryptionPublicParameters,
+    HashMap<PartyID, SecretKeyShareSizedNumber>,
+) {
+    let t = (((number_of_parties * 2) / 3) + 1) as PartyID;
+    let (public_params, secret_key) = DecryptionKey::generate(&mut OsRng).unwrap();
+    let public_key = *public_params.plaintext_space_public_parameters().modulus;
+    let base = PaillierModulusSizedNumber::random(&mut OsRng);
+    let base = base.rem(&NonZero::new(public_key * public_key).unwrap());
+    tiresias_deal_trusted_shares(t, number_of_parties, public_key, secret_key.secret_key, base)
+}
+
