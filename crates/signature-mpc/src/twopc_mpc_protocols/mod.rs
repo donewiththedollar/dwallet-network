@@ -2,42 +2,43 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 use std::collections::{HashMap, HashSet};
-
-pub use commitment::Commitment;
-use crypto_bigint::{NonZero, Random, U256};
-use ecdsa::signature::DigestVerifier;
-use ecdsa::{elliptic_curve::ops::Reduce, hazmat::bits2field, RecoveryId, Signature, VerifyingKey};
-pub use enhanced_maurer::language::EnhancedLanguageStatementAccessors;
-pub use group::PartyID;
-pub use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
-use k256::elliptic_curve::group::GroupEncoding;
-use k256::sha2::Digest;
-use k256::{elliptic_curve, sha2, AffinePoint, CompressedPoint};
-use rand::rngs::OsRng;
 use std::fmt::{Debug, Display, Formatter};
 use std::marker::PhantomData;
 
+pub use commitment::Commitment;
+use crypto_bigint::{Random, U256};
+use ecdsa::{elliptic_curve::ops::Reduce, hazmat::bits2field, RecoveryId, Signature, VerifyingKey};
+use ecdsa::signature::DigestVerifier;
+pub use enhanced_maurer::language::EnhancedLanguageStatementAccessors;
+pub use group::{AffineXCoordinate, GroupElement, secp256k1};
+pub use group::PartyID;
 pub use group::Value;
-pub use group::{secp256k1, AffineXCoordinate, GroupElement};
 use homomorphic_encryption::{AdditivelyHomomorphicEncryptionKey, GroupsPublicParametersAccessors};
+pub use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
+use k256::{AffinePoint, CompressedPoint, elliptic_curve, sha2};
+use k256::elliptic_curve::group::GroupEncoding;
+use k256::sha2::Digest;
 use k256::sha2::digest::FixedOutput;
 pub use proof::aggregation::{
     CommitmentRoundParty, DecommitmentRoundParty, ProofAggregationRoundParty, ProofShareRoundParty,
 };
-use tiresias::decryption_key_share::PublicParameters;
+use rand::rngs::OsRng;
 pub use tiresias::{
+    AdjustedLagrangeCoefficientSizedNumber,
     decryption_key_share::PublicParameters as DecryptionPublicParameters,
-    encryption_key::PublicParameters as EncryptionPublicParameters,
-    test_exports::deal_trusted_shares as tiresias_deal_trusted_shares,
-    AdjustedLagrangeCoefficientSizedNumber, DecryptionKeyShare, LargeBiPrimeSizedNumber,
-    PaillierModulusSizedNumber, SecretKeyShareSizedNumber,
+    DecryptionKeyShare,
+    encryption_key::PublicParameters as EncryptionPublicParameters, LargeBiPrimeSizedNumber, PaillierModulusSizedNumber,
+    SecretKeyShareSizedNumber, test_exports::deal_trusted_shares as tiresias_deal_trusted_shares,
 };
 pub use tiresias::{DecryptionKey, EncryptionKey, ProtocolError};
+use tiresias::decryption_key_share::PublicParameters;
+pub use twopc_mpc::{Error, Result};
 use twopc_mpc::paillier::PLAINTEXT_SPACE_SCALAR_LIMBS;
+pub use twopc_mpc::secp256k1::{GroupElement as Secp256K1GroupElement, Scalar, SCALAR_LIMBS};
 pub use twopc_mpc::secp256k1::paillier::bulletproofs::{
-    CentralizedPartyPresign, DKGCentralizedPartyOutput, DKGCommitmentRoundParty,
-    DKGDecentralizedPartyOutput, DKGDecommitmentRoundParty, DKGDecommitmentRoundState,
-    DecentralizedPartyPresign, DecommitmentProofVerificationRoundParty, EncDHCommitment,
+    CentralizedPartyPresign, DecentralizedPartyPresign, DecommitmentProofVerificationRoundParty,
+    DKGCentralizedPartyOutput, DKGCommitmentRoundParty, DKGDecentralizedPartyOutput,
+    DKGDecommitmentRoundParty, DKGDecommitmentRoundState, EncDHCommitment,
     EncDHCommitmentRoundParty, EncDHDecommitment, EncDHDecommitmentRoundParty,
     EncDHProofAggregationOutput, EncDHProofAggregationRoundParty, EncDHProofShare,
     EncDHProofShareRoundParty, EncDLCommitment, EncDLCommitmentRoundParty, EncDLDecommitment,
@@ -51,14 +52,11 @@ pub use twopc_mpc::secp256k1::paillier::bulletproofs::{
     SignatureNonceSharesCommitmentsAndBatchedProof, SignaturePartialDecryptionParty,
     SignatureThresholdDecryptionParty,
 };
-pub use twopc_mpc::secp256k1::{GroupElement as Secp256K1GroupElement, Scalar, SCALAR_LIMBS};
-
 use twopc_mpc::secp256k1::paillier::bulletproofs::{DecryptionShare, PartialDecryptionProof};
 pub use twopc_mpc::secp256k1::paillier::bulletproofs::{
     PresignProofVerificationRoundParty, SignaturePartialDecryptionProofParty,
     SignaturePartialDecryptionProofVerificationParty, SignatureVerificationParty,
 };
-pub use twopc_mpc::{Error, Result};
 
 pub type InitSignatureMPCProtocolSequenceNumber = u64;
 pub type SignatureMPCRound = u64;
