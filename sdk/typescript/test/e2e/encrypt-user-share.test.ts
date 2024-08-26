@@ -156,6 +156,7 @@ describe('Secret key share transfer', () => {
 				toolbox.keypair.toSuiAddress(),
 				encryptionKey,
 				decryptionKey,
+				new Uint8Array(createdDwallet?.decentralizedDKGOutput!),
 			),
 		).toBeTruthy();
 	});

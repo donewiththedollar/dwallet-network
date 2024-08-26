@@ -55,7 +55,6 @@ type EncryptedUserShare = {
 	dwalletId: string;
 	encryptedUserShareAndProof: number[];
 	encryptionKeyObjID: string;
-	dwalletDKGOutput: number[];
 	signedDKGOutput: number[];
 	senderPubKey: number[];
 };
@@ -75,7 +74,6 @@ export const getEncryptedUserShareByObjID = async (
 					dwallet_id: string;
 					encrypted_secret_share_and_proof: number[];
 					encryption_key_id: string;
-					dwallet_dkg_output: number[];
 					signed_dkg_output: number[];
 					sender_pubkey: number[];
 				})
@@ -86,7 +84,6 @@ export const getEncryptedUserShareByObjID = async (
 				dwalletId: objectFields.dwallet_id,
 				encryptedUserShareAndProof: objectFields.encrypted_secret_share_and_proof,
 				encryptionKeyObjID: objectFields.encryption_key_id,
-				dwalletDKGOutput: objectFields.dwallet_dkg_output,
 				signedDKGOutput: objectFields.signed_dkg_output,
 				senderPubKey: objectFields.sender_pubkey,
 			}
@@ -98,11 +95,12 @@ export const verifyEncryptedSecretShare = async (
 	expectedSourceSuiAddress: string,
 	encryptionKey: Uint8Array,
 	decryptionKey: Uint8Array,
+	dkgOutput: Uint8Array,
 ): Promise<boolean> => {
 	let publicKey = new Ed25519PublicKey(encryptedUserShare?.senderPubKey!);
 	if (
 		!(await publicKey.verify(
-			new Uint8Array(encryptedUserShare?.dwalletDKGOutput!),
+			new Uint8Array(dkgOutput),
 			new Uint8Array(encryptedUserShare?.signedDKGOutput!),
 		))
 	) {
