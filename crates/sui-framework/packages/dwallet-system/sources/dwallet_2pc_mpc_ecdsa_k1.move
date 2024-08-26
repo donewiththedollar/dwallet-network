@@ -494,12 +494,11 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
         dwallet: &DWallet<Secp256K1>,
         encryption_key: &EncryptionKey,
         encrypted_secret_share_and_proof: vector<u8>,
-        dwallet_dkg_output: vector<u8>,
         signed_dkg_output: vector<u8>,
         sender_pubkey: vector<u8>,
         ctx: &mut TxContext,
     ) {
-        assert!(ed25519_verify(&signed_dkg_output, &sender_pubkey, &dwallet_dkg_output), EInvalidDKGOutputSignature);
+        assert!(ed25519_verify(&signed_dkg_output, &sender_pubkey, &get_output(dwallet)), EInvalidDKGOutputSignature);
         assert!(ed2551_pubkey_to_sui_addr(sender_pubkey) == tx_context::sender(ctx), EPublicKeyNotMatchSenderAddress);
         let is_valid = verify_encrypted_user_secret_share_secp256k1(
             get_encryption_key(encryption_key),
@@ -511,7 +510,6 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
             object::id(dwallet),
             encrypted_secret_share_and_proof,
             object::id(encryption_key),
-            dwallet_dkg_output,
             signed_dkg_output,
             sender_pubkey,
             ctx

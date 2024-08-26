@@ -452,7 +452,6 @@ module dwallet_system::dwallet {
         dwallet_id: ID,
         encrypted_secret_share_and_proof: vector<u8>,
         encryption_key_id: ID,
-        dwallet_dkg_output: vector<u8>,
         signed_dkg_output: vector<u8>,
         sender_pubkey: vector<u8>,
     }
@@ -540,7 +539,6 @@ module dwallet_system::dwallet {
         dwallet_id: ID,
         encrypted_secret_share_and_proof: vector<u8>,
         encryption_key_id: ID,
-        dwallet_dkg_output: vector<u8>,
         signed_dkg_output: vector<u8>,
         sender_pubkey: vector<u8>,
         ctx: &mut TxContext
@@ -550,7 +548,6 @@ module dwallet_system::dwallet {
             dwallet_id,
             encrypted_secret_share_and_proof,
             encryption_key_id,
-            dwallet_dkg_output,
             signed_dkg_output,
             sender_pubkey,
         };
