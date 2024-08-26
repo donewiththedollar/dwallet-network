@@ -6,6 +6,7 @@ import { TransactionBlock } from '../builder/index.js';
 import type { DWalletClient } from '../client/index.js';
 import type { Keypair } from '../cryptography/index.js';
 import type { SuiObjectRef } from '../types';
+import { Dwallet } from './dwallet_2pc_mpc_ecdsa_k1_module';
 
 const packageId = '0x3';
 const dWalletModuleName = 'dwallet';
@@ -200,18 +201,28 @@ export const createActiveEncryptionKeysTable = async (client: DWalletClient, key
 export const transferEncryptedUserShare = async (
 	client: DWalletClient,
 	keypair: Keypair,
-	encryptedUserShareAndProof: Uint8Array,
+	encryptedUserShareAndProof: number[],
 	encryptionKeyObjID: string,
-	dwalletID: string,
+	dwallet: Dwallet,
 ) => {
 	const tx = new TransactionBlock();
 	const encryptionKey = tx.object(encryptionKeyObjID);
-	const dwallet = tx.object(dwalletID);
+	const dwalletObj = tx.object(dwallet.dwalletId);
+	let dkgOutput = dwallet?.decentralizedDKGOutput!;
+	let signedDKGOutput = await keypair.sign(new Uint8Array(dkgOutput));
+	let pureSuiPubKey = tx.pure(bcs.vector(bcs.u8()).serialize(keypair.getPublicKey().toRawBytes()));
 
 	tx.moveCall({
 		target: `${packageId}::${dWallet2PCMPCECDSAK1ModuleName}::encrypt_user_share`,
 		typeArguments: [],
-		arguments: [dwallet, encryptionKey, tx.pure(encryptedUserShareAndProof)],
+		arguments: [
+			dwalletObj,
+			encryptionKey,
+			tx.pure(encryptedUserShareAndProof),
+			tx.pure(dkgOutput),
+			tx.pure([...signedDKGOutput]),
+			pureSuiPubKey,
+		],
 	});
 
 	return await client.signAndExecuteTransactionBlock({

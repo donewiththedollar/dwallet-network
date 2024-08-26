@@ -1,6 +1,7 @@
 import { verify_user_share } from '@dwallet-network/signature-mpc-wasm';
 import { beforeAll, describe, expect, it } from 'vitest';
 
+import { Ed25519PublicKey } from '../../src/keypairs/ed25519';
 import {
 	createActiveEncryptionKeysTable,
 	createDWallet,
@@ -14,8 +15,12 @@ import {
 	storeEncryptionKey,
 	transferEncryptedUserShare,
 } from '../../src/signature-mpc';
+import {
+	getEncryptedUserShareByObjID,
+	sendUserShareToSuiPubKey,
+	verifyEncryptedSecretShare,
+} from '../../src/signature-mpc/encrypt_user_share';
 import { setup, TestToolbox } from './utils/setup';
-import {sendUserShareToSuiPubKey} from "../../src/signature-mpc/encrypt_user_share";
 
 describe('Secret key share transfer', () => {
 	let toolbox: TestToolbox;
@@ -35,7 +40,6 @@ describe('Secret key share transfer', () => {
 		const publicKeyID = pubKeyRef?.objectId;
 		const recipientData = await getEncryptionKeyByObjectId(toolbox.client, publicKeyID);
 		const dwallet = await createDWallet(toolbox.keypair, toolbox.client);
-		const dwalletID = dwallet?.dwalletId!;
 		const secretShare = dwallet?.secretKeyShare!;
 		const encryptedUserShareAndProof = generate_proof(
 			new Uint8Array(secretShare),
@@ -50,13 +54,12 @@ describe('Secret key share transfer', () => {
 				new Uint8Array(recipientData?.signedEncryptionKey!),
 			);
 		expect(isValidEncryptionKey).toBeTruthy();
-
 		await transferEncryptedUserShare(
 			toolbox.client,
 			toolbox.keypair,
 			encryptedUserShareAndProof,
 			publicKeyID,
-			dwalletID,
+			dwallet!,
 		);
 
 		const decryptedKeyShare = decrypt_user_share(
@@ -112,17 +115,16 @@ describe('Secret key share transfer', () => {
 		expect(`0x${activeEncryptionKeyAddress}`).toEqual(pubKeyRef?.objectId!);
 	});
 
-	it('encrypts a secret share to a given Sui address successfully', async () => {
-		const [encryptionKey, _] = generate_keypair();
+	it('encrypts a secret share to a given Sui public key successfully', async () => {
+		const [encryptionKey, decryptionKey] = generate_keypair();
 		const pubKeyRef = await storeEncryptionKey(
 			encryptionKey,
 			EncryptionKeyScheme.Paillier,
 			toolbox.keypair,
 			toolbox.client,
 		);
-		console.log({ pubKeyRef });
 
-		const dkg = await createDWallet(toolbox.keypair, toolbox.client);
+		const createdDwallet = await createDWallet(toolbox.keypair, toolbox.client);
 
 		const encryptionKeysHolder = await createActiveEncryptionKeysTable(
 			toolbox.client,
@@ -136,12 +138,25 @@ describe('Secret key share transfer', () => {
 			encryptionKeysHolder.objectId,
 		);
 
-		await sendUserShareToSuiPubKey(
+		let txResponse = await sendUserShareToSuiPubKey(
 			toolbox.client,
 			toolbox.keypair,
-			dkg!,
+			createdDwallet!,
 			toolbox.keypair.getPublicKey(),
 			encryptionKeysHolder.objectId,
 		);
+		let encryptedUserShareObjID = txResponse.effects?.created![0].reference.objectId;
+		let encryptedUserShare = await getEncryptedUserShareByObjID(
+			toolbox.client,
+			encryptedUserShareObjID!,
+		);
+		expect(
+			await verifyEncryptedSecretShare(
+				encryptedUserShare!,
+				toolbox.keypair.toSuiAddress(),
+				encryptionKey,
+				decryptionKey,
+			),
+		).toBeTruthy();
 	});
 });

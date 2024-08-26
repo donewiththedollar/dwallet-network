@@ -13,6 +13,7 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
     use dwallet::object::{Self, ID, UID};
     use dwallet::transfer;
     use dwallet::tx_context::{Self, TxContext};
+    use dwallet::ed25519::ed25519_verify;
 
     use dwallet_system::dwallet;
     use dwallet_system::dwallet::{
@@ -28,6 +29,7 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
         get_output,
         PartialUserSignedMessages,
         SignSession, get_public_key, EncryptionKey, create_encrypted_user_share, get_encryption_key,
+        ed2551_pubkey_to_sui_addr,
     };
 
     #[test_only]
@@ -45,6 +47,8 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
     const ENotSupported: u64 = 4;
     const EEmptyCommitment: u64 = 5;
     const EEncryptUserShare: u64 = 6;
+    const EInvalidDKGOutputSignature: u64 = 7;
+    const EPublicKeyNotMatchSenderAddress: u64 = 8;
 
     // <<<<<<<<<<<<<<<<<<<<<<<< Error codes <<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -490,20 +494,26 @@ module dwallet_system::dwallet_2pc_mpc_ecdsa_k1 {
         dwallet: &DWallet<Secp256K1>,
         encryption_key: &EncryptionKey,
         encrypted_secret_share_and_proof: vector<u8>,
+        dwallet_dkg_output: vector<u8>,
+        signed_dkg_output: vector<u8>,
+        sender_pubkey: vector<u8>,
         ctx: &mut TxContext,
     ) {
+        assert!(ed25519_verify(&signed_dkg_output, &sender_pubkey, &dwallet_dkg_output), EInvalidDKGOutputSignature);
+        assert!(ed2551_pubkey_to_sui_addr(sender_pubkey) == tx_context::sender(ctx), EPublicKeyNotMatchSenderAddress);
         let is_valid = verify_encrypted_user_secret_share_secp256k1(
             get_encryption_key(encryption_key),
             encrypted_secret_share_and_proof,
             get_output(dwallet),
         );
-
         assert!(is_valid, EEncryptUserShare);
-
         create_encrypted_user_share(
             object::id(dwallet),
             encrypted_secret_share_and_proof,
             object::id(encryption_key),
+            dwallet_dkg_output,
+            signed_dkg_output,
+            sender_pubkey,
             ctx
         );
     }
