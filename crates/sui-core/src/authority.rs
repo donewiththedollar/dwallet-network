@@ -38,6 +38,7 @@ use std::{
     sync::Arc,
     thread, vec,
 };
+use std::sync::atomic::AtomicUsize;
 use sui_config::node::{OverloadThresholdConfig, StateDebugDumpConfig};
 use sui_config::NodeConfig;
 use sui_types::type_resolver::LayoutResolver;
@@ -618,6 +619,8 @@ impl AuthorityMetrics {
 ///
 pub type StableSyncAuthoritySigner = Pin<Arc<dyn Signer<AuthoritySignature> + Send + Sync>>;
 
+const MAX_CONCURRENT_MPC_SESSIONS: usize = 1000;
+
 pub struct AuthorityState {
     // Fixed size, static, identity of the authority
     /// The name of this authority.
@@ -664,6 +667,13 @@ pub struct AuthorityState {
 
     /// Config for when we consider the node overloaded.
     overload_threshold_config: OverloadThresholdConfig,
+
+    /// The number of the currently running MPC instances
+    currently_running_mpc_sessions_number: usize,
+
+    /// The list of all pending initiate MPC session messages, that were not sent
+    /// because the number of currently running MPC sessions was at the limit.
+    pending_initiate_mpc_sessions: Vec<InitiateSignatureMPCProtocol>,
 }
 
 /// The authority state encapsulates all state, drives execution, and ensures safety.
@@ -959,7 +969,7 @@ impl AuthorityState {
     /// Should only be called within sui-core.
     #[instrument(level = "trace", skip_all)]
     pub async fn try_execute_immediately(
-        &self,
+        &mut self,
         certificate: &VerifiedExecutableTransaction,
         expected_effects_digest: Option<TransactionEffectsDigest>,
         epoch_store: &Arc<AuthorityPerEpochStore>,
@@ -1080,7 +1090,7 @@ impl AuthorityState {
 
     #[instrument(level = "trace", skip_all)]
     pub(crate) async fn process_certificate(
-        &self,
+        &mut self,
         tx_guard: CertTxGuard,
         certificate: &VerifiedExecutableTransaction,
         input_objects: InputObjects,
@@ -1222,7 +1232,7 @@ impl AuthorityState {
     }
 
     async fn commit_certificate(
-        &self,
+        &mut self,
         certificate: &VerifiedExecutableTransaction,
         inner_temporary_store: InnerTemporaryStore,
         effects: &TransactionEffects,
@@ -1310,7 +1320,7 @@ impl AuthorityState {
     }
 
     fn initiate_signature_mpc_protocol(
-        &self,
+        &mut self,
         certificate: &VerifiedExecutableTransaction,
         inner_temporary_store: &InnerTemporaryStore,
         effects: &TransactionEffects,
@@ -1329,6 +1339,13 @@ impl AuthorityState {
             return Ok(());
         }
         let mut messages = Vec::new();
+
+        // Add the messages from the pending queue if there are any
+        for message in self.pending_initiate_mpc_sessions {
+            self.currently_running_mpc_sessions_number += 1;
+            messages.push(message);
+        }
+
         let events = &inner_temporary_store.events.data;
         // Check events and decide if we need to initiate a signature mpc protocol
         for event in events {
@@ -1385,6 +1402,7 @@ impl AuthorityState {
                 // TODO: validate commitment error
                 let obj_ref = Self::get_object_ref_by_object_id(effects, &event.session_id.bytes)?;
                 let message = InitiateSignatureMPCProtocol::Sign {
+
                     session_id: SignatureMPCSessionID(event.session_id.bytes.into_bytes()),
                     session_ref: obj_ref,
                     messages: event.messages.clone(),
