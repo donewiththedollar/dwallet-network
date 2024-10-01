@@ -367,30 +367,8 @@ impl SignatureMPCManager {
             event.session_id
         );
 
-        if self.active_instances_counter > self.max_active_mpc_instances {
-            self.pending_instances_queue
-                .push_back(event.session_id.bytes);
-            info!(
-                "Added MPCInstance to pending queue for session_id {:?}",
-                event.session_id
-            );
-            return;
-        }
-        let new_instance = MPCInstance::new(
-            Arc::clone(&self.consensus_adapter),
-            self.epoch_store.clone(),
-            self.mpc_threshold_number_of_parties,
-            event.session_id.clone().bytes,
-            self.language_public_parameters.clone(),
-        )
-        .await;
-        self.mpc_instances
-            .insert(event.session_id.clone().bytes, new_instance);
-        self.active_instances_counter += 1;
-        info!(
-            "Added MPCInstance to MPC manager for session_id {:?}",
-            event.session_id
-        );
+        self.pending_instances_queue
+            .push_back(event.session_id.bytes);
     }
 
     fn epoch_store(&self) -> PeraResult<Arc<AuthorityPerEpochStore>> {
