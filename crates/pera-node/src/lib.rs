@@ -1291,15 +1291,17 @@ impl PeraNode {
                     .await?;
             }
         }
-
-        epoch_store
-            .set_signature_mpc_manager(SignatureMPCManager::new(
-                Arc::new(consensus_adapter.clone()),
-                Arc::downgrade(&epoch_store),
-                config.max_active_mpc_instances,
-                epoch_store.committee().voting_rights.len(),
-            ))
-            .await?;
+        let signature_mpc_manager = SignatureMPCManager::try_new(
+            Arc::new(consensus_adapter.clone()),
+            Arc::downgrade(&epoch_store),
+            config.max_active_mpc_instances,
+            epoch_store.committee().voting_rights.len(),
+        );
+        if let Some(signature_mpc_manager) = signature_mpc_manager {
+            epoch_store
+                .set_signature_mpc_manager(signature_mpc_manager)
+                .await?;
+        }
         let throughput_calculator = Arc::new(ConsensusThroughputCalculator::new(
             None,
             state.metrics.clone(),

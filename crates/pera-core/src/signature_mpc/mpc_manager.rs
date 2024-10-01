@@ -27,6 +27,7 @@ use std::{io, mem};
 use tokio::sync::{mpsc, Mutex, RwLock};
 use tokio::time::sleep;
 use tracing::{debug, error, info};
+use pera_types::committee::EpochId;
 
 #[derive(Clone)]
 struct ProofMPCMessage {
@@ -246,6 +247,7 @@ pub struct SignatureMPCManager {
     pub epoch_store: Weak<AuthorityPerEpochStore>,
     pub max_active_mpc_instances: usize,
     mpc_threshold_number_of_parties: usize,
+    epoch: EpochId,
 }
 
 type Lang = maurer::knowledge_of_discrete_log::Language<secp256k1::Scalar, secp256k1::GroupElement>;
@@ -267,13 +269,23 @@ fn generate_language_public_parameters<const REPETITIONS: usize>(
 }
 
 impl SignatureMPCManager {
-    pub fn new(
+    pub fn try_new(
         consensus_adapter: Arc<dyn SubmitToConsensus>,
-        epoch_store: Weak<AuthorityPerEpochStore>,
+        epoch_store_weak: Weak<AuthorityPerEpochStore>,
         max_active_mpc_instances: usize,
         num_of_parties: usize,
-    ) -> Self {
-        Self {
+    ) -> Option<Self> {
+        let epoch_store = match epoch_store_weak.upgrade() {
+            Some(epoch_store) => epoch_store,
+            None => {
+                error!(
+                    "could not construct RandomnessManager: AuthorityPerEpochStore already gone"
+                );
+                return None;
+            }
+        };
+
+        Some(Self {
             mpc_instances: HashMap::new(),
             pending_instances_queue: VecDeque::new(),
             active_instances_counter: 0,
@@ -281,11 +293,12 @@ impl SignatureMPCManager {
                 { maurer::SOUND_PROOFS_REPETITIONS },
             >(),
             consensus_adapter,
-            epoch_store,
+            epoch_store: epoch_store_weak,
+            epoch: epoch_store.committee().epoch,
             max_active_mpc_instances,
             // TODO (#268): Take into account the validator's voting power
             mpc_threshold_number_of_parties: ((num_of_parties * 2) + 2) / 3,
-        }
+        })
     }
 
     /// Filter the relevant MPC events from the transaction events & handle them
@@ -378,5 +391,11 @@ impl SignatureMPCManager {
             "Added MPCInstance to MPC manager for session_id {:?}",
             event.session_id
         );
+    }
+
+    fn epoch_store(&self) -> PeraResult<Arc<AuthorityPerEpochStore>> {
+        self.epoch_store
+            .upgrade()
+            .ok_or(PeraError::EpochEnded(self.epoch))
     }
 }
