@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/your-first-dwallet",
+  "title": "Your First dWallet",
+  "description": "Before you can create your first dWallet, you must have dWallet installed, and",
+  "source": "@site/docs/developers-guide/getting-started/your-first-dwallet.md",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/your-first-dwallet",
+  "permalink": "/developers-guide/getting-started/your-first-dwallet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/your-first-dwallet.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Get DWLT Tokens",
+    "permalink": "/developers-guide/getting-started/get-tokens"
+  },
+  "next": {
+    "title": "Encryption Keys",
+    "permalink": "/developers-guide/getting-started/encryption-key"
+  }
+}

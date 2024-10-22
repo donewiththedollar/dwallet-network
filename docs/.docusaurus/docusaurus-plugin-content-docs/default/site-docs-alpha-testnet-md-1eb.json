@@ -1,0 +1,27 @@
+{
+  "id": "alpha-testnet",
+  "title": "Alpha Testnet",
+  "description": "A live version of the testnet will be available soon, follow us on Discord or Twitter to stay up to date. To join the incentivized testnet, apply on our website.",
+  "source": "@site/docs/alpha-testnet.md",
+  "sourceDirName": ".",
+  "slug": "/alpha-testnet",
+  "permalink": "/alpha-testnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/alpha-testnet.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/"
+  },
+  "next": {
+    "title": "Multi-Chain vs. Cross-Chain",
+    "permalink": "/core-concepts/multi-chain-vs-cross-chain"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/local-network",
+  "title": "Connect to a Local Network",
+  "description": "If you haven't already, you need to install dWallet on your system.",
+  "source": "@site/docs/developers-guide/getting-started/local-network.mdx",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/local-network",
+  "permalink": "/developers-guide/getting-started/local-network",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/local-network.mdx",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Connect to a dWallet Network",
+    "permalink": "/developers-guide/getting-started/connect"
+  },
+  "next": {
+    "title": "Get DWLT Tokens",
+    "permalink": "/developers-guide/getting-started/get-tokens"
+  }
+}

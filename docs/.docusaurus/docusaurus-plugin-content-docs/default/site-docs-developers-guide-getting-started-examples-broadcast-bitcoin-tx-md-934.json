@@ -1,0 +1,26 @@
+{
+  "id": "developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+  "title": "Use a dWallet on Bitcoin",
+  "description": "After creating a dWallet you can derive the dWallet's Bitcoin address,",
+  "source": "@site/docs/developers-guide/getting-started/examples/broadcast-bitcoin-tx.md",
+  "sourceDirName": "developers-guide/getting-started/examples",
+  "slug": "/developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+  "permalink": "/developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/examples/broadcast-bitcoin-tx.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Use a dWallet on Bitcoin"
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Use a dWallet on Ethereum",
+    "permalink": "/developers-guide/getting-started/examples/broadcast-ether-tx"
+  },
+  "next": {
+    "title": "Bitcoin MultiSig in Sui Move",
+    "permalink": "/developers-guide/getting-started/examples/bitcoin-multisig-sui-move"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/state-proofs",
+  "title": "State Proofs",
+  "description": "History of State Proofs",
+  "source": "@site/docs/core-concepts/state-proofs.md",
+  "sourceDirName": "core-concepts",
+  "slug": "/core-concepts/state-proofs",
+  "permalink": "/core-concepts/state-proofs",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/state-proofs.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 6,
+  "frontMatter": {
+    "sidebar_position": 6
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "2PC-MPC",
+    "permalink": "/core-concepts/cryptography/2pc-mpc"
+  },
+  "next": {
+    "title": "dWallet Environment Setup",
+    "permalink": "/developers-guide/getting-started/dwallet-network-environment"
+  }
+}

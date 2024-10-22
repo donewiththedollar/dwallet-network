@@ -1,0 +1,23 @@
+{
+  "id": "community",
+  "title": "Community",
+  "description": "- Join our Discord",
+  "source": "@site/docs/community.md",
+  "sourceDirName": ".",
+  "slug": "/community",
+  "permalink": "/community",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/community.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Operators Guide",
+    "permalink": "/operators-guide"
+  }
+}

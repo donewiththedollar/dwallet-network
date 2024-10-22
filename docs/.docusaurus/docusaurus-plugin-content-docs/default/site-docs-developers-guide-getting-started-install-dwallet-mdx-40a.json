@@ -1,0 +1,27 @@
+{
+  "id": "developers-guide/getting-started/install-dwallet",
+  "title": "Install dWallet",
+  "description": "Prerequisites",
+  "source": "@site/docs/developers-guide/getting-started/install-dwallet.mdx",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/install-dwallet",
+  "permalink": "/developers-guide/getting-started/install-dwallet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/install-dwallet.mdx",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "dWallet Environment Setup",
+    "permalink": "/developers-guide/getting-started/dwallet-network-environment"
+  },
+  "next": {
+    "title": "Get DWLT Address",
+    "permalink": "/developers-guide/getting-started/get-address"
+  }
+}

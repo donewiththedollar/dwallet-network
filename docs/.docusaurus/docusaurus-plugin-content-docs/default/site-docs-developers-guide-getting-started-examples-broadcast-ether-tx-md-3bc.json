@@ -1,0 +1,26 @@
+{
+  "id": "developers-guide/getting-started/examples/broadcast-ether-tx",
+  "title": "Use a dWallet on Ethereum",
+  "description": "After creating a dWallet, you can derive the dWallet's Ethereum address,",
+  "source": "@site/docs/developers-guide/getting-started/examples/broadcast-ether-tx.md",
+  "sourceDirName": "developers-guide/getting-started/examples",
+  "slug": "/developers-guide/getting-started/examples/broadcast-ether-tx",
+  "permalink": "/developers-guide/getting-started/examples/broadcast-ether-tx",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/examples/broadcast-ether-tx.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Use a dWallet on Ethereum"
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Future Transactions",
+    "permalink": "/developers-guide/getting-started/future-transaction"
+  },
+  "next": {
+    "title": "Use a dWallet on Bitcoin",
+    "permalink": "/developers-guide/getting-started/examples/broadcast-bitcoin-tx"
+  }
+}

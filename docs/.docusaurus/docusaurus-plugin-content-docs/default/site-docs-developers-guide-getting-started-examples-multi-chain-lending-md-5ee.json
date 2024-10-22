@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/examples/multi-chain-lending",
+  "title": "Multi-Chain Lending",
+  "description": "Coming soon...",
+  "source": "@site/docs/developers-guide/getting-started/examples/multi-chain-lending.md",
+  "sourceDirName": "developers-guide/getting-started/examples",
+  "slug": "/developers-guide/getting-started/examples/multi-chain-lending",
+  "permalink": "/developers-guide/getting-started/examples/multi-chain-lending",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/examples/multi-chain-lending.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Bitcoin MultiSig in Solidity",
+    "permalink": "/developers-guide/getting-started/examples/bitcoin-multisig-solidity"
+  },
+  "next": {
+    "title": "Multi-Chain Atomic Swap",
+    "permalink": "/developers-guide/getting-started/examples/multi-chain-atomic-swap"
+  }
+}

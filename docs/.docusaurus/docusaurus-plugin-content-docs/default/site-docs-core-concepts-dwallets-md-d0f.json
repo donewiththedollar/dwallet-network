@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/dwallets",
+  "title": "dWallets",
+  "description": "What is a dWallet",
+  "source": "@site/docs/core-concepts/dwallets.md",
+  "sourceDirName": "core-concepts",
+  "slug": "/core-concepts/dwallets",
+  "permalink": "/core-concepts/dwallets",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/dwallets.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Noncollusive and Decentralized",
+    "permalink": "/core-concepts/noncollusive-and-decentralized"
+  },
+  "next": {
+    "title": "MPC",
+    "permalink": "/core-concepts/cryptography/mpc"
+  }
+}

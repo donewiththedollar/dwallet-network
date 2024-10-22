@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/composable-modular-networks",
+  "title": "Composable Modularity",
+  "description": "Blockchain Modularity",
+  "source": "@site/docs/core-concepts/composable-modular-networks.md",
+  "sourceDirName": "core-concepts",
+  "slug": "/core-concepts/composable-modular-networks",
+  "permalink": "/core-concepts/composable-modular-networks",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/composable-modular-networks.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Multi-Chain vs. Cross-Chain",
+    "permalink": "/core-concepts/multi-chain-vs-cross-chain"
+  },
+  "next": {
+    "title": "Noncollusive and Decentralized",
+    "permalink": "/core-concepts/noncollusive-and-decentralized"
+  }
+}

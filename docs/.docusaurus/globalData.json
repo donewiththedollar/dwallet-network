@@ -1,0 +1,173 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "overview",
+          "docs": [
+            {
+              "id": "alpha-testnet",
+              "path": "/alpha-testnet",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "community",
+              "path": "/community",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/composable-modular-networks",
+              "path": "/core-concepts/composable-modular-networks",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/cryptography/2pc-mpc",
+              "path": "/core-concepts/cryptography/2pc-mpc",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/cryptography/mpc",
+              "path": "/core-concepts/cryptography/mpc",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/dwallets",
+              "path": "/core-concepts/dwallets",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/multi-chain-vs-cross-chain",
+              "path": "/core-concepts/multi-chain-vs-cross-chain",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/noncollusive-and-decentralized",
+              "path": "/core-concepts/noncollusive-and-decentralized",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "core-concepts/state-proofs",
+              "path": "/core-concepts/state-proofs",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/connect",
+              "path": "/developers-guide/getting-started/connect",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/dwallet-network-environment",
+              "path": "/developers-guide/getting-started/dwallet-network-environment",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/encryption-key",
+              "path": "/developers-guide/getting-started/encryption-key",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+              "path": "/developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/bitcoin-multisig-sui-move",
+              "path": "/developers-guide/getting-started/examples/bitcoin-multisig-sui-move",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+              "path": "/developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/broadcast-ether-tx",
+              "path": "/developers-guide/getting-started/examples/broadcast-ether-tx",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/multi-chain-atomic-swap",
+              "path": "/developers-guide/getting-started/examples/multi-chain-atomic-swap",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/examples/multi-chain-lending",
+              "path": "/developers-guide/getting-started/examples/multi-chain-lending",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/future-transaction",
+              "path": "/developers-guide/getting-started/future-transaction",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/get-address",
+              "path": "/developers-guide/getting-started/get-address",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/get-tokens",
+              "path": "/developers-guide/getting-started/get-tokens",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/install-dwallet",
+              "path": "/developers-guide/getting-started/install-dwallet",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/local-network",
+              "path": "/developers-guide/getting-started/local-network",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/user-share-encryption",
+              "path": "/developers-guide/getting-started/user-share-encryption",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/getting-started/your-first-dwallet",
+              "path": "/developers-guide/getting-started/your-first-dwallet",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/lightclients/ether-lightclient",
+              "path": "/developers-guide/lightclients/ether-lightclient",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "developers-guide/lightclients/sui-lightclient",
+              "path": "/developers-guide/lightclients/sui-lightclient",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "operators-guide",
+              "path": "/operators-guide",
+              "sidebar": "dwalletSidebar"
+            },
+            {
+              "id": "overview",
+              "path": "/",
+              "sidebar": "dwalletSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "dwalletSidebar": {
+              "link": {
+                "path": "/",
+                "label": "Overview"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

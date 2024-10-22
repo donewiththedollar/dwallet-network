@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/future-transaction",
+  "title": "Future Transactions",
+  "description": "The “Sign Future Transaction” feature on the dWallet Network introduces a way to enhance zero-trust interactions within the blockchain ecosystem.",
+  "source": "@site/docs/developers-guide/getting-started/future-transaction.md",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/future-transaction",
+  "permalink": "/developers-guide/getting-started/future-transaction",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/future-transaction.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "User Secret Share Encryption",
+    "permalink": "/developers-guide/getting-started/user-share-encryption"
+  },
+  "next": {
+    "title": "Use a dWallet on Ethereum",
+    "permalink": "/developers-guide/getting-started/examples/broadcast-ether-tx"
+  }
+}

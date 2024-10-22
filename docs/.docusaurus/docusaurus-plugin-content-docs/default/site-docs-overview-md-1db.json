@@ -1,0 +1,24 @@
+{
+  "id": "overview",
+  "title": "Overview",
+  "description": "Welcome to dWallet Network",
+  "source": "@site/docs/overview.md",
+  "sourceDirName": ".",
+  "slug": "/",
+  "permalink": "/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/overview.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "slug": "/"
+  },
+  "sidebar": "dwalletSidebar",
+  "next": {
+    "title": "Alpha Testnet",
+    "permalink": "/alpha-testnet"
+  }
+}

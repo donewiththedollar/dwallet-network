@@ -1,0 +1,449 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "dwalletSidebar": [
+      {
+        "type": "link",
+        "label": "Overview",
+        "href": "/",
+        "docId": "overview",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Alpha Testnet",
+        "href": "/alpha-testnet",
+        "docId": "alpha-testnet",
+        "unlisted": false
+      },
+      {
+        "type": "category",
+        "label": "Core Concepts",
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Multi-Chain vs. Cross-Chain",
+            "href": "/core-concepts/multi-chain-vs-cross-chain",
+            "docId": "core-concepts/multi-chain-vs-cross-chain",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Composable Modularity",
+            "href": "/core-concepts/composable-modular-networks",
+            "docId": "core-concepts/composable-modular-networks",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "Noncollusive and Decentralized",
+            "href": "/core-concepts/noncollusive-and-decentralized",
+            "docId": "core-concepts/noncollusive-and-decentralized",
+            "unlisted": false
+          },
+          {
+            "type": "link",
+            "label": "dWallets",
+            "href": "/core-concepts/dwallets",
+            "docId": "core-concepts/dwallets",
+            "unlisted": false
+          },
+          {
+            "type": "category",
+            "label": "Cryptography",
+            "collapsed": false,
+            "items": [
+              {
+                "type": "link",
+                "label": "MPC",
+                "href": "/core-concepts/cryptography/mpc",
+                "docId": "core-concepts/cryptography/mpc",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "2PC-MPC",
+                "href": "/core-concepts/cryptography/2pc-mpc",
+                "docId": "core-concepts/cryptography/2pc-mpc",
+                "unlisted": false
+              }
+            ],
+            "collapsible": true
+          },
+          {
+            "type": "link",
+            "label": "State Proofs",
+            "href": "/core-concepts/state-proofs",
+            "docId": "core-concepts/state-proofs",
+            "unlisted": false
+          }
+        ],
+        "collapsible": true
+      },
+      {
+        "type": "category",
+        "label": "Developers Guide",
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "Getting Started",
+            "collapsed": false,
+            "items": [
+              {
+                "type": "link",
+                "label": "dWallet Environment Setup",
+                "href": "/developers-guide/getting-started/dwallet-network-environment",
+                "docId": "developers-guide/getting-started/dwallet-network-environment",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Install dWallet",
+                "href": "/developers-guide/getting-started/install-dwallet",
+                "docId": "developers-guide/getting-started/install-dwallet",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Get DWLT Address",
+                "href": "/developers-guide/getting-started/get-address",
+                "docId": "developers-guide/getting-started/get-address",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Connect to a dWallet Network",
+                "href": "/developers-guide/getting-started/connect",
+                "docId": "developers-guide/getting-started/connect",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Connect to a Local Network",
+                "href": "/developers-guide/getting-started/local-network",
+                "docId": "developers-guide/getting-started/local-network",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Get DWLT Tokens",
+                "href": "/developers-guide/getting-started/get-tokens",
+                "docId": "developers-guide/getting-started/get-tokens",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Your First dWallet",
+                "href": "/developers-guide/getting-started/your-first-dwallet",
+                "docId": "developers-guide/getting-started/your-first-dwallet",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Encryption Key",
+                "href": "/developers-guide/getting-started/encryption-key",
+                "docId": "developers-guide/getting-started/encryption-key",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "User Share Encryption",
+                "href": "/developers-guide/getting-started/user-share-encryption",
+                "docId": "developers-guide/getting-started/user-share-encryption",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Future Transactions",
+                "href": "/developers-guide/getting-started/future-transaction",
+                "docId": "developers-guide/getting-started/future-transaction",
+                "unlisted": false
+              },
+              {
+                "type": "category",
+                "label": "Examples",
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "link",
+                    "label": "Using dWallets on Ethereum",
+                    "href": "/developers-guide/getting-started/examples/broadcast-ether-tx",
+                    "docId": "developers-guide/getting-started/examples/broadcast-ether-tx",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Using dWallets on Bitcoin",
+                    "href": "/developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+                    "docId": "developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "category",
+                    "label": "Bitcoin Multi-Sig",
+                    "collapsed": false,
+                    "items": [
+                      {
+                        "type": "link",
+                        "label": "Bitcoin MultiSig in Sui Move",
+                        "href": "/developers-guide/getting-started/examples/bitcoin-multisig-sui-move",
+                        "docId": "developers-guide/getting-started/examples/bitcoin-multisig-sui-move",
+                        "unlisted": false
+                      },
+                      {
+                        "type": "link",
+                        "label": "Bitcoin MultiSig in Solidity",
+                        "href": "/developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+                        "docId": "developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+                        "unlisted": false
+                      }
+                    ],
+                    "collapsible": true
+                  },
+                  {
+                    "type": "link",
+                    "label": "Multi-Chain Lending - Coming soon",
+                    "href": "/developers-guide/getting-started/examples/multi-chain-lending",
+                    "docId": "developers-guide/getting-started/examples/multi-chain-lending",
+                    "unlisted": false
+                  },
+                  {
+                    "type": "link",
+                    "label": "Multi-Chain Atomic Swap - Coming soon",
+                    "href": "/developers-guide/getting-started/examples/multi-chain-atomic-swap",
+                    "docId": "developers-guide/getting-started/examples/multi-chain-atomic-swap",
+                    "unlisted": false
+                  }
+                ],
+                "collapsible": true
+              }
+            ],
+            "collapsible": true
+          },
+          {
+            "type": "category",
+            "label": "dWallet Multi-Chain Control",
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "Control a dWallet on Sui",
+                "href": "/developers-guide/lightclients/sui-lightclient",
+                "docId": "developers-guide/lightclients/sui-lightclient",
+                "unlisted": false
+              },
+              {
+                "type": "link",
+                "label": "Control a dWallet on Ethereum",
+                "href": "/developers-guide/lightclients/ether-lightclient",
+                "docId": "developers-guide/lightclients/ether-lightclient",
+                "unlisted": false
+              }
+            ],
+            "collapsible": true
+          }
+        ],
+        "collapsible": true
+      },
+      {
+        "type": "link",
+        "label": "Operators Guide - Coming Soon",
+        "href": "/operators-guide",
+        "docId": "operators-guide",
+        "unlisted": false
+      },
+      {
+        "type": "link",
+        "label": "Community",
+        "href": "/community",
+        "docId": "community",
+        "unlisted": false
+      }
+    ]
+  },
+  "docs": {
+    "alpha-testnet": {
+      "id": "alpha-testnet",
+      "title": "Alpha Testnet",
+      "description": "A live version of the testnet will be available soon, follow us on Discord or Twitter to stay up to date. To join the incentivized testnet, apply on our website.",
+      "sidebar": "dwalletSidebar"
+    },
+    "community": {
+      "id": "community",
+      "title": "Community",
+      "description": "- Join our Discord",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/composable-modular-networks": {
+      "id": "core-concepts/composable-modular-networks",
+      "title": "Composable Modularity",
+      "description": "Blockchain Modularity",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/cryptography/2pc-mpc": {
+      "id": "core-concepts/cryptography/2pc-mpc",
+      "title": "2PC-MPC",
+      "description": "Overview",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/cryptography/mpc": {
+      "id": "core-concepts/cryptography/mpc",
+      "title": "MPC",
+      "description": "What is MPC - Multi Party Computation",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/dwallets": {
+      "id": "core-concepts/dwallets",
+      "title": "dWallets",
+      "description": "What is a dWallet",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/multi-chain-vs-cross-chain": {
+      "id": "core-concepts/multi-chain-vs-cross-chain",
+      "title": "Multi-Chain vs. Cross-Chain",
+      "description": "Multi-Chain Architecture",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/noncollusive-and-decentralized": {
+      "id": "core-concepts/noncollusive-and-decentralized",
+      "title": "Noncollusive and Decentralized",
+      "description": "Since the inception of Bitcoin, noncollusivity and decentralization have been foundational principles of the Web3 ecosystem. These principles ensure that no single entity or group of entities can steal user assets or manipulate the network, promoting a secure, transparent, and equitable digital infrastructure.",
+      "sidebar": "dwalletSidebar"
+    },
+    "core-concepts/state-proofs": {
+      "id": "core-concepts/state-proofs",
+      "title": "State Proofs",
+      "description": "History of State Proofs",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/connect": {
+      "id": "developers-guide/getting-started/connect",
+      "title": "Connect to a dWallet Network",
+      "description": "You can use our test network, to experiment with the version of dWallet running on that network. You can also spin up a local dWallet network for local development.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/dwallet-network-environment": {
+      "id": "developers-guide/getting-started/dwallet-network-environment",
+      "title": "dWallet Environment Setup",
+      "description": "Fork the dWallet Network repository",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/encryption-key": {
+      "id": "developers-guide/getting-started/encryption-key",
+      "title": "Encryption Keys",
+      "description": "Encryption keys facilitate secure data transfer between accounts on the dWallet Network by ensuring that sensitive",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/bitcoin-multisig-solidity": {
+      "id": "developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+      "title": "Bitcoin MultiSig in Solidity",
+      "description": "Coming soon...",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/bitcoin-multisig-sui-move": {
+      "id": "developers-guide/getting-started/examples/bitcoin-multisig-sui-move",
+      "title": "Bitcoin MultiSig in Sui Move",
+      "description": "The following example implements a MultiSig mechanism for Bitcoin txs using Sui Move smart contract.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/broadcast-bitcoin-tx": {
+      "id": "developers-guide/getting-started/examples/broadcast-bitcoin-tx",
+      "title": "Use a dWallet on Bitcoin",
+      "description": "After creating a dWallet you can derive the dWallet's Bitcoin address,",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/broadcast-ether-tx": {
+      "id": "developers-guide/getting-started/examples/broadcast-ether-tx",
+      "title": "Use a dWallet on Ethereum",
+      "description": "After creating a dWallet, you can derive the dWallet's Ethereum address,",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/multi-chain-atomic-swap": {
+      "id": "developers-guide/getting-started/examples/multi-chain-atomic-swap",
+      "title": "Multi-Chain Atomic Swap",
+      "description": "Coming soon...",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/examples/multi-chain-lending": {
+      "id": "developers-guide/getting-started/examples/multi-chain-lending",
+      "title": "Multi-Chain Lending",
+      "description": "Coming soon...",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/future-transaction": {
+      "id": "developers-guide/getting-started/future-transaction",
+      "title": "Future Transactions",
+      "description": "The “Sign Future Transaction” feature on the dWallet Network introduces a way to enhance zero-trust interactions within the blockchain ecosystem.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/get-address": {
+      "id": "developers-guide/getting-started/get-address",
+      "title": "Get DWLT Address",
+      "description": "You need an address on the dWallet network before you can start testing dWallets, hold DWLT tokens, or perform transactions.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/get-tokens": {
+      "id": "developers-guide/getting-started/get-tokens",
+      "title": "Get DWLT Tokens",
+      "description": "dWallet faucet is a helpful tool where dWallet developers can get free test DWLT tokens to deploy and interact with their programs on dWallet's Testnet.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/install-dwallet": {
+      "id": "developers-guide/getting-started/install-dwallet",
+      "title": "Install dWallet",
+      "description": "Prerequisites",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/local-network": {
+      "id": "developers-guide/getting-started/local-network",
+      "title": "Connect to a Local Network",
+      "description": "If you haven't already, you need to install dWallet on your system.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/user-share-encryption": {
+      "id": "developers-guide/getting-started/user-share-encryption",
+      "title": "User Secret Share Encryption",
+      "description": "A dWallet consists of a User Secret Share, and a Network Secret Share.",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/getting-started/your-first-dwallet": {
+      "id": "developers-guide/getting-started/your-first-dwallet",
+      "title": "Your First dWallet",
+      "description": "Before you can create your first dWallet, you must have dWallet installed, and",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/lightclients/ether-lightclient": {
+      "id": "developers-guide/lightclients/ether-lightclient",
+      "title": "Control dWallets from Ethereum",
+      "description": "Coming soon...",
+      "sidebar": "dwalletSidebar"
+    },
+    "developers-guide/lightclients/sui-lightclient": {
+      "id": "developers-guide/lightclients/sui-lightclient",
+      "title": "Control dWallets from Sui",
+      "description": "dWallet Network leverages the Sui Light Client to integrate with Sui, bringing dWallets trustlessly into the Sui Network.",
+      "sidebar": "dwalletSidebar"
+    },
+    "operators-guide": {
+      "id": "operators-guide",
+      "title": "Operators Guide",
+      "description": "Coming Soon..",
+      "sidebar": "dwalletSidebar"
+    },
+    "overview": {
+      "id": "overview",
+      "title": "Overview",
+      "description": "Welcome to dWallet Network",
+      "sidebar": "dwalletSidebar"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/connect",
+  "title": "Connect to a dWallet Network",
+  "description": "You can use our test network, to experiment with the version of dWallet running on that network. You can also spin up a local dWallet network for local development.",
+  "source": "@site/docs/developers-guide/getting-started/connect.mdx",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/connect",
+  "permalink": "/developers-guide/getting-started/connect",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/connect.mdx",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Get DWLT Address",
+    "permalink": "/developers-guide/getting-started/get-address"
+  },
+  "next": {
+    "title": "Connect to a Local Network",
+    "permalink": "/developers-guide/getting-started/local-network"
+  }
+}

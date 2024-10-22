@@ -1,0 +1,26 @@
+{
+  "id": "developers-guide/lightclients/sui-lightclient",
+  "title": "Control dWallets from Sui",
+  "description": "dWallet Network leverages the Sui Light Client to integrate with Sui, bringing dWallets trustlessly into the Sui Network.",
+  "source": "@site/docs/developers-guide/lightclients/sui-lightclient.md",
+  "sourceDirName": "developers-guide/lightclients",
+  "slug": "/developers-guide/lightclients/sui-lightclient",
+  "permalink": "/developers-guide/lightclients/sui-lightclient",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/lightclients/sui-lightclient.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Control dWallets from Sui"
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Multi-Chain Atomic Swap",
+    "permalink": "/developers-guide/getting-started/examples/multi-chain-atomic-swap"
+  },
+  "next": {
+    "title": "Control dWallets from Ethereum",
+    "permalink": "/developers-guide/lightclients/ether-lightclient"
+  }
+}

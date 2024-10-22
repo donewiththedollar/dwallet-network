@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/cryptography/2pc-mpc",
+  "title": "2PC-MPC",
+  "description": "Overview",
+  "source": "@site/docs/core-concepts/cryptography/2pc-mpc.md",
+  "sourceDirName": "core-concepts/cryptography",
+  "slug": "/core-concepts/cryptography/2pc-mpc",
+  "permalink": "/core-concepts/cryptography/2pc-mpc",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/cryptography/2pc-mpc.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "MPC",
+    "permalink": "/core-concepts/cryptography/mpc"
+  },
+  "next": {
+    "title": "State Proofs",
+    "permalink": "/core-concepts/state-proofs"
+  }
+}

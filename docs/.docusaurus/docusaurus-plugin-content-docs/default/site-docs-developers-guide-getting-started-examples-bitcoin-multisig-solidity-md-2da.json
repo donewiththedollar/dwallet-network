@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+  "title": "Bitcoin MultiSig in Solidity",
+  "description": "Coming soon...",
+  "source": "@site/docs/developers-guide/getting-started/examples/bitcoin-multisig-solidity.md",
+  "sourceDirName": "developers-guide/getting-started/examples",
+  "slug": "/developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+  "permalink": "/developers-guide/getting-started/examples/bitcoin-multisig-solidity",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/examples/bitcoin-multisig-solidity.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Bitcoin MultiSig in Sui Move",
+    "permalink": "/developers-guide/getting-started/examples/bitcoin-multisig-sui-move"
+  },
+  "next": {
+    "title": "Multi-Chain Lending",
+    "permalink": "/developers-guide/getting-started/examples/multi-chain-lending"
+  }
+}

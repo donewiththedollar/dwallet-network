@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/getting-started/encryption-key",
+  "title": "Encryption Keys",
+  "description": "Encryption keys facilitate secure data transfer between accounts on the dWallet Network by ensuring that sensitive",
+  "source": "@site/docs/developers-guide/getting-started/encryption-key.md",
+  "sourceDirName": "developers-guide/getting-started",
+  "slug": "/developers-guide/getting-started/encryption-key",
+  "permalink": "/developers-guide/getting-started/encryption-key",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/getting-started/encryption-key.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Your First dWallet",
+    "permalink": "/developers-guide/getting-started/your-first-dwallet"
+  },
+  "next": {
+    "title": "User Secret Share Encryption",
+    "permalink": "/developers-guide/getting-started/user-share-encryption"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/noncollusive-and-decentralized",
+  "title": "Noncollusive and Decentralized",
+  "description": "Since the inception of Bitcoin, noncollusivity and decentralization have been foundational principles of the Web3 ecosystem. These principles ensure that no single entity or group of entities can steal user assets or manipulate the network, promoting a secure, transparent, and equitable digital infrastructure.",
+  "source": "@site/docs/core-concepts/noncollusive-and-decentralized.md",
+  "sourceDirName": "core-concepts",
+  "slug": "/core-concepts/noncollusive-and-decentralized",
+  "permalink": "/core-concepts/noncollusive-and-decentralized",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/noncollusive-and-decentralized.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Composable Modularity",
+    "permalink": "/core-concepts/composable-modular-networks"
+  },
+  "next": {
+    "title": "dWallets",
+    "permalink": "/core-concepts/dwallets"
+  }
+}

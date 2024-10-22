@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/multi-chain-vs-cross-chain",
+  "title": "Multi-Chain vs. Cross-Chain",
+  "description": "Multi-Chain Architecture",
+  "source": "@site/docs/core-concepts/multi-chain-vs-cross-chain.md",
+  "sourceDirName": "core-concepts",
+  "slug": "/core-concepts/multi-chain-vs-cross-chain",
+  "permalink": "/core-concepts/multi-chain-vs-cross-chain",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/multi-chain-vs-cross-chain.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Alpha Testnet",
+    "permalink": "/alpha-testnet"
+  },
+  "next": {
+    "title": "Composable Modularity",
+    "permalink": "/core-concepts/composable-modular-networks"
+  }
+}

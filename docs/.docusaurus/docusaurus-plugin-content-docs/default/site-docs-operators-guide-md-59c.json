@@ -1,0 +1,24 @@
+{
+  "id": "operators-guide",
+  "title": "Operators Guide",
+  "description": "Coming Soon..",
+  "source": "@site/docs/operators-guide.md",
+  "sourceDirName": ".",
+  "slug": "/operators-guide",
+  "permalink": "/operators-guide",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/operators-guide.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Control dWallets from Ethereum",
+    "permalink": "/developers-guide/lightclients/ether-lightclient"
+  },
+  "next": {
+    "title": "Community",
+    "permalink": "/community"
+  }
+}

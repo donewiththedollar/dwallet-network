@@ -1,0 +1,27 @@
+{
+  "id": "core-concepts/cryptography/mpc",
+  "title": "MPC",
+  "description": "What is MPC - Multi Party Computation",
+  "source": "@site/docs/core-concepts/cryptography/mpc.md",
+  "sourceDirName": "core-concepts/cryptography",
+  "slug": "/core-concepts/cryptography/mpc",
+  "permalink": "/core-concepts/cryptography/mpc",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/core-concepts/cryptography/mpc.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "dWallets",
+    "permalink": "/core-concepts/dwallets"
+  },
+  "next": {
+    "title": "2PC-MPC",
+    "permalink": "/core-concepts/cryptography/2pc-mpc"
+  }
+}

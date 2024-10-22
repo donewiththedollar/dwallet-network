@@ -1,0 +1,24 @@
+{
+  "id": "developers-guide/lightclients/ether-lightclient",
+  "title": "Control dWallets from Ethereum",
+  "description": "Coming soon...",
+  "source": "@site/docs/developers-guide/lightclients/ether-lightclient.md",
+  "sourceDirName": "developers-guide/lightclients",
+  "slug": "/developers-guide/lightclients/ether-lightclient",
+  "permalink": "/developers-guide/lightclients/ether-lightclient",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/dwallet-labs/dwallet-network/tree/main/docs/docs/developers-guide/lightclients/ether-lightclient.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "dwalletSidebar",
+  "previous": {
+    "title": "Control dWallets from Sui",
+    "permalink": "/developers-guide/lightclients/sui-lightclient"
+  },
+  "next": {
+    "title": "Operators Guide",
+    "permalink": "/operators-guide"
+  }
+}
