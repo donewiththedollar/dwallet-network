@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
 use anyhow::Error;
-use wasm_bindgen::JsValue;
+use wasm_bindgen::{memory, JsValue};
 use wasm_bindgen::prelude::*;
 use serde::{Deserialize, Serialize};
 use dwallet_mpc::create_centralized_output;

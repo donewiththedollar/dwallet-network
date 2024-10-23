@@ -42,6 +42,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c7f02d4ea65f2c1853089ffd8d2787bdbc63de2f0d29dedbcf8ccdfa0ccd4cf"
 
 [[package]]
+name = "base64"
+version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
+
+[[package]]
 name = "base64ct"
 version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -190,7 +196,7 @@ checksum = "1462739cb27611015575c0c11df5df7601141071f07518d56fcc1be504cbec97"
 [[package]]
 name = "class_groups"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "crypto-bigint",
  "crypto-primes",
@@ -231,7 +237,7 @@ dependencies = [
 [[package]]
 name = "commitment"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "crypto-bigint",
  "group 0.1.0",
@@ -404,6 +410,7 @@ name = "dwallet-mpc"
 version = "1.32.2"
 dependencies = [
  "anyhow",
+ "base64",
  "bcs",
  "class_groups_constants",
  "commitment",
@@ -458,7 +465,7 @@ dependencies = [
 [[package]]
 name = "enhanced_maurer"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "commitment",
  "crypto-bigint",
@@ -625,7 +632,7 @@ checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
 [[package]]
 name = "group"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "crypto-bigint",
  "curve25519-dalek-ng",
@@ -690,7 +697,7 @@ dependencies = [
 [[package]]
 name = "homomorphic_encryption"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "crypto-bigint",
  "getrandom",
@@ -784,7 +791,7 @@ checksum = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24"
 [[package]]
 name = "maurer"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "commitment",
  "crypto-bigint",
@@ -819,7 +826,7 @@ dependencies = [
 [[package]]
 name = "mpc"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "criterion",
  "crypto-bigint",
@@ -943,7 +950,7 @@ dependencies = [
 [[package]]
 name = "proof"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "bulletproofs",
  "commitment",
@@ -1154,6 +1161,7 @@ version = "1.0.132"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d726bfaff4b320266d395898905d0eba0345aae23b54aee3a737e260fd46db03"
 dependencies = [
+ "indexmap",
  "itoa",
  "memchr",
  "ryu",
@@ -1224,6 +1232,7 @@ name = "signature-mpc-wasm"
 version = "0.1.6"
 dependencies = [
  "anyhow",
+ "base64",
  "bcs",
  "console_error_panic_hook",
  "console_log",
@@ -1312,7 +1321,7 @@ dependencies = [
 [[package]]
 name = "tiresias"
 version = "0.2.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "crypto-bigint",
  "crypto-primes",
@@ -1348,7 +1357,7 @@ dependencies = [
 [[package]]
 name = "twopc_mpc"
 version = "0.1.0"
-source = "git+https://github.com/dwallet-labs/cryptography-private?branch=pera-dkg-changes#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
+source = "git+https://github.com/dwallet-labs/cryptography-private?rev=7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26#7e26ab440d93d30e4ec75aa3b7de67d6c2c72e26"
 dependencies = [
  "class_groups",
  "commitment",

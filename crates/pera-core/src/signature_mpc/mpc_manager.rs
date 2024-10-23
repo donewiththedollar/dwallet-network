@@ -287,9 +287,9 @@ pub struct SignatureMPCManager<P: Advance + Party> {
 }
 
 /// Needed to be able to iterate over a vector of generic MPCInstances with Rayon
-unsafe impl<P: mpc::Party + Advance + Sync + Send> Send for SignatureMPCInstance<P> {}
+unsafe impl<P: Party + Advance + Sync + Send> Send for SignatureMPCInstance<P> {}
 
-impl<P: Advance + mpc::Party + Sync + Send> SignatureMPCManager<P> {
+impl<P: Advance + Party + Sync + Send> SignatureMPCManager<P> {
     pub fn new(
         consensus_adapter: Arc<dyn SubmitToConsensus>,
         epoch_store: Weak<AuthorityPerEpochStore>,

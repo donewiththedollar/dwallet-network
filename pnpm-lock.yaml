@@ -1460,6 +1460,9 @@ importers:
       graphql:
         specifier: ^16.9.0
         version: 16.9.0
+      js-base64:
+        specifier: ^3.7.7
+        version: 3.7.7
       tweetnacl:
         specifier: ^1.0.3
         version: 1.0.3
@@ -10307,6 +10310,9 @@ packages:
 
   jose@5.6.3:
     resolution: {integrity: sha512-1Jh//hEEwMhNYPDDLwXHa2ePWgWiFNNUadVmguAAw2IJ6sj9mNxV5tGXJNqlMkJAybF6Lgw1mISDxTePP/187g==}
+
+  js-base64@3.7.7:
+    resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
 
   js-sdsl@4.4.2:
     resolution: {integrity: sha512-dwXFwByc/ajSV6m5bcKAPwe4yDDF6D614pxmIi5odytzxRlwqF6nwoiCek80Ixc7Cvma5awClxrzFtxCQvcM8w==}
@@ -25433,6 +25439,8 @@ snapshots:
   jose@4.13.1: {}
 
   jose@5.6.3: {}
+
+  js-base64@3.7.7: {}
 
   js-sdsl@4.4.2: {}
 
