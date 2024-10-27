@@ -3992,6 +3992,7 @@ dependencies = [
  "log",
  "mpc",
  "rand_core 0.6.4",
+ "serde",
  "twopc_mpc",
 ]
 

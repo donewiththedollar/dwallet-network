@@ -7,28 +7,16 @@ use wasm_bindgen::prelude::*;
 use serde::{Deserialize, Serialize};
 use dwallet_mpc::create_centralized_output;
 use log::debug;
-
-#[wasm_bindgen]
-pub fn hello_wasm(dkg_first_round_output: Vec<u8>) -> Result<Vec<u8>, JsErr> {
-    console_error_panic_hook::set_once();
-    console_log::init_with_level(log::Level::Debug).unwrap();
+#[wasm_bindgen(catch)]
+pub fn hello_wasm(dkg_first_round_output: Vec<u8>) -> Result<JsValue, JsErr> {
     debug!("hello wasm {:?}", dkg_first_round_output);
-    let output = match create_centralized_output(dkg_first_round_output) {
-        Ok(output) => output,
-        Err(e) => {debug!("{:?}", e);return Ok(vec![1,2]);},
-    };
-    Ok(output)
+    return Ok(JsValue::from_str("yael"));
+    // let output = match create_centralized_output(dkg_first_round_output) {
+    //     Ok(output) => output,
+    //     Err(e) => {debug!("{:?}", e);return Ok(vec![1,2]);},
+    // };
+    // Ok(output)
 }
-
-
-// impl<T: std::error::Error> From<T> for JsErr {
-//     fn from(err: T) -> Self {
-//         JsErr {
-//             display: format!("{}", err),
-//             message: err.to_string(),
-//         }
-//     }
-// }
 
 impl From<JsErr> for JsValue {
     fn from(err: JsErr) -> Self {
