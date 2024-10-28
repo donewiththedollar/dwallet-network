@@ -1,7 +1,7 @@
-use mpc::two_party::Round;
-use rand_core::OsRng;
 use log::{debug, log};
 use mpc::two_party;
+use mpc::two_party::Round;
+use rand_core::OsRng;
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
@@ -12,7 +12,7 @@ pub fn create_centralized_output(first_round_output: Vec<u8>) -> anyhow::Result<
     debug!("{:?}", output == first_round_output);
     let a = output == first_round_output;
     debug!("1");
-    let first_round_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::EncryptionOfSecretKeyShareAndPublicKeyShare = bcs::from_bytes(&first_round_output)?;
+    let first_round_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::EncryptionOfSecretKeyShareAndPublicKeyShare = bcs::from_bytes(&output)?;
     debug!("2");
     let pp = class_groups_constants::protocol_public_parameters()?;
     debug!("1");
@@ -28,4 +28,15 @@ pub fn create_centralized_output(first_round_output: Vec<u8>) -> anyhow::Result<
     let a = hex::encode(&outgoing_message);
     debug!("1");
     Ok(outgoing_message)
+}
+
+pub fn no_code_in_wasm(input: Vec<u8>) -> Vec<u8> {
+    let output = match create_centralized_output(input) {
+        Ok(output) => output,
+        Err(e) => {
+            debug!("{:?}", e);
+            return vec![1, 2];
+        }
+    };
+    output
 }
