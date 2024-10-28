@@ -32,11 +32,11 @@ function hexStringToNumberArray(hexString: string): number[] {
 }
 
 describe('Test signature mpc', () => {
-	let toolbox: TestToolbox;
-
-	beforeAll(async () => {
-		toolbox = await setup();
-	});
+	// let toolbox: TestToolbox;
+	//
+	// beforeAll(async () => {
+	// 	toolbox = await setup();
+	// });
 
 	// it('should create proof MPC Event', async () => {
 	// 	await launchProofMPSession(toolbox.keypair, toolbox.client);
