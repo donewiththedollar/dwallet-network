@@ -2,6 +2,8 @@ use log::{debug, log};
 use mpc::two_party;
 use mpc::two_party::Round;
 use rand_core::OsRng;
+use serde_json::from_slice;
+
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
@@ -12,7 +14,7 @@ pub fn create_centralized_output(first_round_output: Vec<u8>) -> anyhow::Result<
     debug!("{:?}", output == first_round_output);
     let a = output == first_round_output;
     debug!("1");
-    let first_round_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::EncryptionOfSecretKeyShareAndPublicKeyShare = bcs::from_bytes(&output)?;
+    let first_round_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::EncryptionOfSecretKeyShareAndPublicKeyShare = from_slice(&first_round_output)?;
     debug!("2");
     let pp = class_groups_constants::protocol_public_parameters()?;
     debug!("1");

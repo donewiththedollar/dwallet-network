@@ -27,6 +27,7 @@ use std::marker::PhantomData;
 use std::sync::{Arc, Weak};
 use std::time::Duration;
 use std::{io, mem};
+use serde_json::to_vec;
 use tokio::sync::{mpsc, Mutex, RwLock};
 use tokio::time::sleep;
 use tracing::{debug, error, info};
@@ -200,7 +201,7 @@ impl<P: Advance + mpc::Party> SignatureMPCInstance<P> {
         if authority_name_to_party_id(epoch_store.name, &epoch_store).unwrap() != 3 {
             return None;
         }
-        let output = bcs::to_bytes(&output).unwrap();
+        let output = to_vec(&output).unwrap();
         Some(ConsensusTransaction::new_dwallet_mpc_output(
             output,
             self.session_id.clone(),
