@@ -10,7 +10,9 @@ use wasm_bindgen::{memory, JsValue};
 
 #[wasm_bindgen]
 pub fn hello_wasm(dkg_first_round_output: Vec<u8>) -> Result<Vec<u8>, JsErr> {
-    Ok(no_code_in_wasm(vec![]))
+    console_error_panic_hook::set_once();
+    console_log::init_with_level(log::Level::Debug).unwrap();
+    Ok(no_code_in_wasm(dkg_first_round_output))
 }
 
 // impl<T: std::error::Error> From<T> for JsErr {
