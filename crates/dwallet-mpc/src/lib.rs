@@ -4,7 +4,6 @@ use mpc::two_party::Round;
 use rand_core::OsRng;
 use serde_json::from_slice;
 
-
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
 

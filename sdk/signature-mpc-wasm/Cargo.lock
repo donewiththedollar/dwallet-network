@@ -418,6 +418,7 @@ dependencies = [
  "log",
  "mpc",
  "rand_core",
+ "serde_json",
  "twopc_mpc",
 ]
 
