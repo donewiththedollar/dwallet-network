@@ -6,10 +6,7 @@
 //! instances to the next round.
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
-use crate::dwallet_mpc::mpc_events::{
-    StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent,
-    StartPresignSecondRoundEvent,
-};
+use crate::dwallet_mpc::mpc_events::{StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent, StartPresignSecondRoundEvent, StartSignFirstRoundEvent};
 use crate::dwallet_mpc::presign::{
     FirstPresignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty,
 };
@@ -63,6 +60,8 @@ pub enum MPCParty {
     FirstPresignBytesParty(FirstPresignBytesParty),
     /// The party used in the second round of the presign protocol.
     SecondPresignBytesParty(SecondPresignBytesParty),
+
+    FirstSignBytesParty(FirstSignBytesParty),
 }
 
 /// Default party implementation for `MPCParty`.
@@ -177,6 +176,30 @@ impl MPCParty {
             )));
         } else if event.type_ == StartPresignSecondRoundEvent::type_() {
             let deserialized_event: StartPresignSecondRoundEvent =
+                bcs::from_bytes(&event.contents)?;
+            return Ok(Some((
+                MPCParty::SecondPresignBytesParty(SecondPresignBytesParty {
+                    party: PresignSecondParty::default(),
+                }),
+                SecondPresignBytesParty::generate_auxiliary_input(
+                    deserialized_event.first_round_session_id.bytes.to_vec(),
+                    number_of_parties,
+                    party_id,
+                    deserialized_event.dkg_output,
+                    deserialized_event.first_round_output.clone(),
+                ),
+                SessionInfo {
+                    session_id: deserialized_event.session_id.bytes,
+                    initiating_user_address: deserialized_event.sender,
+                    dwallet_cap_id: deserialized_event.dwallet_cap_id.bytes,
+                    mpc_round: MPCRound::PresignSecond(
+                        deserialized_event.dwallet_id.bytes,
+                        deserialized_event.first_round_output,
+                    ),
+                },
+            )));
+        } else if event.type_ == StartSignFirstRoundEvent::type_() {
+            let deserialized_event: StartSignFirstRoundEvent =
                 bcs::from_bytes(&event.contents)?;
             return Ok(Some((
                 MPCParty::SecondPresignBytesParty(SecondPresignBytesParty {

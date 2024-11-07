@@ -15,6 +15,7 @@ pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 pub type PresignFirstParty =
     <AsyncProtocol as twopc_mpc::presign::Protocol>::EncryptionOfMaskAndMaskedNonceShareRoundParty;
 pub type PresignSecondParty = <AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceShareRoundParty;
+pub type SignFirstParty = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty;
 
 /// A wrapper for the first round of the Presign protocol.
 ///
@@ -154,6 +155,48 @@ impl SecondPresignBytesParty {
     ) -> Vec<u8> {
         let first_round_output = bcs::from_bytes(&first_round_output).unwrap();
         bcs::to_bytes(&PresignSecondParty::generate_auxiliary_input(
+            session_id,
+            number_of_parties,
+            party_id,
+            dkg_output,
+            first_round_output,
+        ))
+        .unwrap()
+    }
+}
+
+/// A wrapper for the second round of the Presign protocol.
+///
+/// This struct represents the final round of the Presign protocol.
+pub struct FirstSignBytesParty {
+    pub party: SignFirstParty,
+}
+
+impl FirstSignBytesParty {
+    /// Generates the auxiliary input required for the second Presign round.
+    /// It is necessary for advancing the party to the next round of the Presign protocol.
+    ///
+    /// # Arguments
+    ///
+    /// * `number_of_parties` - The total number of participating parties.
+    /// * `party_id` - The ID of the current party.
+    /// * `first_round_output` - The output from the first round of the Presign protocol.
+    /// * `dkg_output` - The decentralized final output of the DKG protocol.
+    /// * `session_id` - A unique identifier for the MPC session.(session ID of the first round)
+    ///
+    /// # Returns
+    ///
+    /// A serialized vector containing the auxiliary input data required to advance
+    /// the party.
+    pub(crate) fn generate_auxiliary_input(
+        session_id: Vec<u8>,
+        number_of_parties: u16,
+        party_id: PartyID,
+        dkg_output: Vec<u8>,
+        first_round_output: Vec<u8>,
+    ) -> Vec<u8> {
+        let first_round_output = bcs::from_bytes(&first_round_output).unwrap();
+        bcs::to_bytes(&SignFirstParty::generate_auxiliary_input(
             session_id,
             number_of_parties,
             party_id,
