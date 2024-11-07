@@ -46,7 +46,7 @@ module pera_system::dwallet {
 
     /// `MessageApproval` represents a message that was approved.
     /// Bound to a `DWalletCap`.
-    struct MessageApproval has store, drop {
+    public struct MessageApproval has store, drop {
         dwallet_cap_id: ID,
         message: vector<u8>,
     }
@@ -56,10 +56,10 @@ module pera_system::dwallet {
     /// The messages must be approved by the same `dwallet_cap_id`.
     public fun approve_messages(
         dwallet_cap: &DWalletCap,
-        messages: vector<vector<u8>>
+        mut messages: vector<vector<u8>>
     ): vector<MessageApproval> {
         let dwallet_cap_id = object::id(dwallet_cap);
-        let message_approvals = vector::empty<MessageApproval>();
+        let mut message_approvals = vector::empty<MessageApproval>();
         while (vector::length(&messages) > 0) {
             let message = vector::pop_back(&mut messages);
             vector::push_back(&mut message_approvals, MessageApproval {
