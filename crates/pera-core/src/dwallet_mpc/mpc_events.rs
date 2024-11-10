@@ -143,9 +143,11 @@ pub struct StartSignFirstRoundEvent {
     /// The DKG decentralized final output to use for the presign session.
     pub dkg_output: Vec<u8>,
     /// Presign first round output
-    pub first_round_output: Vec<u8>,
+    pub hashed_message: Vec<u8>,
     /// Unique identifier for the first Presign round session.
-    pub first_round_session_id: ID,
+    pub presign: Vec<u8>,
+    /// Centralized signed message
+    pub centralized_signed_message: Vec<u8>,
 }
 
 impl StartSignFirstRoundEvent {

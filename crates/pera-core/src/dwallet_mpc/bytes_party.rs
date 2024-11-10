@@ -6,15 +6,21 @@
 //! instances to the next round.
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
-use crate::dwallet_mpc::mpc_events::{StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent, StartPresignSecondRoundEvent, StartSignFirstRoundEvent};
-use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty, SignFirstParty};
+use crate::dwallet_mpc::mpc_events::{
+    StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent,
+    StartPresignSecondRoundEvent, StartSignFirstRoundEvent,
+};
+use crate::dwallet_mpc::presign::{
+    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
+    SecondPresignBytesParty, SignFirstParty,
+};
 use group::PartyID;
+use homomorphic_encryption::GroupsPublicParametersAccessors;
 use pera_types::base_types::ObjectID;
 use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
-use homomorphic_encryption::GroupsPublicParametersAccessors;
 use twopc_mpc::sign::create_mock_sign_party;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
 
@@ -120,7 +126,7 @@ impl MPCParty {
         event: &Event,
         number_of_parties: u16,
         party_id: PartyID,
-    ) -> anyhow::Result<Option<(Self, Vec<u8>, SessionInfo)>> {
+    ) -> PeraResult<Option<(Self, Vec<u8>, SessionInfo)>> {
         if event.type_ == StartDKGFirstRoundEvent::type_() {
             let deserialized_event: StartDKGFirstRoundEvent = bcs::from_bytes(&event.contents)?;
             return Ok(Some((
@@ -146,7 +152,7 @@ impl MPCParty {
                     deserialized_event.first_round_output,
                     deserialized_event.public_key_share_and_proof,
                     deserialized_event.first_round_session_id.bytes.to_vec(),
-                )?,
+                ).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?,
                 SessionInfo {
                     session_id: ObjectID::from(deserialized_event.session_id),
                     initiating_user_address: deserialized_event.sender,
@@ -201,29 +207,27 @@ impl MPCParty {
                 },
             )));
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
-            let deserialized_event: StartSignFirstRoundEvent =
-                bcs::from_bytes(&event.contents)?;
+            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
             let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
-            let (party, public_parameters) = create_mock_sign_party(party_id, threshold_number_of_parties, number_of_parties);
+            let (party, public_parameters) =
+                create_mock_sign_party(party_id, threshold_number_of_parties, number_of_parties);
             return Ok(Some((
-                MPCParty::FirstSignBytesParty(FirstSignBytesParty {
-                    party
-                }),
-                SecondPresignBytesParty::generate_auxiliary_input(
-                    deserialized_event.first_round_session_id.bytes.to_vec(),
+                MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
+                FirstSignBytesParty::generate_auxiliary_input(
+                    deserialized_event.session_id.bytes.to_vec(),
                     number_of_parties,
                     party_id,
                     deserialized_event.dkg_output,
-                    deserialized_event.first_round_output.clone(),
-                ),
+                    deserialized_event.hashed_message.clone(),
+                    deserialized_event.presign.clone(),
+                    deserialized_event.centralized_signed_message.clone(),
+                    public_parameters,
+                )?,
                 SessionInfo {
                     session_id: deserialized_event.session_id.bytes,
                     initiating_user_address: deserialized_event.sender,
                     dwallet_cap_id: deserialized_event.dwallet_cap_id.bytes,
-                    mpc_round: MPCRound::PresignSecond(
-                        deserialized_event.dwallet_id.bytes,
-                        deserialized_event.first_round_output,
-                    ),
+                    mpc_round: MPCRound::Sign,
                 },
             )));
         }
