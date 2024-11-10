@@ -98,6 +98,7 @@ impl MPCParty {
             MPCParty::FirstPresignBytesParty(party) => party.advance(messages, auxiliary_input),
             MPCParty::SecondPresignBytesParty(party) => party.advance(messages, auxiliary_input),
             MPCParty::DefaultParty => Err(PeraError::InternalDWalletMPCError),
+            MPCParty::FirstSignBytesParty(party) => party.advance(messages, auxiliary_input),
         }
     }
 

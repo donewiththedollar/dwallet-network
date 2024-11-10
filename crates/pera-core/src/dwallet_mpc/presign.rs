@@ -10,6 +10,7 @@ use group::PartyID;
 use mpc::{Advance, Party};
 use pera_types::error::{PeraError, PeraResult};
 use std::collections::{HashMap, HashSet};
+use mysten_network::multiaddr::Protocol;
 
 pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 pub type PresignFirstParty =
@@ -173,23 +174,54 @@ pub struct FirstSignBytesParty {
     pub party: SignFirstParty,
 }
 
-impl FirstSignBytesParty {
-    pub(crate) fn generate_auxiliary_input(
-        session_id: Vec<u8>,
-        number_of_parties: u16,
-        party_id: PartyID,
-        dkg_output: Vec<u8>,
-        first_round_output: Vec<u8>,
-    ) -> Vec<u8> {
-        let first_round_output = bcs::from_bytes(&first_round_output).unwrap();
-        bcs::to_bytes(&SignFirstParty::generate_auxiliary_input(
-            session_id,
-            number_of_parties,
-            party_id,
-            dkg_output,
-            first_round_output,
-        ))
-        .unwrap()
+// impl FirstSignBytesParty {
+//     pub(crate) fn generate_auxiliary_input(
+//         session_id: Vec<u8>,
+//         number_of_parties: u16,
+//         party_id: PartyID,
+//         dkg_output: Vec<u8>,
+//         first_round_output: Vec<u8>,
+//     ) -> Vec<u8> {
+//         let first_round_output = bcs::from_bytes(&first_round_output).unwrap();
+//         SignAuxiliaryInput::from()
+//         bcs::to_bytes(&SignFirstParty::generate_auxiliary_input(
+//             session_id,
+//             number_of_parties,
+//             party_id,
+//             dkg_output,
+//             first_round_output,
+//         ))
+//         .unwrap()
+//     }
+// }
+
+impl BytesParty for FirstSignBytesParty {
+    fn advance(
+        self,
+        messages: HashMap<PartyID, Vec<u8>>,
+        auxiliary_input: Vec<u8>,
+    ) -> PeraResult<AdvanceResult> {
+        let auxiliary_input =
+            // This is not a validator malicious behaviour, as the authority input is being sent by the initiating user.
+            // In this case this MPC session should be cancelled.
+            bcs::from_bytes(&auxiliary_input).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
+        let result = self
+            .party
+            .advance(
+                deserialize_mpc_messages(messages)?,
+                &auxiliary_input,
+                &mut rand_core::OsRng,
+            )
+            .map_err(twopc_error_to_pera_error)?;
+        match result {
+            mpc::AdvanceResult::Advance((message, new_party)) => Ok(AdvanceResult::Advance((
+                bcs::to_bytes(&message).unwrap(),
+                MPCParty::FirstSignBytesParty(Self { party: new_party }),
+            ))),
+            mpc::AdvanceResult::Finalize(output) => {
+                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap()))
+            }
+        }
     }
 }
 
