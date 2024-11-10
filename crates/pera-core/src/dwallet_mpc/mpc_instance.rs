@@ -3,6 +3,7 @@ use std::mem;
 use std::sync::{Arc, Weak};
 
 use group::PartyID;
+use twopc_mpc::sign::create_mock_sign_party;
 
 use pera_types::base_types::{AuthorityName, EpochId};
 use pera_types::error::{PeraError, PeraResult};
@@ -14,7 +15,8 @@ use crate::consensus_adapter::SubmitToConsensus;
 use crate::dwallet_mpc::bytes_party::{AdvanceResult, MPCParty};
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
 use crate::dwallet_mpc::presign::{
-    FirstPresignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty,
+    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
+    SecondPresignBytesParty,
 };
 
 /// The message a validator can send to the other parties while running a dwallet MPC session.
@@ -135,6 +137,16 @@ impl DWalletMPCInstance {
             MPCRound::PresignSecond(_, _) => {
                 MPCParty::SecondPresignBytesParty(SecondPresignBytesParty {
                     party: PresignSecondParty::default(),
+                })
+            }
+            MPCRound::Sign => {
+                let number_of_parties = self.epoch_store()?.committee().voting_rights.len();
+                let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
+                let party_id = self.epoch_store()?.committee().authority_index(&self.epoch_store()?.name).unwrap();
+                let (party, _) =
+                    create_mock_sign_party(party_id as PartyID, threshold_number_of_parties as PartyID, number_of_parties as PartyID);
+                MPCParty::FirstSignBytesParty(FirstSignBytesParty {
+                    party
                 })
             }
         };
