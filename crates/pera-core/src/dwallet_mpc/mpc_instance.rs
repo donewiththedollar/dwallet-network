@@ -76,6 +76,12 @@ impl DWalletMPCInstance {
             .upgrade()
             .ok_or(PeraError::EpochEnded(self.epoch_id))
     }
+    pub(crate) fn is_valid_party(&self) -> bool {
+        match self.party {
+            MPCParty::DefaultParty => false,
+            _ => true,
+        }
+    }
 
     /// Advances the MPC instance and optionally return a message the validator wants to send to the other MPC parties.
     /// Uses the existing party if it exists, otherwise creates a new one, as this is the first advance.
