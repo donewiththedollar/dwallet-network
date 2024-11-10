@@ -204,9 +204,10 @@ impl MPCParty {
             let deserialized_event: StartSignFirstRoundEvent =
                 bcs::from_bytes(&event.contents)?;
             let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
+            let (party, public_parameters) = create_mock_sign_party(party_id, threshold_number_of_parties, number_of_parties);
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty {
-                    party: create_mock_sign_party(party_id, threshold_number_of_parties, number_of_parties),
+                    party
                 }),
                 SecondPresignBytesParty::generate_auxiliary_input(
                     deserialized_event.first_round_session_id.bytes.to_vec(),

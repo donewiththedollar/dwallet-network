@@ -16,29 +16,28 @@ impl FirstSignBytesParty {
         hashed_message: Vec<u8>,
         presign: Vec<u8>,
         centralized_signed_message: Vec<u8>,
-        decryption_key_share_public_parameters: <AsyncProtocol as twopc_mpc::sign::Protocol>::DecryptionKeySharePublicParameters
+        decryption_key_share_public_parameters: <AsyncProtocol as twopc_mpc::sign::Protocol>::DecryptionKeySharePublicParameters,
     ) -> PeraResult<Vec<u8>> {
-        let auxiliary_auxiliary_input =
-            DKGFirstParty::generate_auxiliary_input(
-                session_id.clone(),
-                number_of_parties,
-                party_id,
-            );
+        let auxiliary_auxiliary_input = DKGFirstParty::generate_auxiliary_input(
+            session_id.clone(),
+            number_of_parties,
+            party_id,
+        );
 
-        let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = (
+        let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput::from((
             auxiliary_auxiliary_input,
             bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(&hashed_message)?,
             bcs::from_bytes::<
-                <AsyncProtocol as twopc_mpc::dkg::Protocol>::DecentralizedPartyDKGOutput,
+                <AsyncProtocol as Protocol>::DecentralizedPartyDKGOutput,
             >(&dkg_output)?,
             bcs::from_bytes::<
                 <AsyncProtocol as twopc_mpc::presign::Protocol>::Presign,
-            >(&presign),
+            >(&presign)?,
             bcs::from_bytes::<
                 <AsyncProtocol as twopc_mpc::sign::Protocol>::SignMessage,
             >(&centralized_signed_message)?,
             decryption_key_share_public_parameters,
-        ).into();
+        ));
         Ok(bcs::to_bytes(&auxiliary).unwrap())
     }
 }
