@@ -84,7 +84,7 @@ impl DWalletMPCInstance {
         let advance_result =
             party.advance(self.pending_messages.clone(), self.auxiliary_input.clone());
         if let Err(PeraError::DWalletMPCMaliciousParties(malicious_parties)) = advance_result {
-            self.restart();
+            self.restart()?;
             return Err(PeraError::DWalletMPCMaliciousParties(malicious_parties));
         }
         let msg = match advance_result? {
@@ -115,7 +115,7 @@ impl DWalletMPCInstance {
         Ok(())
     }
 
-    fn restart(&mut self) {
+    fn restart(&mut self) -> PeraResult {
         self.pending_messages.clear();
         self.status = MPCSessionStatus::FirstExecution;
         self.party = match &self.session_info.mpc_round {
@@ -150,6 +150,7 @@ impl DWalletMPCInstance {
                 })
             }
         };
+        Ok(())
     }
 
     /// Create a new consensus transaction with the message to be sent to the other MPC parties.
