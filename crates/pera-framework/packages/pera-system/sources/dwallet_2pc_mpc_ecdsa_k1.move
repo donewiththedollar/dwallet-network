@@ -296,21 +296,22 @@ module pera_system::dwallet_2pc_mpc_ecdsa_k1 {
 
     public struct StartSignEvent has copy, drop {
         session_id: ID,
-        sender: PeraAddress,
+        sender: address,
         dwallet_id: ID,
         dwallet_cap_id: ID,
-        dkg_output: Vec<u8>,
-        hashed_message: Vec<u8>,
-        presign: Vec<u8>,
-        centralized_signed_message: Vec<u8>,
+        dkg_output: vector<u8>,
+        hashed_message: vector<u8>,
+        presign: vector<u8>,
+        centralized_signed_message: vector<u8>,
     }
 
-    public fun sign(messages: vector<u8>, presign: vector<u8>, dkg_output: vector<u8>, centralized_signed_message: vector<u8>, ctx: &mut TxContext): vector<u8> {
+    public fun sign(hashed_message: vector<u8>, presign: vector<u8>, dkg_output: vector<u8>, centralized_signed_message: vector<u8>, ctx: &mut TxContext) {
+        let id = object::id_from_address( tx_context::fresh_object_address(ctx));
         let event = StartSignEvent {
-            session_id: tx_context::fresh_object_address(ctx),
+            session_id: id,
             sender: tx_context::sender(ctx),
-            dwallet_id: tx_context::fresh_object_address(ctx),
-            dwallet_cap_id: tx_context::fresh_object_address(ctx),
+            dwallet_id: id,
+            dwallet_cap_id: id,
             presign,
             centralized_signed_message,
             dkg_output,
