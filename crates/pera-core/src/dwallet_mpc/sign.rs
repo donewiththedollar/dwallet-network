@@ -40,7 +40,7 @@ impl FirstSignBytesParty {
             bcs::from_bytes::<
                 <AsyncProtocol as twopc_mpc::sign::Protocol>::DecryptionKeySharePublicParameters,
             >,
-        )
+        ).into()
     }
 }
 
