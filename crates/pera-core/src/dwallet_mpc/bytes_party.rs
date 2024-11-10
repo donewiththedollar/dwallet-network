@@ -15,6 +15,7 @@ use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
 use homomorphic_encryption::GroupsPublicParametersAccessors;
+use twopc_mpc::sign::create_mock_sign_party;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
 
 /// Trait defining the functionality to advance an MPC party to the next round.
@@ -201,10 +202,10 @@ impl MPCParty {
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
             let deserialized_event: StartSignFirstRoundEvent =
                 bcs::from_bytes(&event.contents)?;
-
+            let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty {
-                    party: SignFirstParty::,
+                    party: create_mock_sign_party(party_id, threshold_number_of_parties, number_of_parties),
                 }),
                 SecondPresignBytesParty::generate_auxiliary_input(
                     deserialized_event.first_round_session_id.bytes.to_vec(),
@@ -226,42 +227,4 @@ impl MPCParty {
         }
         Ok(None)
     }
-}
-
-use crypto_bigint::{U256};
-fn create_sign_party() -> PeraResult<SignFirstParty>{
-    let (protocol_public_parameters, decryption_key) = setup_class_groups_secp256k1();
-
-    let secret_key_bits = protocol_public_parameters.encryption_scheme_public_parameters
-        .randomness_space_public_parameters()
-        .sample_bits;
-
-    // TODO: what to set this to? should be a random element in the group.
-    let base = protocol_public_parameters.encryption_scheme_public_parameters.h.clone();
-
-    let (decryption_key_share_public_parameters, decryption_key_shares) =
-        ::class_groups::test_helpers::deal_trusted_shares::<{ U256::LIMBS }, { crate::secp256k1::class_groups::DISCRIMINANT_LIMBS }, secp256k1::GroupElement>(
-            threshold,
-            number_of_parties,
-            protocol_public_parameters.encryption_scheme_public_parameters.clone(),
-            decryption_key.decryption_key,
-            base,
-            secret_key_bits,
-        );
-
-    let decryption_key_shares: HashMap<_, _> = decryption_key_shares
-        .into_iter()
-        .map(|(party_id, share)| {
-            (
-                party_id,
-                ::class_groups::DecryptionKeyShare::<
-                    { U256::LIMBS },
-                    { crate::secp256k1::class_groups::DISCRIMINANT_LIMBS },
-                    secp256k1::GroupElement,
-                >::new(party_id, share, &decryption_key_share_public_parameters)
-                    .unwrap(),
-            )
-        })
-        .collect();
-
 }
