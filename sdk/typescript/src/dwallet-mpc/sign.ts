@@ -2,7 +2,7 @@ import { bcs } from '../bcs/index.js';
 import type { PeraClient } from '../client/index.js';
 import type { Keypair } from '../cryptography/index.js';
 import { Transaction } from '../transactions/index.js';
-import { dWalletModuleName, packageId } from './globals.js';
+import { dWallet2PCMPCECDSAK1ModuleName, dWalletModuleName, packageId } from './globals.js';
 
 export async function approveAndSign(
 	dwalletCapId: string,
@@ -28,7 +28,7 @@ export enum Hash {
 	SHA256 = 1,
 }
 
-export async function sign(
+export async function signMessage(
 	keypair: Keypair,
 	client: PeraClient,
 	hashedMessage: Uint8Array,
@@ -38,7 +38,7 @@ export async function sign(
 ) {
 	const tx = new Transaction();
 	tx.moveCall({
-		target: `${packageId}::${dWalletModuleName}::sign`,
+		target: `${packageId}::${dWallet2PCMPCECDSAK1ModuleName}::sign`,
 		arguments: [
 			tx.pure(bcs.vector(bcs.u8()).serialize(hashedMessage)),
 			tx.pure(bcs.vector(bcs.u8()).serialize(presign)),
@@ -55,5 +55,5 @@ export async function sign(
 		},
 	});
 
-	return result.effects?.created?.[0].reference!;
+	return result;
 }

@@ -90,18 +90,18 @@ pub fn create_sign_output(
     message: Vec<u8>,
     hash: u8,
     session_id: String,
-) -> anyhow::Result<(Vec<u8>, Vec<u8>)> {
+) -> anyhow::Result<(Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)> {
     let centralized_party_dkg_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::CentralizedPartyDKGOutput = bcs::from_bytes(&centralized_party_dkg_output)?;
     let presign_first_round_output: <AsyncProtocol as twopc_mpc::presign::Protocol>::EncryptionOfMaskAndMaskedNonceShare = bcs::from_bytes(&presign_first_round_output)?;
     let presign_second_round_output: (<AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceSharePart, <AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceSharePart) = bcs::from_bytes(&presign_second_round_output)?;
     let presigns: <AsyncProtocol as twopc_mpc::presign::Protocol>::Presign =
         (presign_first_round_output, presign_second_round_output).into();
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
-    let message = message_digest(&message, &hash.try_into()?);
+    let hash_message = message_digest(&message, &hash.try_into()?);
     let protocol_public_parameters = class_groups_constants::protocol_public_parameters();
 
     let centralized_party_auxiliary_input = (
-        message,
+        hash_message,
         centralized_party_dkg_output.clone(),
         presigns.clone(),
         protocol_public_parameters.clone(),
@@ -112,5 +112,7 @@ pub fn create_sign_output(
         SignCentralizedParty::advance((), &centralized_party_auxiliary_input, &mut OsRng)?;
     let sign_message = bcs::to_bytes(&sign_message)?;
     let centralized_output = bcs::to_bytes(&centralized_output)?;
-    Ok((sign_message, centralized_output))
+    let presigns = bcs::to_bytes(&presigns)?;
+    let hash_message = bcs::to_bytes(&hash_message)?;
+    Ok((sign_message, centralized_output, presigns, hash_message))
 }

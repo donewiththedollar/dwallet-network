@@ -5,9 +5,9 @@ import { create_sign_centralized_output } from '@dwallet-network/dwallet-mpc-was
 import { beforeAll, describe, it } from 'vitest';
 
 import { createDWallet } from '../../src/dwallet-mpc/dkg';
+import { DKGSessionID, mockedDWallet, mockedPresign } from '../../src/dwallet-mpc/mock';
 import { presign } from '../../src/dwallet-mpc/presign';
-import { Hash } from '../../src/dwallet-mpc/sign';
-import { approveAndSign } from '../../src/dwallet-mpc/sign';
+import { approveAndSign, Hash, signMessage } from '../../src/dwallet-mpc/sign';
 import { setup, TestToolbox } from './utils/setup';
 
 describe('Test dwallet mpc', () => {
@@ -39,15 +39,27 @@ describe('Test dwallet mpc', () => {
 	});
 
 	it('should sign a message successfully ', async () => {
-		const dwallet = await createDWallet(toolbox.keypair, toolbox.client);
-		await approveAndSign(
-			dwallet?.dwalletID!,
-			'',
-			[Uint8Array.from([1]), Uint8Array.from([2]), Uint8Array.from([3])],
-			dwallet?.dwalletID!,
-			'KECCAK256',
+		console.log(toolbox.keypair.toPeraAddress());
+		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+			Uint8Array.from(mockedDWallet.centralizedDKGOutput),
+			Uint8Array.from(mockedPresign.firstRoundOutput),
+			Uint8Array.from(mockedPresign.secondRoundOutput),
+			Uint8Array.from([1, 2, 3, 4, 5]),
+			Hash.KECCAK256,
+			DKGSessionID.slice(2)!,
+		);
+
+		console.log('ok');
+
+		let res = await signMessage(
 			toolbox.keypair,
 			toolbox.client,
+			hash_msg,
+			fullPresigns,
+			mockedDWallet.decentralizedDKGOutput,
+			sign_msg,
 		);
+
+		console.log(res);
 	});
 });
