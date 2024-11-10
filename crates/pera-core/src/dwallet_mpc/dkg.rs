@@ -145,7 +145,7 @@ trait DKGFirstPartyAuxiliaryInputGenerator: Party {
 }
 
 impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
-    fn generate_auxiliary_input(
+    pub fn generate_auxiliary_input(
         session_id: Vec<u8>,
         number_of_parties: u16,
         party_id: PartyID,
@@ -163,6 +163,8 @@ impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
             parties: parties.clone(),
             session_id,
         }
+
+
     }
 }
 
