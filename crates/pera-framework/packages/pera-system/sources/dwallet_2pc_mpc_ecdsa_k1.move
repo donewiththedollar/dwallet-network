@@ -318,4 +318,20 @@ module pera_system::dwallet_2pc_mpc_ecdsa_k1 {
         };
         event::emit(event);
     }
+
+    public struct SignOutput has key {
+        id: UID,
+        session_id: ID,
+        output: vector<u8>,
+    }
+
+    public fun create_sign_output(initiating_user: address, session_id: ID, output: vector<u8>, ctx: &mut TxContext) {
+        assert!(tx_context::sender(ctx) == @0x0, ENotSystemAddress);
+        let output = SignOutput {
+            id: object::new(ctx),
+            session_id,
+            output,
+        };
+        transfer::transfer(output, initiating_user);
+    }
 }
