@@ -22,7 +22,38 @@ export async function approveAndSign(
 		],
 	});
 }
+
 export enum Hash {
-    KECCAK256 = 0,
-    SHA256 = 1,
+	KECCAK256 = 0,
+	SHA256 = 1,
+}
+
+export async function sign(
+	keypair: Keypair,
+	client: PeraClient,
+	hashedMessage: Uint8Array,
+	presign: Uint8Array,
+	dkgOutput: Uint8Array,
+	centralizedSignedMessage: Uint8Array,
+) {
+	const tx = new Transaction();
+	tx.moveCall({
+		target: `${packageId}::${dWalletModuleName}::sign`,
+		arguments: [
+			tx.pure(bcs.vector(bcs.u8()).serialize(hashedMessage)),
+			tx.pure(bcs.vector(bcs.u8()).serialize(presign)),
+			tx.pure(bcs.vector(bcs.u8()).serialize(dkgOutput)),
+			tx.pure(bcs.vector(bcs.u8()).serialize(centralizedSignedMessage)),
+		],
+	});
+
+	const result = await client.signAndExecuteTransaction({
+		signer: keypair,
+		transaction: tx,
+		options: {
+			showEffects: true,
+		},
+	});
+
+	return result.effects?.created?.[0].reference!;
 }
