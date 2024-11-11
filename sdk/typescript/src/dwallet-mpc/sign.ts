@@ -35,6 +35,7 @@ export async function signMessage(
 	presign: Uint8Array,
 	dkgOutput: Uint8Array,
 	centralizedSignedMessage: Uint8Array,
+	presignFirstRoundSessionId: string,
 ) {
 	const tx = new Transaction();
 	tx.moveCall({
@@ -44,6 +45,7 @@ export async function signMessage(
 			tx.pure(bcs.vector(bcs.u8()).serialize(presign)),
 			tx.pure(bcs.vector(bcs.u8()).serialize(dkgOutput)),
 			tx.pure(bcs.vector(bcs.u8()).serialize(centralizedSignedMessage)),
+			tx.pure
 		],
 	});
 

@@ -311,7 +311,7 @@ module pera_system::dwallet_2pc_mpc_ecdsa_k1 {
         presign: vector<u8>,
         dkg_output: vector<u8>,
         centralized_signed_message: vector<u8>,
-        presign_session_id: vector<u8>,
+        presign_session_id: ID,
         ctx: &mut TxContext
     ) {
         let id = object::id_from_address(tx_context::fresh_object_address(ctx));
