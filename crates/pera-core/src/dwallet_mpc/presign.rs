@@ -11,6 +11,7 @@ use mpc::{Advance, Party};
 use pera_types::error::{PeraError, PeraResult};
 use std::collections::{HashMap, HashSet};
 use twopc_mpc::tests::setup_class_groups_secp256k1;
+use class_groups_constants::protocol_public_parameters;
 use mysten_network::multiaddr::Protocol;
 
 pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
@@ -100,7 +101,7 @@ impl PresignFirstRound for PresignFirstParty {
     ) -> Self::AuxiliaryInput {
         // let secp256k1_group_public_parameters =
         //     class_groups_constants::protocol_public_parameters();
-        let (secp256k1_group_public_parameters, _) = setup_class_groups_secp256k1();
+        let secp256k1_group_public_parameters = protocol_public_parameters();
 
         let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
