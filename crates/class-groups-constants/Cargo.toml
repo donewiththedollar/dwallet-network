@@ -9,6 +9,8 @@ group.workspace = true
 serde = "1.0.210"
 bcs = "0.1.6"
 hex = "0.4.3"
+class_groups = { path = "../../../cryptography-private/class-groups" }
+homomorphic_encryption = { path = "../../../cryptography-private/homomorphic-encryption" }
 anyhow = "1.0.90"
 
 [lints]

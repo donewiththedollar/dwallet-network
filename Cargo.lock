@@ -2552,8 +2552,10 @@ version = "1.32.2"
 dependencies = [
  "anyhow",
  "bcs",
+ "class_groups",
  "group 0.1.0",
  "hex",
+ "homomorphic_encryption",
  "serde",
  "twopc_mpc",
 ]
@@ -16921,6 +16923,7 @@ dependencies = [
 name = "twopc_mpc"
 version = "0.1.0"
 dependencies = [
+ "bcs",
  "class_groups",
  "commitment",
  "criterion",
@@ -16929,6 +16932,7 @@ dependencies = [
  "enhanced_maurer",
  "getrandom 0.2.15",
  "group 0.1.0",
+ "hex",
  "homomorphic_encryption",
  "k256 0.13.3",
  "maurer",
