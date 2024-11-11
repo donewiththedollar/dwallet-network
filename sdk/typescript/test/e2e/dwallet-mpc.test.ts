@@ -44,6 +44,7 @@ describe('Test dwallet mpc', () => {
 			'presign second output',
 			encodeBase64(Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce)),
 		);
+		console.log('presign first round session id', presignOutput!.presignFirstRoundSessionId);
 		console.log('dwallet_id', dwallet?.dwalletID);
 		const res = create_sign_centralized_output(
 			Uint8Array.from(dwallet?.centralizedDKGOutput!),
