@@ -9,6 +9,7 @@ use group::PartyID;
 use mpc::{Advance, Party};
 use serde::de::DeserializeOwned;
 use twopc_mpc::dkg::Protocol;
+use twopc_mpc::tests::setup_class_groups_secp256k1;
 
 use pera_types::error::{PeraError, PeraResult};
 
@@ -128,8 +129,9 @@ impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
         number_of_parties: u16,
         party_id: PartyID,
     ) -> Self::AuxiliaryInput {
-        let secp256k1_group_public_parameters =
-            class_groups_constants::protocol_public_parameters();
+        // let secp256k1_group_public_parameters =
+        //     class_groups_constants::protocol_public_parameters();
+        let (secp256k1_group_public_parameters, _) = setup_class_groups_secp256k1();
         let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
         Self::AuxiliaryInput {

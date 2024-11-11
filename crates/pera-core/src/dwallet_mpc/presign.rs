@@ -10,6 +10,7 @@ use group::PartyID;
 use mpc::{Advance, Party};
 use pera_types::error::{PeraError, PeraResult};
 use std::collections::{HashMap, HashSet};
+use twopc_mpc::tests::setup_class_groups_secp256k1;
 use mysten_network::multiaddr::Protocol;
 
 pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
@@ -97,8 +98,9 @@ impl PresignFirstRound for PresignFirstParty {
         party_id: PartyID,
         dkg_output: Vec<u8>,
     ) -> Self::AuxiliaryInput {
-        let secp256k1_group_public_parameters =
-            class_groups_constants::protocol_public_parameters();
+        // let secp256k1_group_public_parameters =
+        //     class_groups_constants::protocol_public_parameters();
+        let (secp256k1_group_public_parameters, _) = setup_class_groups_secp256k1();
 
         let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
@@ -181,15 +183,19 @@ impl BytesParty for FirstSignBytesParty {
             // This is not a validator malicious behaviour, as the authority input is being sent by the initiating user.
             // In this case this MPC session should be cancelled.
             bcs::from_bytes(&auxiliary_input).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
+        let messages = deserialize_mpc_messages(messages)?;
         let result = self
             .party
             .advance(
-                deserialize_mpc_messages(messages)?,
+                messages,
                 &auxiliary_input,
                 &mut rand_core::OsRng,
-            )
-            .map_err(twopc_error_to_pera_error)?;
-        match result {
+            );
+        if result.is_err() {
+            let result = twopc_error_to_pera_error(result.err().unwrap());
+            return Err(result);
+        }
+        match result.map_err(twopc_error_to_pera_error)? {
             mpc::AdvanceResult::Advance((message, new_party)) => Ok(AdvanceResult::Advance((
                 bcs::to_bytes(&message).unwrap(),
                 MPCParty::FirstSignBytesParty(Self { party: new_party }),

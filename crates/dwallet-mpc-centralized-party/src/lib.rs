@@ -6,6 +6,7 @@ use k256::{elliptic_curve, U256};
 use mpc::two_party::Round;
 use rand_core::OsRng;
 use twopc_mpc::secp256k1;
+use twopc_mpc::tests::setup_class_groups_secp256k1;
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
@@ -26,7 +27,8 @@ pub fn create_dkg_output(
     session_id: String,
 ) -> anyhow::Result<(Vec<u8>, Vec<u8>)> {
     let decentralized_first_round_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::EncryptionOfSecretKeyShareAndPublicKeyShare = bcs::from_bytes(&decentralized_first_round_output)?;
-    let public_parameters = class_groups_constants::protocol_public_parameters();
+    // let public_parameters = class_groups_constants::protocol_public_parameters();
+    let (public_parameters, _) = setup_class_groups_secp256k1();
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
 
     let (public_key_share_and_proof, centralized_output) = DKGCentralizedParty::advance(
@@ -98,7 +100,8 @@ pub fn create_sign_output(
         (presign_first_round_output, presign_second_round_output).into();
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
     let hash_message = message_digest(&message, &hash.try_into()?);
-    let protocol_public_parameters = class_groups_constants::protocol_public_parameters();
+    // let protocol_public_parameters = class_groups_constants::protocol_public_parameters();
+    let (protocol_public_parameters, _) = setup_class_groups_secp256k1();
 
     let centralized_party_auxiliary_input = (
         hash_message,

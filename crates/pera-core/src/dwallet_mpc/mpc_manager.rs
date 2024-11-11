@@ -266,7 +266,7 @@ impl DWalletMPCManager {
 /// Needed this function and not a `From` implementation because when including the `twopc_mpc` crate
 /// as a dependency in the `pera-types` crate there are many conflicting implementations.
 pub fn twopc_error_to_pera_error(error: twopc_mpc::Error) -> PeraError {
-    let Ok(error): Result<mpc::Error, _> = error.try_into() else {
+     let Ok(error): Result<Error, _> = error.try_into() else {
         return PeraError::InternalDWalletMPCError;
     };
     return match error {

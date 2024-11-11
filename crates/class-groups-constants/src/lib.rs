@@ -16,3 +16,11 @@ pub fn protocol_public_parameters() -> twopc_mpc::class_groups::ProtocolPublicPa
     let protocol_public_parameters = hex::decode(&PUBLIC_PARAMETERS).unwrap();
     bcs::from_bytes(&protocol_public_parameters).unwrap()
 }
+//
+// pub fn decryption_key() -> twopc_mpc::class_groups::DecryptionShare<
+//     { secp256k1::SCALAR_LIMBS },
+//     { twopc_mpc::secp256k1::class_groups::DISCRIMINANT_LIMBS },
+// > {
+//     let decryption_key = hex::decode(&DECRYPTION_KEY).unwrap();
+//
+// }
