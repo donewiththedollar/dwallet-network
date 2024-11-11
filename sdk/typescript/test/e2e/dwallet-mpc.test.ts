@@ -59,7 +59,7 @@ describe('Test dwallet mpc', () => {
 
 	it('should fetch the dwallet decentralized dkg output', async () => {
 		let output = await toolbox.client.getObject({
-			id: '0x0c6323df7d2d073e802902d018d5dbea6229b7a6e2b90dded25b5a2c3aaaaf9c',
+			id: '0x11e7d95fb66af2613241d313415ad2b4c9fb2dd66f484f5826149a32e74a8eb4',
 			options: {
 				showContent: true,
 			},
@@ -92,6 +92,7 @@ describe('Test dwallet mpc', () => {
 			fullPresigns,
 			mockedDWallet.decentralizedDKGOutput,
 			sign_msg,
+			mockedPresign.firstRoundSessionID
 		);
 
 		console.log(res);
