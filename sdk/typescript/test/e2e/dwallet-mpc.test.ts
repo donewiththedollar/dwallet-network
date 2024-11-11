@@ -80,7 +80,7 @@ describe('Test dwallet mpc', () => {
 			Uint8Array.from(mockedPresign.secondRoundOutput),
 			Uint8Array.from([1, 2, 3, 4, 5]),
 			Hash.KECCAK256,
-			DKGSessionID.slice(2)!,
+			mockedPresign.firstRoundSessionID.slice(2)!,
 		);
 
 		console.log('ok');
@@ -92,7 +92,7 @@ describe('Test dwallet mpc', () => {
 			fullPresigns,
 			mockedDWallet.decentralizedDKGOutput,
 			sign_msg,
-			mockedPresign.firstRoundSessionID
+			mockedPresign.firstRoundSessionID,
 		);
 
 		console.log(res);
