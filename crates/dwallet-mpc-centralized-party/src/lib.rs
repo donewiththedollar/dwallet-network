@@ -1,3 +1,4 @@
+use class_groups_constants::protocol_public_parameters;
 /// This crate contains the cryptographic logic for the centralized 2PC-MPC party
 use k256::ecdsa::hazmat::bits2field;
 use k256::ecdsa::signature::digest::{Digest, FixedOutput};
@@ -7,7 +8,6 @@ use mpc::two_party::Round;
 use rand_core::OsRng;
 use twopc_mpc::secp256k1;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
-use class_groups_constants::protocol_public_parameters;
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
