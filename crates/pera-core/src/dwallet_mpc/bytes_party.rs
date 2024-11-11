@@ -190,7 +190,7 @@ impl MPCParty {
             let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
             let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
             let (party, public_parameters) = create_mock_sign_party(
-                party_id,
+                party_id + 1,
                 threshold_number_of_parties,
                 number_of_parties,
                 protocol_public_parameters(),
@@ -199,7 +199,7 @@ impl MPCParty {
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
                 FirstSignBytesParty::generate_auxiliary_input(
-                    deserialized_event.session_id.bytes.to_vec(),
+                    deserialized_event.presign_session_id.bytes.to_vec(),
                     number_of_parties,
                     party_id,
                     deserialized_event.dkg_output,
@@ -209,7 +209,7 @@ impl MPCParty {
                     public_parameters,
                 )?,
                 SessionInfo {
-                    session_id: deserialized_event.session_id.bytes,
+                    session_id: deserialized_event.presign_session_id.bytes,
                     initiating_user_address: deserialized_event.sender,
                     dwallet_cap_id: deserialized_event.dwallet_cap_id.bytes,
                     mpc_round: MPCRound::Sign,

@@ -134,6 +134,8 @@ impl StartPresignSecondRoundEvent {
 pub struct StartSignFirstRoundEvent {
     /// Unique identifier for the MPC session.
     pub session_id: ID,
+    /// Unique identifier for the MPC session.
+    pub presign_session_id: ID,
     /// The address of the user that initiated this session.
     pub sender: PeraAddress,
     /// The `DWallet` object's ID associated with the dkg output.

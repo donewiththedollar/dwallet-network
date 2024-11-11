@@ -151,7 +151,7 @@ impl DWalletMPCInstance {
                 let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
                 let party_id = self.epoch_store()?.committee().authority_index(&self.epoch_store()?.name).unwrap();
                 let (party, _) =
-                    create_mock_sign_party(party_id as PartyID, threshold_number_of_parties as PartyID, number_of_parties as PartyID, protocol_public_parameters(), decryption_key());
+                    create_mock_sign_party(party_id as PartyID + 1, threshold_number_of_parties as PartyID, number_of_parties as PartyID, protocol_public_parameters(), decryption_key());
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty {
                     party
                 })

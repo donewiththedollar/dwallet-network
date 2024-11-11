@@ -296,6 +296,7 @@ module pera_system::dwallet_2pc_mpc_ecdsa_k1 {
 
     public struct StartSignEvent has copy, drop {
         session_id: ID,
+        presign_session_id: ID,
         sender: address,
         dwallet_id: ID,
         dwallet_cap_id: ID,
@@ -305,10 +306,18 @@ module pera_system::dwallet_2pc_mpc_ecdsa_k1 {
         centralized_signed_message: vector<u8>,
     }
 
-    public fun sign(hashed_message: vector<u8>, presign: vector<u8>, dkg_output: vector<u8>, centralized_signed_message: vector<u8>, ctx: &mut TxContext) {
-        let id = object::id_from_address( tx_context::fresh_object_address(ctx));
+    public fun sign(
+        hashed_message: vector<u8>,
+        presign: vector<u8>,
+        dkg_output: vector<u8>,
+        centralized_signed_message: vector<u8>,
+        presign_session_id: vector<u8>,
+        ctx: &mut TxContext
+    ) {
+        let id = object::id_from_address(tx_context::fresh_object_address(ctx));
         let event = StartSignEvent {
             session_id: id,
+            presign_session_id,
             sender: tx_context::sender(ctx),
             dwallet_id: id,
             dwallet_cap_id: id,
