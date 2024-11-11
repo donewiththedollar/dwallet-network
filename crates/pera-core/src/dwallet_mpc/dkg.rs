@@ -8,6 +8,7 @@ use std::collections::{HashMap, HashSet};
 use group::PartyID;
 use mpc::{Advance, Party};
 use serde::de::DeserializeOwned;
+use tracing::warn;
 use twopc_mpc::dkg::Protocol;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
 use class_groups_constants::protocol_public_parameters;
@@ -135,6 +136,7 @@ impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
         let secp256k1_group_public_parameters = protocol_public_parameters();
         let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
+        warn!("dkg auxiliary session id: {:?}", session_id);
         Self::AuxiliaryInput {
             protocol_public_parameters: secp256k1_group_public_parameters,
             party_id,

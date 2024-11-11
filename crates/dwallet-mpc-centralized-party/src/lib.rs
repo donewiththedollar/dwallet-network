@@ -4,6 +4,7 @@ use k256::ecdsa::hazmat::bits2field;
 use k256::ecdsa::signature::digest::{Digest, FixedOutput};
 use k256::elliptic_curve::ops::Reduce;
 use k256::{elliptic_curve, U256};
+use log::debug;
 use mpc::two_party::Round;
 use rand_core::OsRng;
 use twopc_mpc::secp256k1;
@@ -100,6 +101,7 @@ pub fn create_sign_output(
     let presigns: <AsyncProtocol as twopc_mpc::presign::Protocol>::Presign =
         (presign_first_round_output, presign_second_round_output).into();
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
+    debug!("sign wasm session id: {:?}", session_id);
     let hash_message = message_digest(&message, &hash.try_into()?);
     // let protocol_public_parameters = class_groups_constants::protocol_public_parameters();
     let protocol_public_parameters = protocol_public_parameters();

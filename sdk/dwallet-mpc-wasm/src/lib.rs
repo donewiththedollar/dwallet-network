@@ -26,6 +26,8 @@ pub fn create_sign_centralized_output(
     hash: u8,
     session_id: String,
 ) -> Result<JsValue, JsErr> {
+    console_error_panic_hook::set_once();
+    console_log::init_with_level(log::Level::Debug).unwrap();
     let (sign_message, centralized_output, presign, hash_msg) = create_sign_output(
         centralized_party_dkg_output,
         presign_first_round_output,
