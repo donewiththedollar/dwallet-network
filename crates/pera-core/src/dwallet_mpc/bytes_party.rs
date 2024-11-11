@@ -209,7 +209,7 @@ impl MPCParty {
                     public_parameters,
                 )?,
                 SessionInfo {
-                    session_id: deserialized_event.presign_session_id.bytes,
+                    session_id: deserialized_event.session_id.bytes,
                     initiating_user_address: deserialized_event.sender,
                     dwallet_cap_id: deserialized_event.dwallet_cap_id.bytes,
                     mpc_round: MPCRound::Sign,

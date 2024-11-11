@@ -46,7 +46,7 @@ describe('Test dwallet mpc', () => {
 		);
 		console.log('presign first round session id', presignOutput!.presignFirstRoundSessionId);
 		console.log('dwallet_id', dwallet?.dwalletID);
-		const res = create_sign_centralized_output(
+		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(dwallet?.centralizedDKGOutput!),
 			Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare),
 			Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce),
@@ -54,6 +54,17 @@ describe('Test dwallet mpc', () => {
 			Hash.KECCAK256,
 			dwallet?.dwalletID.slice(2)!,
 		);
+		let res = await signMessage(
+			toolbox.keypair,
+			toolbox.client,
+			hash_msg,
+			fullPresigns,
+			// mockedDWallet.decentralizedDKGOutput,
+			Uint8Array.from(dwallet?.decentralizedDKGOutput!),
+			sign_msg,
+			presignOutput?.presignFirstRoundSessionId!,
+		);
+
 		console.log(res);
 	});
 
