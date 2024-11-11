@@ -10,6 +10,10 @@ import { presign } from '../../src/dwallet-mpc/presign';
 import { approveAndSign, Hash, signMessage } from '../../src/dwallet-mpc/sign';
 import { setup, TestToolbox } from './utils/setup';
 
+function encodeBase64(bytes: Uint8Array): string {
+	return btoa(String.fromCharCode(...bytes));
+}
+
 describe('Test dwallet mpc', () => {
 	let toolbox: TestToolbox;
 
@@ -27,6 +31,19 @@ describe('Test dwallet mpc', () => {
 		console.log(toolbox.keypair.toPeraAddress());
 		const dwallet = await createDWallet(toolbox.keypair, toolbox.client);
 		const presignOutput = await presign(toolbox.keypair, toolbox.client, dwallet!.dwalletID);
+		console.log(
+			'centralizedDKGOutput',
+			encodeBase64(Uint8Array.from(dwallet?.centralizedDKGOutput!)),
+		);
+		console.log(
+			'presign first output',
+			encodeBase64(Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare)),
+		);
+		console.log(
+			'presign second output',
+			encodeBase64(Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce)),
+		);
+		console.log('dwallet_id', dwallet?.dwalletID);
 		const res = create_sign_centralized_output(
 			Uint8Array.from(dwallet?.centralizedDKGOutput!),
 			Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare),
