@@ -311,7 +311,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 let (_, keys) = Committee::new_simple_test_committee_of_size(size.into());
 
                 let threshold_number_of_parties = ((size.get() * 2) + 2) / 3;
-                let (decryption_key_share_public_parameters, decryption_key_shares) =
+                let (decryption_key_shares, decryption_key_share_public_parameters) =
                     deal_blockchain_secret_shares(
                         threshold_number_of_parties as PartyID, size.get() as PartyID,
                         protocol_public_parameters(), decryption_key()
@@ -320,7 +320,10 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 keys.into_iter()
                     .map(|authority_key| {
                         let mut builder = ValidatorGenesisConfigBuilder::new()
-                            .with_protocol_key_pair(authority_key);
+                            .with_protocol_key_pair(authority_key)
+                            .with_dwallet_mpc_class_groups_public_parameters(
+                                decryption_key_share_public_parameters.clone(),
+                            );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);
                         }
