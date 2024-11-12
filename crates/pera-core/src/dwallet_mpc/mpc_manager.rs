@@ -14,6 +14,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
 use tracing::log::warn;
 use tracing::{error, info};
+use pera_config::NodeConfig;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
@@ -26,6 +27,7 @@ pub struct DWalletMPCManager {
     // TODO (#257): Make sure the counter is always in sync with the number of active instances.
     active_instances_counter: usize,
     consensus_adapter: Arc<dyn SubmitToConsensus>,
+    pub node_config: NodeConfig,
     pub epoch_store: Weak<AuthorityPerEpochStore>,
     pub max_active_mpc_instances: usize,
     pub epoch_id: EpochId,
@@ -49,7 +51,7 @@ impl DWalletMPCManager {
         consensus_adapter: Arc<dyn SubmitToConsensus>,
         epoch_store: Weak<AuthorityPerEpochStore>,
         epoch_id: EpochId,
-        max_active_mpc_instances: usize,
+        node_config: NodeConfig,
         number_of_parties: usize,
     ) -> Self {
         Self {
@@ -59,7 +61,8 @@ impl DWalletMPCManager {
             consensus_adapter,
             epoch_store,
             epoch_id,
-            max_active_mpc_instances,
+            max_active_mpc_instances: node_config.max_active_dwallet_mpc_instances,
+            node_config,
             // TODO (#268): Take into account the validator's voting power
             number_of_parties,
             malicious_actors: HashSet::new(),

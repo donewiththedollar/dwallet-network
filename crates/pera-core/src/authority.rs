@@ -1560,6 +1560,7 @@ impl AuthorityState {
             if let Some((party, auxiliary_input, session_info)) = MPCParty::from_event(
                 event,
                 bytes_mpc_manager.number_of_parties as u16,
+                bytes_mpc_manager,
                 authority_name_to_party_id(epoch_store.name, &epoch_store)?,
             )? {
                 bytes_mpc_manager.push_new_mpc_instance(auxiliary_input, party, session_info);

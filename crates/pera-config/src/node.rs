@@ -47,36 +47,11 @@ pub const DEFAULT_COMMISSION_RATE: u64 = 200;
 /// Default max number of active dwallet mpc instances allowed to run simultaneously
 pub const DEFAULT_MAX_ACTIVE_DWALLET_MPC_INSTANCES: usize = 3000;
 
-// #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Eq)]
-// pub struct DWalletSignatureMPC {
-//     // #[serde(flatten)]
-//     // signature_mpc_tiresias_location: SignatureMPCTiresiasLocation,
-//
-//     #[serde(skip)]
-//     public_parameters: DecryptionSharePublicParameters,
-//
-//     #[serde(skip)]
-//     key_share_decryption_key_share: DecryptionKeyShare,
-// }
-//
-// impl DWalletSignatureMPC {
-//     pub fn new(
-//         public_parameters: Option<DecryptionSharePublicParameters>,
-//         key_share_decryption_key_share: Option<DecryptionKeyShare>,
-//     ) -> Self {
-//         Self {
-//             public_parameters: public_parameters.unwrap(),
-//             key_share_decryption_key_share: key_share_decryption_key_share.unwrap(),
-//         }
-//     }
-// }
-
 #[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct NodeConfig {
     #[serde(skip)]
-    // pub dwallet_config: Option<DWalletSignatureMPC>,
     pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(skip)]
     pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,

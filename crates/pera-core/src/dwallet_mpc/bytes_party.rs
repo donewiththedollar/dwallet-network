@@ -16,13 +16,16 @@ use crate::dwallet_mpc::presign::{
 };
 use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
-use homomorphic_encryption::GroupsPublicParametersAccessors;
+use homomorphic_encryption::{AdditivelyHomomorphicDecryptionKeyShare, GroupsPublicParametersAccessors};
 use pera_types::base_types::ObjectID;
 use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
+use twopc_mpc::secp256k1;
+use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
+use crate::dwallet_mpc::mpc_manager::DWalletMPCManager;
 
 /// Trait defining the functionality to advance an MPC party to the next round.
 ///
@@ -104,6 +107,7 @@ impl MPCParty {
     pub fn from_event(
         event: &Event,
         number_of_parties: u16,
+        dwallet_mpc_manager: &DWalletMPCManager,
         party_id: PartyID,
     ) -> PeraResult<Option<(Self, Vec<u8>, SessionInfo)>> {
         if event.type_ == StartDKGFirstRoundEvent::type_() {
@@ -187,16 +191,8 @@ impl MPCParty {
             )));
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
             let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
-            let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
-            let share
-            let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from()
-            let (party, public_parameters) = create_mock_sign_party(
-                party_id,
-                threshold_number_of_parties,
-                number_of_parties,
-                protocol_public_parameters(),
-                decryption_key(),
-            );
+            let share = DecryptionKeyShare::new(party_id, dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
+            let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(share);
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
                 FirstSignBytesParty::generate_auxiliary_input(
@@ -207,7 +203,7 @@ impl MPCParty {
                     deserialized_event.hashed_message.clone(),
                     deserialized_event.presign.clone(),
                     deserialized_event.centralized_signed_message.clone(),
-                    public_parameters,
+                    dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap(),
                 )?,
                 SessionInfo {
                     session_id: deserialized_event.session_id.bytes,
