@@ -4,6 +4,8 @@ use std::sync::{Arc, Weak};
 
 use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
+use twopc_mpc::secp256k1::class_groups::{DecryptionKeyShare, DecryptionSharePublicParameters};
 
 use pera_types::base_types::{AuthorityName, EpochId};
 use pera_types::error::{PeraError, PeraResult};
@@ -47,6 +49,7 @@ pub struct DWalletMPCInstance {
     /// The MPC party that being used to run the MPC cryptographic steps. An option because it can be None before the instance has started.
     party: MPCParty,
     pub(crate) auxiliary_input: Vec<u8>,
+    decryption_share: DecryptionKeyShare,
 }
 
 impl DWalletMPCInstance {
@@ -58,6 +61,7 @@ impl DWalletMPCInstance {
         status: MPCSessionStatus,
         auxiliary_input: Vec<u8>,
         session_info: SessionInfo,
+        decryption_share: DecryptionKeyShare,
     ) -> Self {
         Self {
             status,
@@ -68,6 +72,7 @@ impl DWalletMPCInstance {
             party,
             auxiliary_input,
             session_info,
+            decryption_share,
         }
     }
 
@@ -146,11 +151,7 @@ impl DWalletMPCInstance {
                 })
             }
             MPCRound::Sign => {
-                let number_of_parties = self.epoch_store()?.committee().voting_rights.len();
-                let threshold_number_of_parties = ((number_of_parties * 2) + 2) / 3;
-                let party_id = self.epoch_store()?.committee().authority_index(&self.epoch_store()?.name).unwrap();
-                let (party, _) =
-                    create_mock_sign_party(party_id as PartyID, threshold_number_of_parties as PartyID, number_of_parties as PartyID, protocol_public_parameters(), decryption_key());
+                let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(self.decryption_share.clone());
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty {
                     party
                 })
@@ -250,5 +251,6 @@ pub fn authority_name_to_party_id(
                 "Received a dwallet MPC message from a validator that is not in the committee"
                     .to_string(),
             )
-        })? as PartyID + 1)
+        })? as PartyID
+        + 1)
 }

@@ -6,7 +6,9 @@ use pera_types::error::{PeraError, PeraResult};
 use crate::dwallet_mpc::bytes_party::MPCParty;
 use crate::dwallet_mpc::mpc_instance::{DWalletMPCInstance, DWalletMPCMessage, MPCSessionStatus};
 use group::PartyID;
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use mpc::Error;
+use pera_config::NodeConfig;
 use pera_types::committee::EpochId;
 use pera_types::messages_dwallet_mpc::SessionInfo;
 use rayon::prelude::*;
@@ -14,7 +16,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
 use tracing::log::warn;
 use tracing::{error, info};
-use pera_config::NodeConfig;
+use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
@@ -103,8 +105,9 @@ impl DWalletMPCManager {
             .filter_map(|(_, instance)| {
                 // TODO (#268): Take the voting power into account when dealing with the threshold
                 let threshold_number_of_parties = ((self.number_of_parties * 2) + 2) / 3;
-                if (instance.is_valid_party() && (instance.status == MPCSessionStatus::Active
-                    && instance.pending_messages.len() >= threshold_number_of_parties)
+                if (instance.is_valid_party()
+                    && (instance.status == MPCSessionStatus::Active
+                        && instance.pending_messages.len() >= threshold_number_of_parties)
                     || (instance.status == MPCSessionStatus::FirstExecution))
                 {
                     Some(instance)
@@ -197,7 +200,7 @@ impl DWalletMPCManager {
         auxiliary_input: Vec<u8>,
         party: MPCParty,
         session_info: SessionInfo,
-    ) {
+    ) -> PeraResult {
         let session_id = session_info.session_id.clone();
         if self.mpc_instances.contains_key(&session_id) {
             // This should never happen, as the session ID is a move UniqueID
@@ -205,10 +208,26 @@ impl DWalletMPCManager {
                 "Received start flow event for session ID {:?} that already exists",
                 session_id
             );
-            return;
+            return Ok(());
         }
 
         info!("Received start flow event for session ID {:?}", session_id);
+        let party_id = self
+            .epoch_store()?
+            .committee()
+            .authority_index(&self.epoch_store()?.name)
+            .unwrap();
+        let share = DecryptionKeyShare::new(
+            party_id as PartyID,
+            self.node_config
+                .dwallet_mpc_class_groups_decryption_share
+                .unwrap(),
+            &self
+                .node_config
+                .dwallet_mpc_class_groups_public_parameters
+                .clone()
+                .unwrap(),
+        );
         let mut new_instance = DWalletMPCInstance::new(
             Arc::clone(&self.consensus_adapter),
             self.epoch_store.clone(),
@@ -217,6 +236,7 @@ impl DWalletMPCManager {
             MPCSessionStatus::Pending,
             auxiliary_input,
             session_info,
+            share.unwrap(),
         );
         // TODO (#311): Make validator don't mark other validators as malicious or take any active action while syncing
         if self.active_instances_counter > self.max_active_mpc_instances
@@ -227,7 +247,7 @@ impl DWalletMPCManager {
                 "Added MPCInstance to pending queue for session_id {:?}",
                 session_id
             );
-            return;
+            return Ok(());
         }
         new_instance.status = MPCSessionStatus::FirstExecution;
         self.mpc_instances.insert(session_id.clone(), new_instance);
@@ -236,6 +256,7 @@ impl DWalletMPCManager {
             "Added MPCInstance to MPC manager for session_id {:?}",
             session_id
         );
+        Ok(())
     }
 
     pub fn finalize_mpc_instance(&mut self, session_id: ObjectID) -> PeraResult {
@@ -269,7 +290,7 @@ impl DWalletMPCManager {
 /// Needed this function and not a `From` implementation because when including the `twopc_mpc` crate
 /// as a dependency in the `pera-types` crate there are many conflicting implementations.
 pub fn twopc_error_to_pera_error(error: twopc_mpc::Error) -> PeraError {
-     let Ok(error): Result<Error, _> = error.try_into() else {
+    let Ok(error): Result<Error, _> = error.try_into() else {
         return PeraError::InternalDWalletMPCError;
     };
     return match error {
