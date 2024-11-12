@@ -329,7 +329,7 @@ impl TryFrom<MoveTokenDepositedEvent> for EmittedPeraToEthTokenBridgeV1 {
 
         let pera_address = PeraAddress::from_bytes(event.sender_address)
             .map_err(|e| BridgeError::Generic(format!("Failed to convert MoveTokenDepositedEvent to EmittedPeraToEthTokenBridgeV1. Failed to convert sender_address to PeraAddress: {:?}", e)))?;
-        let eth_address = EthAddress::from_str(&Hex::encode(&event.target_address))?;
+        let eth_address = EthAddress::from_str(&Hex::encode(&event.target_address)).map_err(anyhow::Error::from)?;
 
         Ok(Self {
             nonce: event.seq_num,
