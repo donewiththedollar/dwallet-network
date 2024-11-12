@@ -391,7 +391,7 @@ macro_rules! declare_events {
                 $(
                     if &event.type_ == $variant.get().unwrap() {
                         let event_struct: $event_struct = bcs::from_bytes(&event.bcs).map_err(|e| BridgeError::InternalError(format!("Failed to deserialize event to {}: {:?}", stringify!($event_struct), e)))?;
-                        return Ok(Some(PeraBridgeEvent::$variant(event_struct.try_into()?)));
+                        return Ok(Some(PeraBridgeEvent::$variant(event_struct.try_into().unwrap())));
                     }
                 )*
                 Ok(None)
