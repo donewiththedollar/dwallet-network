@@ -4,7 +4,6 @@ use std::sync::{Arc, Weak};
 
 use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
-use twopc_mpc::sign::create_mock_sign_party;
 
 use pera_types::base_types::{AuthorityName, EpochId};
 use pera_types::error::{PeraError, PeraResult};

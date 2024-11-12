@@ -18,7 +18,7 @@ use pera_types::multiaddr::Multiaddr;
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 use tracing::info;
-use twopc_mpc::secp256k1::class_groups::AsyncProtocol;
+use twopc_mpc::secp256k1::class_groups::{AsyncProtocol, DecryptionSharePublicParameters};
 use twopc_mpc::sign;
 
 // All information needed to build a NodeConfig for a state sync fullnode.
@@ -105,7 +105,7 @@ pub struct ValidatorGenesisConfigBuilder {
     port_offset: Option<u16>,
     /// Whether to use a specific p2p listen ip address. This is useful for testing on AWS.
     p2p_listen_ip_address: Option<IpAddr>,
-    dwallet_mpc_class_groups_public_parameters: Option<AsyncProtocol::DecryptionKeySharePublicParameters>
+    dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>
 }
 
 impl ValidatorGenesisConfigBuilder {
@@ -115,7 +115,7 @@ impl ValidatorGenesisConfigBuilder {
 
     pub fn with_dwallet_mpc_class_groups_public_parameters(
         mut self,
-        dwallet_mpc_class_groups_public_parameters: AsyncProtocol::DecryptionKeySharePublicParameters,
+        dwallet_mpc_class_groups_public_parameters: DecryptionSharePublicParameters,
     ) -> Self {
         self.dwallet_mpc_class_groups_public_parameters =
             Some(dwallet_mpc_class_groups_public_parameters);
