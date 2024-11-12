@@ -10360,6 +10360,7 @@ dependencies = [
  "dirs 4.0.0",
  "fastcrypto",
  "insta",
+ "mpc",
  "narwhal-config",
  "object_store",
  "once_cell",
@@ -10374,6 +10375,7 @@ dependencies = [
  "serde_yaml 0.8.26",
  "tempfile",
  "tracing",
+ "twopc_mpc",
 ]
 
 [[package]]
@@ -12176,6 +12178,7 @@ dependencies = [
  "group 0.1.0",
  "insta",
  "move-bytecode-utils",
+ "mpc",
  "narwhal-config",
  "pera-config",
  "pera-execution",

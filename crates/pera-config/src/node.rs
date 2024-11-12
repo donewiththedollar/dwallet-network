@@ -29,10 +29,11 @@ use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
-
+use mpc::secret_sharing::shamir::over_the_integers::SecretKeyShareSizedNumber;
 use pera_types::crypto::{get_key_pair_from_rng, AccountKeyPair, AuthorityKeyPair};
 use pera_types::multiaddr::Multiaddr;
 use tracing::info;
+use twopc_mpc::secp256k1::class_groups::{DecryptionKeyShare, DecryptionSharePublicParameters};
 
 // Default max number of concurrent requests served
 pub const DEFAULT_GRPC_CONCURRENCY_LIMIT: usize = 20000000000;
@@ -46,10 +47,39 @@ pub const DEFAULT_COMMISSION_RATE: u64 = 200;
 /// Default max number of active dwallet mpc instances allowed to run simultaneously
 pub const DEFAULT_MAX_ACTIVE_DWALLET_MPC_INSTANCES: usize = 3000;
 
+// #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Eq)]
+// pub struct DWalletSignatureMPC {
+//     // #[serde(flatten)]
+//     // signature_mpc_tiresias_location: SignatureMPCTiresiasLocation,
+//
+//     #[serde(skip)]
+//     public_parameters: DecryptionSharePublicParameters,
+//
+//     #[serde(skip)]
+//     key_share_decryption_key_share: DecryptionKeyShare,
+// }
+//
+// impl DWalletSignatureMPC {
+//     pub fn new(
+//         public_parameters: Option<DecryptionSharePublicParameters>,
+//         key_share_decryption_key_share: Option<DecryptionKeyShare>,
+//     ) -> Self {
+//         Self {
+//             public_parameters: public_parameters.unwrap(),
+//             key_share_decryption_key_share: key_share_decryption_key_share.unwrap(),
+//         }
+//     }
+// }
+
 #[serde_as]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct NodeConfig {
+    #[serde(skip)]
+    // pub dwallet_config: Option<DWalletSignatureMPC>,
+    pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
+    #[serde(skip)]
+    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
     /// The maximum number of active dwallet mpc instances allowed to run simultaneously
     #[serde(default = "default_max_mpc_protocol_messages_in_progress")]
     pub max_active_dwallet_mpc_instances: usize,
