@@ -22,7 +22,6 @@ use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
-use twopc_mpc::sign::create_mock_sign_party;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
 
 /// Trait defining the functionality to advance an MPC party to the next round.

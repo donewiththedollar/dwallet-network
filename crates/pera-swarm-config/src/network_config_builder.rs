@@ -4,7 +4,8 @@
 use std::path::PathBuf;
 use std::time::Duration;
 use std::{num::NonZeroUsize, path::Path, sync::Arc};
-
+use group::PartyID;
+use twopc_mpc::sign::deal_blockchain_secret_shares;
 use pera_config::genesis::{TokenAllocation, TokenDistributionScheduleBuilder};
 use pera_config::node::AuthorityOverloadConfig;
 use pera_macros::nondeterministic;
@@ -15,6 +16,7 @@ use pera_types::object::Object;
 use pera_types::supported_protocol_versions::SupportedProtocolVersions;
 use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
+use class_groups_constants::{decryption_key, protocol_public_parameters};
 
 use crate::genesis_config::{AccountConfig, ValidatorGenesisConfigBuilder, DEFAULT_GAS_AMOUNT};
 use crate::genesis_config::{GenesisConfig, ValidatorGenesisConfig};
@@ -307,6 +309,13 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 // tests call `make_tx_certs_and_signed_effects`, which locally forges a cert using
                 // this same committee.
                 let (_, keys) = Committee::new_simple_test_committee_of_size(size.into());
+
+                let threshold_number_of_parties = ((size.get() * 2) + 2) / 3;
+                let (decryption_key_share_public_parameters, decryption_key_shares) =
+                    deal_blockchain_secret_shares(
+                        threshold_number_of_parties as PartyID, size.get() as PartyID,
+                        protocol_public_parameters(), decryption_key()
+                    );
 
                 keys.into_iter()
                     .map(|authority_key| {

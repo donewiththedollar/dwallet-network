@@ -12171,7 +12171,9 @@ dependencies = [
  "anemo",
  "anyhow",
  "bcs",
+ "class_groups_constants",
  "fastcrypto",
+ "group 0.1.0",
  "insta",
  "move-bytecode-utils",
  "narwhal-config",
@@ -12190,6 +12192,7 @@ dependencies = [
  "shared-crypto",
  "tempfile",
  "tracing",
+ "twopc_mpc",
 ]
 
 [[package]]
