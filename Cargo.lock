@@ -4015,6 +4015,7 @@ dependencies = [
  "bcs",
  "class_groups_constants",
  "commitment",
+ "env_logger",
  "hex",
  "k256 0.13.3",
  "log",

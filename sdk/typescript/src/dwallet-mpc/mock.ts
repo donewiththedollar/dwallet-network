@@ -16,7 +16,7 @@ export const mockedDWallet = {
 export const mockedPresign = {
 	firstRoundOutput: Uint8Array.from(Buffer.from(PresignFirstRoundOutput, 'base64')),
 	secondRoundOutput: Uint8Array.from(Buffer.from(PresignSecondRoundOutput, 'base64')),
-	firstRoundSessionID: '0xb34f83539d7453106808a155f0d438405ce6eaa4db8a9bd614d8bda1583ed324'
+	firstRoundSessionID: '0xb34f83539d7453106808a155f0d438405ce6eaa4db8a9bd614d8bda1583ed324',
 };
 
 // centralizedDKGOutput 5HJn/xMi+E/QDzvXjx/BsnBXi30k3e15ltb1jj30LRYhA83oXYfN/+DorDro3S0KYar9iByeMRhHzWJFfgQgN9+CIQPYqXScFNI2ELmp2O8dJx+77gE1l34DaFolvGvWB9Mk+SEDdvKzebh9UryosYdf35sDc+m2ex0Xp8zA2XlDsMsFNMA=
