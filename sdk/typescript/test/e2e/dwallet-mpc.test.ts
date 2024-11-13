@@ -59,13 +59,12 @@ describe('Test dwallet mpc', () => {
 			toolbox.client,
 			hash_msg,
 			fullPresigns,
-			// mockedDWallet.decentralizedDKGOutput,
 			Uint8Array.from(dwallet?.decentralizedDKGOutput!),
 			sign_msg,
 			presignOutput?.presignFirstRoundSessionId!,
 		);
 
-		console.log(res);
+		console.log({ res });
 	});
 
 	it('should fetch the dwallet decentralized dkg output', async () => {
