@@ -118,7 +118,7 @@ pub fn create_sign_output(
     let seed = 42;
     let mut rng = StdRng::seed_from_u64(seed);
     let (sign_message, _) =
-        SignCentralizedParty::advance((), &centralized_party_auxiliary_input, &mut OsRng)?;
+        SignCentralizedParty::advance((), &centralized_party_auxiliary_input, &mut rng)?;
     let sign_message = bcs::to_bytes(&sign_message)?;
     let presigns = bcs::to_bytes(&presigns)?;
     let hashed_message = bcs::to_bytes(&hash_message)?;
