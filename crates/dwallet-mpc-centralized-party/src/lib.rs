@@ -9,6 +9,8 @@ use mpc::two_party::Round;
 use rand_core::OsRng;
 use twopc_mpc::secp256k1;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
+use rand::{rngs::StdRng, SeedableRng, Rng};
+
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
@@ -94,7 +96,7 @@ pub fn create_sign_output(
     message: Vec<u8>,
     hash: u8,
     session_id: String,
-) -> anyhow::Result<(Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)> {
+) -> anyhow::Result<(Vec<u8>, Vec<u8>, Vec<u8>)> {
     let centralized_party_dkg_output: <AsyncProtocol as twopc_mpc::dkg::Protocol>::CentralizedPartyDKGOutput = bcs::from_bytes(&centralized_party_dkg_output)?;
     let presign_first_round_output: <AsyncProtocol as twopc_mpc::presign::Protocol>::EncryptionOfMaskAndMaskedNonceShare = bcs::from_bytes(&presign_first_round_output)?;
     let presign_second_round_output: (<AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceSharePart, <AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceSharePart) = bcs::from_bytes(&presign_second_round_output)?;
@@ -103,7 +105,6 @@ pub fn create_sign_output(
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
     debug!("sign wasm session id: {:?}", session_id);
     let hash_message = message_digest(&message, &hash.try_into()?);
-    // let protocol_public_parameters = class_groups_constants::protocol_public_parameters();
     let protocol_public_parameters = protocol_public_parameters();
 
     let centralized_party_auxiliary_input = (
@@ -114,11 +115,15 @@ pub fn create_sign_output(
         session_id,
     )
         .into();
-    let (sign_message, centralized_output) =
+    let seed = 42;
+    let mut rng = StdRng::seed_from_u64(seed);
+    let (sign_message, _) =
         SignCentralizedParty::advance((), &centralized_party_auxiliary_input, &mut OsRng)?;
     let sign_message = bcs::to_bytes(&sign_message)?;
-    let centralized_output = bcs::to_bytes(&centralized_output)?;
     let presigns = bcs::to_bytes(&presigns)?;
-    let hash_message = bcs::to_bytes(&hash_message)?;
-    Ok((sign_message, centralized_output, presigns, hash_message))
+    let hashed_message = bcs::to_bytes(&hash_message)?;
+    debug!("sign wasm sign_message: {:?}", base64::encode(&sign_message));
+    debug!("sign wasm presigns: {:?}", base64::encode(&presigns));
+    debug!("sign wasm hashed_message: {:?}", base64::encode(&hashed_message));
+    Ok((sign_message, presigns, hashed_message))
 }

@@ -28,7 +28,7 @@ pub fn create_sign_centralized_output(
 ) -> Result<JsValue, JsErr> {
     console_error_panic_hook::set_once();
     console_log::init_with_level(log::Level::Debug).unwrap();
-    let (sign_message, centralized_output, presign, hash_msg) = create_sign_output(
+    let (sign_message, presign, hash_msg) = create_sign_output(
         centralized_party_dkg_output,
         presign_first_round_output,
         presign_second_round_output,
@@ -38,7 +38,7 @@ pub fn create_sign_centralized_output(
     )
     .map_err(to_js_err)?;
     Ok(
-        serde_wasm_bindgen::to_value(&(sign_message, centralized_output, presign, hash_msg))
+        serde_wasm_bindgen::to_value(&(sign_message, presign, hash_msg))
             .unwrap(),
     )
 }

@@ -4011,6 +4011,7 @@ name = "dwallet-mpc"
 version = "1.32.2"
 dependencies = [
  "anyhow",
+ "base64 0.22.1",
  "bcs",
  "class_groups_constants",
  "commitment",
@@ -4018,6 +4019,7 @@ dependencies = [
  "k256 0.13.3",
  "log",
  "mpc",
+ "rand 0.8.5",
  "rand_core 0.6.4",
  "sha2 0.10.8",
  "sha3 0.10.8",

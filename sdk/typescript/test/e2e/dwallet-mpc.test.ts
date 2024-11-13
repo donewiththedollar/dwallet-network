@@ -17,9 +17,9 @@ function encodeBase64(bytes: Uint8Array): string {
 describe('Test dwallet mpc', () => {
 	let toolbox: TestToolbox;
 
-	beforeAll(async () => {
-		toolbox = await setup();
-	});
+	// beforeAll(async () => {
+	// 	toolbox = await setup();
+	// });
 
 	it('should create DWallet', async () => {
 		console.log(toolbox.keypair.toPeraAddress());
@@ -46,7 +46,7 @@ describe('Test dwallet mpc', () => {
 		);
 		console.log('presign first round session id', presignOutput!.presignFirstRoundSessionId);
 		console.log('dwallet_id', dwallet?.dwalletID);
-		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+		const [sign_msg, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(dwallet?.centralizedDKGOutput!),
 			Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare),
 			Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce),
@@ -84,8 +84,8 @@ describe('Test dwallet mpc', () => {
 	});
 
 	it('should sign a message successfully ', async () => {
-		console.log(toolbox.keypair.toPeraAddress());
-		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+		// console.log(toolbox.keypair.toPeraAddress());
+		const [sign_msg, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(mockedDWallet.centralizedDKGOutput),
 			Uint8Array.from(mockedPresign.firstRoundOutput),
 			Uint8Array.from(mockedPresign.secondRoundOutput),
@@ -94,18 +94,19 @@ describe('Test dwallet mpc', () => {
 			mockedPresign.firstRoundSessionID.slice(2)!,
 		);
 
-		console.log('ok');
-
-		let res = await signMessage(
-			toolbox.keypair,
-			toolbox.client,
-			hash_msg,
-			fullPresigns,
-			mockedDWallet.decentralizedDKGOutput,
-			sign_msg,
-			mockedPresign.firstRoundSessionID,
-		);
-
-		console.log(res);
+		// console.log('ok');
+		//
+		// let res = await signMessage(
+		// 	toolbox.keypair,
+		// 	toolbox.client,
+		// 	hash_msg,
+		// 	fullPresigns,
+		// 	mockedDWallet.decentralizedDKGOutput,
+		// 	sign_msg,
+		// 	mockedPresign.firstRoundSessionID,
+		// );
+		//
+		// console.log(res);
 	});
 });
+

@@ -146,8 +146,6 @@ impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
             parties: parties.clone(),
             session_id,
         }
-
-
     }
 }
 
