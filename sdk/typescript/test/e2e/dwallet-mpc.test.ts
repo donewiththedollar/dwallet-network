@@ -17,9 +17,9 @@ function encodeBase64(bytes: Uint8Array): string {
 describe('Test dwallet mpc', () => {
 	let toolbox: TestToolbox;
 
-	// beforeAll(async () => {
-	// 	toolbox = await setup();
-	// });
+	beforeAll(async () => {
+		toolbox = await setup();
+	});
 
 	it('should create DWallet', async () => {
 		console.log(toolbox.keypair.toPeraAddress());
