@@ -106,7 +106,7 @@ impl PresignFirstRound for PresignFirstParty {
 
         let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
-        warn!("presign auxiliary session id: {:?}", session_id);
+        println!("presign first round session id: {:?}", session_id);
         Self::AuxiliaryInput {
             protocol_public_parameters: secp256k1_group_public_parameters.clone(),
             party_id,

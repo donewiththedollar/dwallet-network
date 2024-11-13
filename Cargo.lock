@@ -10390,6 +10390,7 @@ dependencies = [
  "arc-swap",
  "async-trait",
  "axum 0.7.7",
+ "base64 0.22.1",
  "bcs",
  "bytes",
  "chrono",
@@ -16932,6 +16933,7 @@ dependencies = [
 name = "twopc_mpc"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
  "bcs",
  "class_groups",
  "commitment",

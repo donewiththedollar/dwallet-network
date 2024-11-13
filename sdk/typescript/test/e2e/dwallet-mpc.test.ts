@@ -109,4 +109,3 @@ describe('Test dwallet mpc', () => {
 		// console.log(res);
 	});
 });
-
