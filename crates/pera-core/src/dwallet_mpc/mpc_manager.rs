@@ -104,7 +104,7 @@ impl DWalletMPCManager {
             .iter_mut()
             .filter_map(|(_, instance)| {
                 // TODO (#268): Take the voting power into account when dealing with the threshold
-                let threshold_number_of_parties = ((self.number_of_parties * 2) + 2) / 3;
+                let threshold_number_of_parties = 4;//((self.number_of_parties * 2) + 2) / 3;
                 if (instance.is_valid_party()
                     && (instance.status == MPCSessionStatus::Active
                         && instance.pending_messages.len() >= threshold_number_of_parties)

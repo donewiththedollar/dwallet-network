@@ -21,6 +21,7 @@ pub fn decryption_key() -> twopc_mpc::secp256k1::class_groups::DecryptionKey {
     let secret_key: class_groups::test_helpers::SecretKey<
         { twopc_mpc::secp256k1::class_groups::DISCRIMINANT_LIMBS },
     > = bcs::from_bytes(&hex::decode(&INNER_SECRET).unwrap()).unwrap();
+
     let decryption_key =
         <twopc_mpc::secp256k1::class_groups::DecryptionKey as AdditivelyHomomorphicDecryptionKey<
             { secp256k1::SCALAR_LIMBS },

@@ -16,6 +16,7 @@ use pera_types::object::Object;
 use pera_types::supported_protocol_versions::SupportedProtocolVersions;
 use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
+use tracing::error;
 use class_groups_constants::{decryption_key, protocol_public_parameters};
 
 use crate::genesis_config::{AccountConfig, ValidatorGenesisConfigBuilder, DEFAULT_GAS_AMOUNT};
@@ -312,10 +313,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
 
                 let threshold_number_of_parties = ((size.get() * 2) + 2) / 3;
                 let (mut decryption_key_shares, decryption_key_share_public_parameters) =
-                    deal_blockchain_secret_shares(
-                        threshold_number_of_parties as PartyID, size.get() as PartyID,
-                        protocol_public_parameters(), decryption_key()
-                    );
+                    deal_blockchain_secret_shares();
 
                 keys.into_iter()
                     .enumerate()
@@ -326,7 +324,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                                 decryption_key_share_public_parameters.clone(),
                             )
                             .with_dwallet_mpc_class_groups_decryption_share(
-                                decryption_key_shares.remove(&((i + 1) as PartyID)).unwrap(),
+                                *decryption_key_shares.get(&((i + 1) as PartyID)).unwrap(),
                             );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);

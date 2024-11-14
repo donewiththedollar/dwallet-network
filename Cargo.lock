@@ -4011,6 +4011,7 @@ name = "dwallet-mpc"
 version = "1.32.2"
 dependencies = [
  "anyhow",
+ "base64 0.22.1",
  "bcs",
  "class_groups_constants",
  "commitment",
@@ -10387,7 +10388,9 @@ dependencies = [
  "arc-swap",
  "async-trait",
  "axum 0.7.7",
+ "base64 0.22.1",
  "bcs",
+ "bincode",
  "bytes",
  "chrono",
  "clap",
@@ -16929,6 +16932,7 @@ dependencies = [
 name = "twopc_mpc"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
  "bcs",
  "class_groups",
  "commitment",

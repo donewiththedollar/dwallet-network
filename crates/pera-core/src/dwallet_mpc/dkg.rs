@@ -134,9 +134,9 @@ impl DKGFirstPartyAuxiliaryInputGenerator for DKGFirstParty {
         // let secp256k1_group_public_parameters =
         //     class_groups_constants::protocol_public_parameters();
         let secp256k1_group_public_parameters = protocol_public_parameters();
-        let parties = (0..number_of_parties).collect::<HashSet<PartyID>>();
+        let parties = (1..number_of_parties + 1).collect::<HashSet<PartyID>>();
         let session_id = commitment::CommitmentSizedNumber::from_le_slice(&session_id);
-        warn!("dkg auxiliary session id: {:?}", session_id);
+        println!("dkg auxiliary session id: {:?}", session_id);
         Self::AuxiliaryInput {
             protocol_public_parameters: secp256k1_group_public_parameters,
             party_id,

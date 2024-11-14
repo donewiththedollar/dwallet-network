@@ -17,6 +17,7 @@ hex = "0.4.3"
 log = "0.4.22"
 sha2 = "0.10.8"
 sha3 = "0.10.8"
+base64 = "0.22.1"
 
 [lints]
 workspace = true

@@ -90,7 +90,7 @@ describe('Test dwallet mpc', () => {
 			Uint8Array.from(mockedPresign.firstRoundOutput),
 			Uint8Array.from(mockedPresign.secondRoundOutput),
 			Uint8Array.from([1, 2, 3, 4, 5]),
-			Hash.KECCAK256,
+			Hash.SHA256,
 			mockedPresign.firstRoundSessionID.slice(2)!,
 		);
 
