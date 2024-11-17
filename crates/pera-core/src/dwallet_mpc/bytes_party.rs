@@ -6,13 +6,8 @@
 //! instances to the next round.
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
-use crate::dwallet_mpc::mpc_events::{
-    StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent,
-    StartPresignSecondRoundEvent,
-};
-use crate::dwallet_mpc::presign::{
-    FirstPresignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty,
-};
+use crate::dwallet_mpc::mpc_events::{StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent, StartPresignSecondRoundEvent, StartSignFirstRoundEvent};
+use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty};
 use group::PartyID;
 use mpc::WeightedThresholdAccessStructure;
 use pera_types::base_types::ObjectID;
@@ -20,6 +15,9 @@ use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
+use class_groups::DecryptionKeyShare;
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
+use crate::dwallet_mpc::mpc_manager::DWalletMPCManager;
 
 /// Trait defining the functionality to advance an MPC party to the next round.
 ///
@@ -99,6 +97,7 @@ impl MPCParty {
     /// Parses an `Event` to extract the corresponding `MPCParty`, auxiliary input, and session information.
     /// When `Ok(None)` is returned the event type does not correspond to any known MPC rounds.
     pub fn from_event(
+        dwallet_mpc_manager: &DWalletMPCManager,
         event: &Event,
         weighted_threshold_access_structure: WeightedThresholdAccessStructure,
         party_id: PartyID,

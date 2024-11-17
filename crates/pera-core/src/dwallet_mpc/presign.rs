@@ -3,17 +3,16 @@
 //! It integrates both Presign parties (each representing a round in the Presign protocol) and
 //! implements the [`BytesParty`] trait for seamless interaction with other MPC components.
 
+use std::collections::{HashMap, HashSet};
+
+use group::PartyID;
+use mpc::{Advance, Party, WeightedThresholdAccessStructure};
+
+use pera_types::error::{PeraError, PeraResult};
+
 use crate::dwallet_mpc::bytes_party::{AdvanceResult, BytesParty, MPCParty};
 use crate::dwallet_mpc::dkg::deserialize_mpc_messages;
 use crate::dwallet_mpc::mpc_manager::twopc_error_to_pera_error;
-use group::PartyID;
-use mpc::{Advance, Party, WeightedThresholdAccessStructure};
-use pera_types::error::{PeraError, PeraResult};
-use std::collections::{HashMap, HashSet};
-use tracing::warn;
-use twopc_mpc::tests::setup_class_groups_secp256k1;
-use class_groups_constants::protocol_public_parameters;
-use mysten_network::multiaddr::Protocol;
 
 pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 pub type PresignFirstParty =
@@ -228,7 +227,10 @@ impl BytesParty for FirstSignBytesParty {
                     MPCParty::FirstSignBytesParty(Self { party: new_party }),
                 )))},
             mpc::AdvanceResult::Finalize(output) => {
-                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap()))
+                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap(), vec![]))
+            }
+            AdvanceResult::FinalizeAsync((output, malicious_actors)) => {
+                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap(), malicious_actors))
             }
         }
     }

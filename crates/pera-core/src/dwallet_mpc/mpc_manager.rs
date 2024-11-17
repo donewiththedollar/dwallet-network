@@ -230,7 +230,7 @@ impl DWalletMPCManager {
         auxiliary_input: Vec<u8>,
         party: MPCParty,
         session_info: SessionInfo,
-    ) {
+    ) -> PeraResult {
         let session_id = session_info.session_id.clone();
         if self.mpc_instances.contains_key(&session_id) {
             // This should never happen, as the session ID is a move UniqueID
@@ -238,7 +238,7 @@ impl DWalletMPCManager {
                 "Received start flow event for session ID {:?} that already exists",
                 session_id
             );
-            return;
+            return Ok(());
         }
 
         info!("Received start flow event for session ID {:?}", session_id);

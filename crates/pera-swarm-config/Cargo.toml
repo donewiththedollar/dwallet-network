@@ -21,11 +21,11 @@ serde_yaml.workspace = true
 tempfile.workspace = true
 tracing.workspace = true
 prometheus.workspace = true
-twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b", subdir = "2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
-group = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b", subdir = "group" }
-mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b", subdir = "mpc" }
+twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "aab80f11094566ac4e043e9f586d323766624306", subdir = "2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
+group = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "aab80f11094566ac4e043e9f586d323766624306", subdir = "group" }
+mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "aab80f11094566ac4e043e9f586d323766624306", subdir = "mpc" }
 class_groups_constants = { path = "../class-groups-constants" }
-class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b", subdir = "class-groups" }
+class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "aab80f11094566ac4e043e9f586d323766624306", subdir = "class-groups" }
 move-bytecode-utils.workspace = true
 narwhal-config.workspace = true
 shared-crypto.workspace = true

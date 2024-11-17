@@ -245,8 +245,8 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(msim)', 'cfg(fail_points)'
 
 # Dependencies that should be kept in sync through the whole workspace
 [workspace.dependencies]
-twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"], rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b" }
-group = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "group", rev = "468d2ae9f6894aaf1fc796cd8eb3b00db96f300b" }
+twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"], rev = "aab80f11094566ac4e043e9f586d323766624306" }
+group = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "group", rev = "aab80f11094566ac4e043e9f586d323766624306" }
 anyhow = "1.0.71"
 arrow = "52"
 arrow-array = "52"

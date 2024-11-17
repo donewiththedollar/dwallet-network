@@ -120,7 +120,7 @@ impl BytesParty for FirstDKGBytesParty {
 /// when accessing `mpc::Party::AuxiliaryInput`. It defines the parameters and logic
 /// necessary to initiate the first round of the DKG protocol,
 /// preparing the party with the essential session information and other contextual data.
-trait DKGFirstPartyAuxiliaryInputGenerator: Party {
+pub trait DKGFirstPartyAuxiliaryInputGenerator: Party {
     /// Generates the auxiliary input required for the first round of the DKG protocol.
     fn generate_auxiliary_input(
         session_id: Vec<u8>,

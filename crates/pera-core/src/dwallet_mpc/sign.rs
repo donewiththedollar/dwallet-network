@@ -1,5 +1,5 @@
 use group::PartyID;
-use mpc::Party;
+use mpc::{Party, WeightedThresholdAccessStructure};
 use twopc_mpc::dkg::Protocol;
 
 use pera_types::error::PeraResult;
@@ -10,7 +10,7 @@ use crate::dwallet_mpc::presign::FirstSignBytesParty;
 impl FirstSignBytesParty {
     pub(crate) fn generate_auxiliary_input(
         session_id: Vec<u8>,
-        number_of_parties: u16,
+        weighted_threshold_access_structure: WeightedThresholdAccessStructure,
         party_id: PartyID,
         dkg_output: Vec<u8>,
         hashed_message: Vec<u8>,
@@ -20,8 +20,8 @@ impl FirstSignBytesParty {
     ) -> PeraResult<Vec<u8>> {
         let auxiliary_auxiliary_input = DKGFirstParty::generate_auxiliary_input(
             session_id.clone(),
-            number_of_parties,
             party_id,
+            weighted_threshold_access_structure,
         );
 
         let sign_message: &str = bcs::from_bytes(&centralized_signed_message)?;
