@@ -20,7 +20,7 @@ use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 use tracing::info;
 pub use twopc_mpc::secp256k1::class_groups::{
-    AsyncProtocol, DecryptionKeyShare, DecryptionSharePublicParameters,
+    AsyncProtocol, DecryptionSharePublicParameters,
 };
 use twopc_mpc::sign;
 

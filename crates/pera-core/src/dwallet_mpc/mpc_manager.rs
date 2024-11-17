@@ -16,9 +16,10 @@ use pera_types::messages_dwallet_mpc::SessionInfo;
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
+use class_groups::DecryptionKeyShare;
 use tracing::log::warn;
 use tracing::{error, info};
-use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
+use pera_config::NodeConfig;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
