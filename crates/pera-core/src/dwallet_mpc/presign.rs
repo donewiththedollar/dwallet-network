@@ -201,7 +201,7 @@ impl BytesParty for FirstSignBytesParty {
             })
             .collect::<(HashSet<PartyID>, HashMap<PartyID, _>)>();
 
-        auxiliary_input.parties = parties;
+        // auxiliary_input.parties = parties;
 
         let result = self
             .party
