@@ -17,6 +17,8 @@ pub enum MPCRound {
     /// The second round of the presign protocol.
     /// Contains the `ObjectId` of the dwallet object and the presign first round output.
     PresignSecond(ObjectID, Vec<u8>),
+
+    Sign
 }
 
 /// The content of the system transaction that stores the MPC session output on chain.

@@ -50,6 +50,10 @@ pub const DEFAULT_MAX_ACTIVE_DWALLET_MPC_INSTANCES: usize = 3000;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct NodeConfig {
+    #[serde(default)]
+    pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
+    #[serde(default)]
+    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
     /// The maximum number of active dwallet mpc instances allowed to run simultaneously
     #[serde(default = "default_max_mpc_protocol_messages_in_progress")]
     pub max_active_dwallet_mpc_instances: usize,

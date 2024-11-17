@@ -4,7 +4,8 @@
 use std::path::PathBuf;
 use std::time::Duration;
 use std::{num::NonZeroUsize, path::Path, sync::Arc};
-
+use group::PartyID;
+use twopc_mpc::sign::deal_blockchain_secret_shares;
 use pera_config::genesis::{TokenAllocation, TokenDistributionScheduleBuilder};
 use pera_config::node::AuthorityOverloadConfig;
 use pera_macros::nondeterministic;
@@ -15,6 +16,8 @@ use pera_types::object::Object;
 use pera_types::supported_protocol_versions::SupportedProtocolVersions;
 use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
+use tracing::error;
+use class_groups_constants::{decryption_key, protocol_public_parameters};
 
 use crate::genesis_config::{AccountConfig, ValidatorGenesisConfigBuilder, DEFAULT_GAS_AMOUNT};
 use crate::genesis_config::{GenesisConfig, ValidatorGenesisConfig};
@@ -308,10 +311,21 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 // this same committee.
                 let (_, keys) = Committee::new_simple_test_committee_of_size(size.into());
 
+                let threshold_number_of_parties = ((size.get() * 2) + 2) / 3;
+                let (mut decryption_key_shares, decryption_key_share_public_parameters) =
+                    deal_blockchain_secret_shares();
+
                 keys.into_iter()
-                    .map(|authority_key| {
+                    .enumerate()
+                    .map(|(i, authority_key)| {
                         let mut builder = ValidatorGenesisConfigBuilder::new()
-                            .with_protocol_key_pair(authority_key);
+                            .with_protocol_key_pair(authority_key)
+                            .with_dwallet_mpc_class_groups_public_parameters(
+                                decryption_key_share_public_parameters.clone(),
+                            )
+                            .with_dwallet_mpc_class_groups_decryption_share(
+                                *decryption_key_shares.get(&((i + 1) as PartyID)).unwrap(),
+                            );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);
                         }

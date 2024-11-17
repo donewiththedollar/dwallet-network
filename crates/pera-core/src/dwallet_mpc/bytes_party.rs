@@ -64,6 +64,8 @@ pub enum MPCParty {
     FirstPresignBytesParty(FirstPresignBytesParty),
     /// The party used in the second round of the presign protocol.
     SecondPresignBytesParty(SecondPresignBytesParty),
+
+    FirstSignBytesParty(FirstSignBytesParty),
 }
 
 /// Default party implementation for `MPCParty`.
@@ -90,6 +92,7 @@ impl MPCParty {
             MPCParty::FirstPresignBytesParty(party) => party.advance(messages, auxiliary_input),
             MPCParty::SecondPresignBytesParty(party) => party.advance(messages, auxiliary_input),
             MPCParty::DefaultParty => Err(PeraError::InternalDWalletMPCError),
+            MPCParty::FirstSignBytesParty(party) => party.advance(messages, auxiliary_input),
         }
     }
 
@@ -177,6 +180,29 @@ impl MPCParty {
                         deserialized_event.dwallet_id.bytes,
                         deserialized_event.first_round_output,
                     ),
+                },
+            )));
+        } else if event.type_ == StartSignFirstRoundEvent::type_() {
+            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
+            let share = DecryptionKeyShare::new(party_id, dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
+            let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(share.unwrap());
+            return Ok(Some((
+                MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
+                FirstSignBytesParty::generate_auxiliary_input(
+                    deserialized_event.presign_session_id.bytes.to_vec(),
+                    weighted_threshold_access_structure,
+                    party_id,
+                    deserialized_event.dkg_output,
+                    deserialized_event.hashed_message.clone(),
+                    deserialized_event.presign.clone(),
+                    deserialized_event.centralized_signed_message.clone(),
+                    dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap(),
+                )?,
+                SessionInfo {
+                    session_id: deserialized_event.session_id.bytes,
+                    initiating_user_address: deserialized_event.sender,
+                    dwallet_cap_id: deserialized_event.dwallet_cap_id.bytes,
+                    mpc_round: MPCRound::Sign,
                 },
             )));
         }

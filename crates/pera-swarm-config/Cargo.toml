@@ -21,7 +21,10 @@ serde_yaml.workspace = true
 tempfile.workspace = true
 tracing.workspace = true
 prometheus.workspace = true
-
+twopc_mpc = { path = "../../../cryptography-private/2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
+group = { path = "../../../cryptography-private/group" }
+class_groups_constants = { path = "../class-groups-constants" }
+mpc = { path = "../../../cryptography-private/mpc" }
 move-bytecode-utils.workspace = true
 narwhal-config.workspace = true
 shared-crypto.workspace = true

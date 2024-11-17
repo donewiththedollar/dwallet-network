@@ -1152,6 +1152,14 @@ mod checked {
                     CallArg::Pure(bcs::to_bytes(&dwallet_id).unwrap()),
                 ],
             ),
+            MPCRound::Sign => (
+                "create_sign_output",
+                vec![
+                    CallArg::Pure(data.session_info.initiating_user_address.to_vec()),
+                    CallArg::Pure(data.session_info.session_id.to_vec()),
+                    CallArg::Pure(bcs::to_bytes(&data.output).unwrap()),
+                ],
+            )
         };
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();

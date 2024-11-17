@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::mem;
 use std::sync::{Arc, Weak};
 
+use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
 use tracing::error;
 
@@ -46,6 +47,7 @@ pub struct DWalletMPCInstance {
     /// The MPC party that being used to run the MPC cryptographic steps. An option because it can be None before the instance has started.
     party: MPCParty,
     pub(crate) auxiliary_input: Vec<u8>,
+    decryption_share: DecryptionKeyShare,
 }
 
 impl DWalletMPCInstance {
@@ -57,6 +59,7 @@ impl DWalletMPCInstance {
         status: MPCSessionStatus,
         auxiliary_input: Vec<u8>,
         session_info: SessionInfo,
+        decryption_share: DecryptionKeyShare,
     ) -> Self {
         Self {
             status,
@@ -67,6 +70,7 @@ impl DWalletMPCInstance {
             party,
             auxiliary_input,
             session_info,
+            decryption_share,
         }
     }
 

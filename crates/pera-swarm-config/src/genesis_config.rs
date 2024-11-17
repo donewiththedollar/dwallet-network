@@ -5,6 +5,7 @@ use std::net::{IpAddr, SocketAddr};
 
 use anyhow::Result;
 use fastcrypto::traits::KeyPair;
+use mpc::secret_sharing::shamir::over_the_integers::SecretKeyShareSizedNumber;
 use pera_config::genesis::{GenesisCeremonyParameters, TokenAllocation};
 use pera_config::node::{DEFAULT_COMMISSION_RATE, DEFAULT_VALIDATOR_GAS_PRICE};
 use pera_config::{local_ip_utils, Config};
@@ -18,6 +19,8 @@ use pera_types::multiaddr::Multiaddr;
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 use tracing::info;
+pub use twopc_mpc::secp256k1::class_groups::{AsyncProtocol, DecryptionKeyShare, DecryptionSharePublicParameters};
+use twopc_mpc::sign;
 
 // All information needed to build a NodeConfig for a state sync fullnode.
 #[derive(Serialize, Deserialize, Debug)]
@@ -29,6 +32,10 @@ pub struct SsfnGenesisConfig {
 // All information needed to build a NodeConfig for a validator.
 #[derive(Serialize, Deserialize)]
 pub struct ValidatorGenesisConfig {
+    #[serde(default)]
+    pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
+    #[serde(default)]
+    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
     #[serde(default = "default_bls12381_key_pair")]
     pub key_pair: AuthorityKeyPair,
     #[serde(default = "default_ed25519_key_pair")]
@@ -103,11 +110,31 @@ pub struct ValidatorGenesisConfigBuilder {
     port_offset: Option<u16>,
     /// Whether to use a specific p2p listen ip address. This is useful for testing on AWS.
     p2p_listen_ip_address: Option<IpAddr>,
+    dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
+    dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>
 }
 
 impl ValidatorGenesisConfigBuilder {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn with_dwallet_mpc_class_groups_public_parameters(
+        mut self,
+        dwallet_mpc_class_groups_public_parameters: DecryptionSharePublicParameters,
+    ) -> Self {
+        self.dwallet_mpc_class_groups_public_parameters =
+            Some(dwallet_mpc_class_groups_public_parameters);
+        self
+    }
+
+    pub fn with_dwallet_mpc_class_groups_decryption_share(
+        mut self,
+        dwallet_mpc_class_groups_public_parameters: SecretKeyShareSizedNumber,
+    ) -> Self {
+        self.dwallet_mpc_class_groups_decryption_share =
+            Some(dwallet_mpc_class_groups_public_parameters);
+        self
     }
 
     pub fn with_protocol_key_pair(mut self, key_pair: AuthorityKeyPair) -> Self {
@@ -192,6 +219,8 @@ impl ValidatorGenesisConfigBuilder {
             .map(|ip| SocketAddr::new(ip, p2p_address.port().unwrap()));
 
         ValidatorGenesisConfig {
+            dwallet_mpc_class_groups_public_parameters: self.dwallet_mpc_class_groups_public_parameters,
+            dwallet_mpc_class_groups_decryption_share: self.dwallet_mpc_class_groups_decryption_share,
             key_pair: protocol_key_pair,
             worker_key_pair,
             account_key_pair: account_key_pair.into(),
