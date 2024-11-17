@@ -137,6 +137,12 @@ impl DWalletMPCInstance {
                     party: PresignSecondParty::default(),
                 })
             }
+            MPCRound::Sign => {
+                let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(self.decryption_share.clone());
+                MPCParty::FirstSignBytesParty(FirstSignBytesParty {
+                    party
+                })
+            }
         };
     }
 
@@ -171,7 +177,7 @@ impl DWalletMPCInstance {
         epoch_store: Arc<AuthorityPerEpochStore>,
     ) -> PeraResult<()> {
         let party_id = authority_name_to_party_id(message.authority, &epoch_store)?;
-        if self.pending_messages.contains_key(&(party_id) as &PartyID) {
+        if self.pending_messages.contains_key(&party_id) {
             return Err(PeraError::DWalletMPCMaliciousParties(vec![party_id]));
         }
         self.pending_messages

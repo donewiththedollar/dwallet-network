@@ -8,6 +8,7 @@ use crate::dwallet_mpc::mpc_instance::{
     authority_name_to_party_id, DWalletMPCInstance, DWalletMPCMessage, MPCSessionStatus,
 };
 use group::PartyID;
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use mpc::{Error, WeightedThresholdAccessStructure};
 use pera_types::committee::{EpochId, StakeUnit};
 use pera_types::messages_consensus::ConsensusTransaction;
@@ -17,6 +18,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
 use tracing::log::warn;
 use tracing::{error, info};
+use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
@@ -29,6 +31,7 @@ pub struct DWalletMPCManager {
     // TODO (#257): Make sure the counter is always in sync with the number of active instances.
     active_instances_counter: usize,
     consensus_adapter: Arc<dyn SubmitToConsensus>,
+    pub node_config: NodeConfig,
     pub epoch_store: Weak<AuthorityPerEpochStore>,
     pub max_active_mpc_instances: usize,
     pub epoch_id: EpochId,
@@ -51,7 +54,7 @@ impl DWalletMPCManager {
         consensus_adapter: Arc<dyn SubmitToConsensus>,
         epoch_store: Arc<AuthorityPerEpochStore>,
         epoch_id: EpochId,
-        max_active_mpc_instances: usize,
+        node_config: NodeConfig,
     ) -> PeraResult<Self> {
         let weighted_parties: HashMap<PartyID, PartyID> = epoch_store
             .committee()
@@ -76,7 +79,8 @@ impl DWalletMPCManager {
             consensus_adapter,
             epoch_store: Arc::downgrade(&epoch_store),
             epoch_id,
-            max_active_mpc_instances,
+            max_active_mpc_instances: node_config.max_active_dwallet_mpc_instances,
+            node_config,
             malicious_actors: HashSet::new(),
             weighted_threshold_access_structure,
             weighted_parties,
