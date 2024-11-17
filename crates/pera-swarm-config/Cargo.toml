@@ -21,10 +21,11 @@ serde_yaml.workspace = true
 tempfile.workspace = true
 tracing.workspace = true
 prometheus.workspace = true
-twopc_mpc = { path = "../../../cryptography-private/2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
-group = { path = "../../../cryptography-private/group" }
+twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "331d257312878d3199ccd9fccc993d4d58163c92", subdir = "2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
+group = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "331d257312878d3199ccd9fccc993d4d58163c92", subdir = "group" }
+mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "331d257312878d3199ccd9fccc993d4d58163c92", subdir = "mpc" }
 class_groups_constants = { path = "../class-groups-constants" }
-mpc = { path = "../../../cryptography-private/mpc" }
+class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "331d257312878d3199ccd9fccc993d4d58163c92", subdir = "class-groups" }
 move-bytecode-utils.workspace = true
 narwhal-config.workspace = true
 shared-crypto.workspace = true

@@ -4,8 +4,8 @@
 use std::net::{IpAddr, SocketAddr};
 
 use anyhow::Result;
+use class_groups::SecretKeyShareSizedNumber;
 use fastcrypto::traits::KeyPair;
-use mpc::secret_sharing::shamir::over_the_integers::SecretKeyShareSizedNumber;
 use pera_config::genesis::{GenesisCeremonyParameters, TokenAllocation};
 use pera_config::node::{DEFAULT_COMMISSION_RATE, DEFAULT_VALIDATOR_GAS_PRICE};
 use pera_config::{local_ip_utils, Config};
@@ -19,7 +19,9 @@ use pera_types::multiaddr::Multiaddr;
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 use tracing::info;
-pub use twopc_mpc::secp256k1::class_groups::{AsyncProtocol, DecryptionKeyShare, DecryptionSharePublicParameters};
+pub use twopc_mpc::secp256k1::class_groups::{
+    AsyncProtocol, DecryptionKeyShare, DecryptionSharePublicParameters,
+};
 use twopc_mpc::sign;
 
 // All information needed to build a NodeConfig for a state sync fullnode.
@@ -28,7 +30,6 @@ pub struct SsfnGenesisConfig {
     pub p2p_address: Multiaddr,
     pub network_key_pair: Option<NetworkKeyPair>,
 }
-
 // All information needed to build a NodeConfig for a validator.
 #[derive(Serialize, Deserialize)]
 pub struct ValidatorGenesisConfig {
@@ -111,7 +112,7 @@ pub struct ValidatorGenesisConfigBuilder {
     /// Whether to use a specific p2p listen ip address. This is useful for testing on AWS.
     p2p_listen_ip_address: Option<IpAddr>,
     dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
-    dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>
+    dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
 }
 
 impl ValidatorGenesisConfigBuilder {
@@ -219,8 +220,10 @@ impl ValidatorGenesisConfigBuilder {
             .map(|ip| SocketAddr::new(ip, p2p_address.port().unwrap()));
 
         ValidatorGenesisConfig {
-            dwallet_mpc_class_groups_public_parameters: self.dwallet_mpc_class_groups_public_parameters,
-            dwallet_mpc_class_groups_decryption_share: self.dwallet_mpc_class_groups_decryption_share,
+            dwallet_mpc_class_groups_public_parameters: self
+                .dwallet_mpc_class_groups_public_parameters,
+            dwallet_mpc_class_groups_decryption_share: self
+                .dwallet_mpc_class_groups_decryption_share,
             key_pair: protocol_key_pair,
             worker_key_pair,
             account_key_pair: account_key_pair.into(),
