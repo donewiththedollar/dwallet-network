@@ -29,10 +29,12 @@ use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
+use class_groups::SecretKeyShareSizedNumber;
 
 use pera_types::crypto::{get_key_pair_from_rng, AccountKeyPair, AuthorityKeyPair};
 use pera_types::multiaddr::Multiaddr;
 use tracing::info;
+use twopc_mpc::secp256k1::class_groups::DecryptionSharePublicParameters;
 
 // Default max number of concurrent requests served
 pub const DEFAULT_GRPC_CONCURRENCY_LIMIT: usize = 20000000000;
