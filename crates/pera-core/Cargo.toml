@@ -110,6 +110,9 @@ class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", s
 commitment = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "commitment", branch = "new-pera-api" }
 class_groups_constants = {path = "../class-groups-constants"}
 rand_core = "0.6.4"
+crypto-bigint = { version = "0.5.5", features = ["rand_core", "serde"], default-features = false }
+base64 = "0.22.1"
+bincode = "1.3.3"
 
 [dev-dependencies]
 clap.workspace = true

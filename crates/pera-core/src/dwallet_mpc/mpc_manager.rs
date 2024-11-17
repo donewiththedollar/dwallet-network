@@ -140,8 +140,7 @@ impl DWalletMPCManager {
             .collect::<Vec<&mut DWalletMPCInstance>>();
 
         let results: Vec<PeraResult<(ConsensusTransaction, Vec<PartyID>)>> = ready_to_advance
-            // .par_iter_mut()
-            .iter_mut()
+            .par_iter_mut()
             .map(|ref mut instance| instance.advance())
             .collect();
         let messages = results
@@ -242,6 +241,22 @@ impl DWalletMPCManager {
         }
 
         info!("Received start flow event for session ID {:?}", session_id);
+        let party_id = self
+            .epoch_store()?
+            .committee()
+            .authority_index(&self.epoch_store()?.name)
+            .unwrap();
+        let share = DecryptionKeyShare::new(
+            party_id as PartyID,
+            self.node_config
+                .dwallet_mpc_class_groups_decryption_share
+                .unwrap(),
+            &self
+                .node_config
+                .dwallet_mpc_class_groups_public_parameters
+                .clone()
+                .unwrap(),
+        );
         let mut new_instance = DWalletMPCInstance::new(
             Arc::clone(&self.consensus_adapter),
             self.epoch_store.clone(),
@@ -250,6 +265,7 @@ impl DWalletMPCManager {
             MPCSessionStatus::Pending,
             auxiliary_input,
             session_info,
+            share.unwrap(),
         );
         // TODO (#311): Make validator don't mark other validators as malicious or take any active action while syncing
         if self.active_instances_counter > self.max_active_mpc_instances
@@ -260,7 +276,7 @@ impl DWalletMPCManager {
                 "Added MPCInstance to pending queue for session_id {:?}",
                 session_id
             );
-            return;
+            return Ok(());
         }
         new_instance.status = MPCSessionStatus::FirstExecution;
         self.mpc_instances.insert(session_id.clone(), new_instance);
@@ -269,6 +285,7 @@ impl DWalletMPCManager {
             "Added MPCInstance to MPC manager for session_id {:?}",
             session_id
         );
+        Ok(())
     }
 
     pub fn finalize_mpc_instance(&mut self, session_id: ObjectID) -> PeraResult {

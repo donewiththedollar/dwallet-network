@@ -10,11 +10,17 @@ use group::PartyID;
 use mpc::{Advance, Party, WeightedThresholdAccessStructure};
 use pera_types::error::{PeraError, PeraResult};
 use std::collections::{HashMap, HashSet};
+use tracing::warn;
+use twopc_mpc::tests::setup_class_groups_secp256k1;
+use class_groups_constants::protocol_public_parameters;
+use mysten_network::multiaddr::Protocol;
 
 pub type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 pub type PresignFirstParty =
     <AsyncProtocol as twopc_mpc::presign::Protocol>::EncryptionOfMaskAndMaskedNonceShareRoundParty;
 pub type PresignSecondParty = <AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceShareRoundParty;
+pub type SignFirstParty = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty;
+pub type SignAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput;
 
 /// A wrapper for the first round of the Presign protocol.
 ///
@@ -139,6 +145,92 @@ impl SecondPresignBytesParty {
             first_round_output,
         ))
         .unwrap()
+    }
+}
+
+/// A wrapper for the second round of the Presign protocol.
+///
+/// This struct represents the final round of the Presign protocol.
+pub struct FirstSignBytesParty {
+    pub party: SignFirstParty,
+}
+
+// impl FirstSignBytesParty {
+//     pub(crate) fn generate_auxiliary_input(
+//         session_id: Vec<u8>,
+//         number_of_parties: u16,
+//         party_id: PartyID,
+//         dkg_output: Vec<u8>,
+//         first_round_output: Vec<u8>,
+//     ) -> Vec<u8> {
+//         let first_round_output = bcs::from_bytes(&first_round_output).unwrap();
+//         SignAuxiliaryInput::from()
+//         bcs::to_bytes(&SignFirstParty::generate_auxiliary_input(
+//             session_id,
+//             number_of_parties,
+//             party_id,
+//             dkg_output,
+//             first_round_output,
+//         ))
+//         .unwrap()
+//     }
+// }
+
+impl BytesParty for FirstSignBytesParty {
+    fn advance(
+        self,
+        messages: HashMap<PartyID, Vec<u8>>,
+        auxiliary_input: Vec<u8>,
+    ) -> PeraResult<AdvanceResult> {
+        let mut auxiliary_input: SignAuxiliaryInput =
+            // This is not a validator malicious behaviour, as the authority input is being sent by the initiating user.
+            // In this case this MPC session should be cancelled.
+            bcs::from_bytes(&auxiliary_input).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
+
+        // let messages = [PARTY_1_MSG, PARTY_2_MSG, PARTY_3_MSG, PARTY_4_MSG];
+
+        let (parties, messages) = messages
+            .into_iter()
+            .map(|(party_id, message)| {
+                // println!("party_id: {:?}", party_id);
+                // println!("message: {:?}", base64::encode(&message));
+                // let message = base64::decode(&message).unwrap();
+                // let message = bcs::from_bytes(&message).unwrap();
+                let message = bincode::deserialize(&message).unwrap();
+                (party_id, (party_id, message))
+            })
+            .collect::<(HashSet<PartyID>, HashMap<PartyID, _>)>();
+
+        // auxiliary_input.parties = parties;
+
+        let result = self
+            .party
+            .advance(
+                messages,
+                &auxiliary_input,
+                &mut rand_core::OsRng,
+            );
+        if result.is_err() {
+            let result = twopc_error_to_pera_error(result.err().unwrap());
+            return Err(result);
+        }
+        match result.map_err(twopc_error_to_pera_error)? {
+            mpc::AdvanceResult::Advance((message, new_party)) => {
+                // let a = bcs::to_bytes(&message.0).unwrap();
+                // let b = bcs::to_bytes(&message.1).unwrap();
+                // let c = bcs::to_bytes(&message.2).unwrap();
+                // let message = (a, b, c);
+                // // base64::encode(&bcs::to_bytes(&message).unwrap());
+                // println!("party id {:?}, message: {:?}", auxiliary_input.party_id, base64::encode(&bcs::to_bytes(&message).unwrap()));
+                Ok(AdvanceResult::Advance((
+                    bincode::serialize(&message).unwrap(),
+                    // bcs::to_bytes(&message).unwrap(),
+                    MPCParty::FirstSignBytesParty(Self { party: new_party }),
+                )))},
+            mpc::AdvanceResult::Finalize(output) => {
+                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap()))
+            }
+        }
     }
 }
 
