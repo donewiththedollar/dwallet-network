@@ -23,13 +23,14 @@ use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::net::SocketAddr;
 use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 use class_groups::SecretKeyShareSizedNumber;
+use mpc::PartyID;
 
 use pera_types::crypto::{get_key_pair_from_rng, AccountKeyPair, AuthorityKeyPair};
 use pera_types::multiaddr::Multiaddr;
@@ -53,9 +54,9 @@ pub const DEFAULT_MAX_ACTIVE_DWALLET_MPC_INSTANCES: usize = 3000;
 #[serde(rename_all = "kebab-case")]
 pub struct NodeConfig {
     #[serde(default)]
-    pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
+    pub dwallet_mpc_decryption_shares_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(default)]
-    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
+    pub dwallet_mpc_class_groups_decryption_shares: Option<HashMap<PartyID, SecretKeyShareSizedNumber>>,
     /// The maximum number of active dwallet mpc instances allowed to run simultaneously
     #[serde(default = "default_max_mpc_protocol_messages_in_progress")]
     pub max_active_dwallet_mpc_instances: usize,

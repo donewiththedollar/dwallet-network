@@ -6,18 +6,24 @@
 //! instances to the next round.
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
-use crate::dwallet_mpc::mpc_events::{StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent, StartPresignSecondRoundEvent, StartSignFirstRoundEvent};
-use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty, SignFirstParty};
+use crate::dwallet_mpc::mpc_events::{
+    StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent,
+    StartPresignSecondRoundEvent, StartSignFirstRoundEvent,
+};
+use crate::dwallet_mpc::mpc_manager::DWalletMPCManager;
+use crate::dwallet_mpc::presign::{
+    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
+    SecondPresignBytesParty, SignFirstParty,
+};
+use class_groups::DecryptionKeyShare;
 use group::PartyID;
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use mpc::WeightedThresholdAccessStructure;
 use pera_types::base_types::ObjectID;
 use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
-use class_groups::DecryptionKeyShare;
-use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
-use crate::dwallet_mpc::mpc_manager::DWalletMPCManager;
 
 /// Trait defining the functionality to advance an MPC party to the next round.
 ///
@@ -182,9 +188,13 @@ impl MPCParty {
                 },
             )));
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
-            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
-            let share = DecryptionKeyShare::new(party_id, dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
-            let shares: HashMap<PartyID, twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> = [(1 as PartyID, share.unwrap().clone())].into_iter().collect();
+            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)
+                .map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
+            let share = dwallet_mpc_manager.get_decryption_share()?;
+            let shares: HashMap<PartyID, twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> =
+                [(1 as PartyID, share.unwrap().clone())]
+                    .into_iter()
+                    .collect();
             let party = SignFirstParty::from(shares);
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
@@ -196,7 +206,11 @@ impl MPCParty {
                     deserialized_event.hashed_message.clone(),
                     deserialized_event.presign.clone(),
                     deserialized_event.centralized_signed_message.clone(),
-                    dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap(),
+                    dwallet_mpc_manager
+                        .node_config
+                        .dwallet_mpc_decryption_shares_public_parameters
+                        .clone()
+                        .unwrap(),
                 )?,
                 SessionInfo {
                     session_id: deserialized_event.session_id.bytes,

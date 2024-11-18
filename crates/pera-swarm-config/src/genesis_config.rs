@@ -38,7 +38,7 @@ pub struct ValidatorGenesisConfig {
     #[serde(default)]
     pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(default)]
-    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
+    pub dwallet_mpc_class_groups_decryption_shares: Option<HashMap<PartyID, SecretKeyShareSizedNumber>>,
     #[serde(default = "default_bls12381_key_pair")]
     pub key_pair: AuthorityKeyPair,
     #[serde(default = "default_ed25519_key_pair")]
@@ -224,7 +224,7 @@ impl ValidatorGenesisConfigBuilder {
         ValidatorGenesisConfig {
             dwallet_mpc_class_groups_public_parameters: self
                 .dwallet_mpc_class_groups_public_parameters,
-            dwallet_mpc_class_groups_decryption_share: self
+            dwallet_mpc_class_groups_decryption_shares: self
                 .dwallet_mpc_decryption_shares,
             key_pair: protocol_key_pair,
             worker_key_pair,

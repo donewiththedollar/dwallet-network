@@ -7,19 +7,19 @@ use crate::dwallet_mpc::bytes_party::MPCParty;
 use crate::dwallet_mpc::mpc_instance::{
     authority_name_to_party_id, DWalletMPCInstance, DWalletMPCMessage, MPCSessionStatus,
 };
+use class_groups::DecryptionKeyShare;
 use group::PartyID;
 use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use mpc::{Error, WeightedThresholdAccessStructure};
+use pera_config::NodeConfig;
 use pera_types::committee::{EpochId, StakeUnit};
 use pera_types::messages_consensus::ConsensusTransaction;
 use pera_types::messages_dwallet_mpc::SessionInfo;
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
-use class_groups::DecryptionKeyShare;
 use tracing::log::warn;
 use tracing::{error, info};
-use pera_config::NodeConfig;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
@@ -86,6 +86,30 @@ impl DWalletMPCManager {
             weighted_threshold_access_structure,
             weighted_parties,
         })
+    }
+
+    pub fn get_decryption_share(
+        &self,
+    ) -> PeraResult<twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> {
+        let party_id =
+            authority_name_to_party_id(self.epoch_store()?.name.clone(), &self.epoch_store()?)?;
+        let share = DecryptionKeyShare::new(
+            party_id,
+            self.node_config
+                .dwallet_mpc_class_groups_decryption_shares
+                .clone()
+                .ok_or(PeraError::InternalDWalletMPCError)?
+                .get(&party_id)
+                .ok_or(PeraError::InternalDWalletMPCError)?
+                .clone(),
+            &self
+                .node_config
+                .dwallet_mpc_decryption_shares_public_parameters
+                .clone()
+                .unwrap(),
+        )
+        .map_err(twopc_error_to_pera_error)?;
+        Ok(share)
     }
 
     /// Tries to verify that the received output for the MPC session matches the one generated locally.
@@ -247,17 +271,6 @@ impl DWalletMPCManager {
             .committee()
             .authority_index(&self.epoch_store()?.name)
             .unwrap();
-        let share = DecryptionKeyShare::new(
-            party_id as PartyID,
-            self.node_config
-                .dwallet_mpc_class_groups_decryption_share
-                .unwrap(),
-            &self
-                .node_config
-                .dwallet_mpc_class_groups_public_parameters
-                .clone()
-                .unwrap(),
-        );
         let mut new_instance = DWalletMPCInstance::new(
             Arc::clone(&self.consensus_adapter),
             self.epoch_store.clone(),
@@ -266,7 +279,7 @@ impl DWalletMPCManager {
             MPCSessionStatus::Pending,
             auxiliary_input,
             session_info,
-            share.unwrap(),
+            self.get_decryption_share()?,
         );
         // TODO (#311): Make validator don't mark other validators as malicious or take any active action while syncing
         if self.active_instances_counter > self.max_active_mpc_instances
