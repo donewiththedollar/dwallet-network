@@ -2,10 +2,9 @@ use std::collections::HashMap;
 use std::mem;
 use std::sync::{Arc, Weak};
 
-use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
 use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
-use twopc_mpc::secp256k1::class_groups::{DecryptionKeyShare, DecryptionSharePublicParameters};
+use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 
 use pera_types::base_types::{AuthorityName, EpochId};
 use pera_types::error::{PeraError, PeraResult};
@@ -17,9 +16,10 @@ use crate::consensus_adapter::SubmitToConsensus;
 use crate::dwallet_mpc::bytes_party::{AdvanceResult, MPCParty};
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
 use crate::dwallet_mpc::presign::{
-    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
+    FirstPresignBytesParty, PresignFirstParty, PresignSecondParty,
     SecondPresignBytesParty,
 };
+use crate::dwallet_mpc::sign::FirstSignBytesParty;
 
 /// The message a validator can send to the other parties while running a dwallet MPC session.
 #[derive(Clone)]

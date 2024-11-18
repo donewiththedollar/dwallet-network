@@ -1,11 +1,13 @@
 use group::PartyID;
-use mpc::Party;
+use mpc::{Advance, Party};
 use twopc_mpc::dkg::Protocol;
 
-use pera_types::error::PeraResult;
-
+use pera_types::error::{PeraError, PeraResult};
+use std::collections::HashMap;
+use crate::dwallet_mpc::bytes_party::{AdvanceResult, BytesParty, MPCParty};
 use crate::dwallet_mpc::dkg::{AsyncProtocol, DKGFirstParty, DKGFirstPartyAuxiliaryInputGenerator};
-use crate::dwallet_mpc::presign::FirstSignBytesParty;
+use crate::dwallet_mpc::mpc_manager::twopc_error_to_pera_error;
+use crate::dwallet_mpc::presign;
 
 impl FirstSignBytesParty {
     pub(crate) fn generate_auxiliary_input(
@@ -43,5 +45,60 @@ impl FirstSignBytesParty {
         ));
 
         Ok(bcs::to_bytes(&auxiliary)?)
+    }
+}
+
+pub type SignFirstParty = <presign::AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty;
+pub type SignAuxiliaryInput = <presign::AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput;
+
+/// A wrapper for the second round of the Presign protocol.
+///
+/// This struct represents the final round of the Presign protocol.
+pub struct FirstSignBytesParty {
+    pub party: SignFirstParty,
+}
+
+impl BytesParty for FirstSignBytesParty {
+    fn advance(
+        self,
+        messages: HashMap<PartyID, Vec<u8>>,
+        auxiliary_input_bytes: Vec<u8>,
+    ) -> PeraResult<AdvanceResult> {
+        let mut auxiliary_input: SignAuxiliaryInput =
+            // This is not a validator malicious behaviour, as the authority input is being sent by the initiating user.
+            // In this case this MPC session should be cancelled.
+            bcs::from_bytes(&auxiliary_input_bytes).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
+
+        let messages = messages
+            .into_iter()
+            .map(|(party_id, message)| {
+                let message = bincode::deserialize(&message).unwrap();
+                (party_id, message)
+            })
+            .collect::< HashMap<PartyID, _>>();
+
+
+        let result = self
+            .party
+            .advance(
+                messages,
+                &auxiliary_input,
+                &mut rand_core::OsRng,
+            );
+        if result.is_err() {
+            let result = twopc_error_to_pera_error(result.err().unwrap());
+            return Err(result);
+        }
+        match result.map_err(twopc_error_to_pera_error)? {
+            mpc::AdvanceResult::Advance((message, new_party)) => {
+                Ok(AdvanceResult::Advance((
+                    bincode::serialize(&message).unwrap(),
+                    // bcs::to_bytes(&message).unwrap(),
+                    MPCParty::FirstSignBytesParty(Self { party: new_party }),
+                )))},
+            mpc::AdvanceResult::Finalize(output) => {
+                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap()))
+            }
+        }
     }
 }

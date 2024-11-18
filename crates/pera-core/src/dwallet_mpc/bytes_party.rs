@@ -11,21 +11,19 @@ use crate::dwallet_mpc::mpc_events::{
     StartPresignSecondRoundEvent, StartSignFirstRoundEvent,
 };
 use crate::dwallet_mpc::presign::{
-    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
-    SecondPresignBytesParty, SignFirstParty,
+    FirstPresignBytesParty, PresignFirstParty, PresignSecondParty,
+    SecondPresignBytesParty,
 };
-use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
-use homomorphic_encryption::{AdditivelyHomomorphicDecryptionKeyShare, GroupsPublicParametersAccessors};
+use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use pera_types::base_types::ObjectID;
 use pera_types::error::{PeraError, PeraResult};
 use pera_types::event::Event;
 use pera_types::messages_dwallet_mpc::{MPCRound, SessionInfo};
 use std::collections::HashMap;
-use twopc_mpc::secp256k1;
 use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
-use twopc_mpc::tests::setup_class_groups_secp256k1;
 use crate::dwallet_mpc::mpc_manager::DWalletMPCManager;
+use crate::dwallet_mpc::sign::FirstSignBytesParty;
 
 /// Trait defining the functionality to advance an MPC party to the next round.
 ///
