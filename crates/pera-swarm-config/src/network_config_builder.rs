@@ -313,15 +313,14 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                     get_hardcoded_blockchain_secret_shares();
 
                 keys.into_iter()
-                    .enumerate()
-                    .map(|(i, authority_key)| {
+                    .map(|authority_key| {
                         let mut builder = ValidatorGenesisConfigBuilder::new()
                             .with_protocol_key_pair(authority_key)
                             .with_dwallet_mpc_class_groups_public_parameters(
                                 decryption_key_share_public_parameters.clone(),
                             )
-                            .with_dwallet_mpc_class_groups_decryption_share(
-                                *decryption_key_shares.get(&((i + 1) as PartyID)).unwrap(),
+                            .with_dwallet_mpc_class_groups_decryption_shares(
+                                decryption_key_shares.clone()
                             );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);
