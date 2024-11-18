@@ -25,7 +25,7 @@ twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev 
 group = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "bfc9089aee4e93ae727175edbf1a98de626eb752", subdir = "group" }
 mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "bfc9089aee4e93ae727175edbf1a98de626eb752", subdir = "mpc" }
 class_groups_constants = { path = "../class-groups-constants" }
-class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "bfc9089aee4e93ae727175edbf1a98de626eb752", subdir = "class-groups" }
+class_groups.workspace = true
 move-bytecode-utils.workspace = true
 narwhal-config.workspace = true
 shared-crypto.workspace = true
