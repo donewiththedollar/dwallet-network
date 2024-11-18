@@ -191,7 +191,7 @@ impl MPCParty {
             )));
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
             let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
-            let share = DecryptionKeyShare::new(party_id, dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
+            let share = DecryptionKeyShare::new(party_id, *dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.clone().unwrap().get(&(party_id as PartyID)).unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
             let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(share.unwrap());
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),

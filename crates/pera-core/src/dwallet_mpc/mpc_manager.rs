@@ -104,7 +104,7 @@ impl DWalletMPCManager {
             .iter_mut()
             .filter_map(|(_, instance)| {
                 // TODO (#268): Take the voting power into account when dealing with the threshold
-                let threshold_number_of_parties = 4;//((self.number_of_parties * 2) + 2) / 3;
+                let threshold_number_of_parties = 4; // ((self.number_of_parties * 2) + 2) / 3;
                 if (instance.is_valid_party()
                     && (instance.status == MPCSessionStatus::Active
                         && instance.pending_messages.len() >= threshold_number_of_parties)
@@ -216,12 +216,10 @@ impl DWalletMPCManager {
             .epoch_store()?
             .committee()
             .authority_index(&self.epoch_store()?.name)
-            .unwrap();
+            .unwrap() + 1;
         let share = DecryptionKeyShare::new(
             party_id as PartyID,
-            self.node_config
-                .dwallet_mpc_class_groups_decryption_share
-                .unwrap(),
+            *self.node_config.dwallet_mpc_class_groups_decryption_share.clone().unwrap().get(&(party_id as PartyID)).unwrap(),
             &self
                 .node_config
                 .dwallet_mpc_class_groups_public_parameters

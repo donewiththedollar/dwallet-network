@@ -324,7 +324,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                                 decryption_key_share_public_parameters.clone(),
                             )
                             .with_dwallet_mpc_class_groups_decryption_share(
-                                *decryption_key_shares.get(&((i + 1) as PartyID)).unwrap(),
+                                decryption_key_shares.clone(),
                             );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);

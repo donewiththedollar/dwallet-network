@@ -1,10 +1,12 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
+use std::collections::{HashMap, HashSet};
 use std::net::{IpAddr, SocketAddr};
 
 use anyhow::Result;
 use fastcrypto::traits::KeyPair;
+use group::PartyID;
 use mpc::secret_sharing::shamir::over_the_integers::SecretKeyShareSizedNumber;
 use pera_config::genesis::{GenesisCeremonyParameters, TokenAllocation};
 use pera_config::node::{DEFAULT_COMMISSION_RATE, DEFAULT_VALIDATOR_GAS_PRICE};
@@ -35,7 +37,7 @@ pub struct ValidatorGenesisConfig {
     #[serde(default)]
     pub dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(default)]
-    pub dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>,
+    pub dwallet_mpc_class_groups_decryption_share: Option<HashMap<PartyID, SecretKeyShareSizedNumber>>,
     #[serde(default = "default_bls12381_key_pair")]
     pub key_pair: AuthorityKeyPair,
     #[serde(default = "default_ed25519_key_pair")]
@@ -111,7 +113,7 @@ pub struct ValidatorGenesisConfigBuilder {
     /// Whether to use a specific p2p listen ip address. This is useful for testing on AWS.
     p2p_listen_ip_address: Option<IpAddr>,
     dwallet_mpc_class_groups_public_parameters: Option<DecryptionSharePublicParameters>,
-    dwallet_mpc_class_groups_decryption_share: Option<SecretKeyShareSizedNumber>
+    dwallet_mpc_class_groups_decryption_share: Option<HashMap<PartyID, SecretKeyShareSizedNumber>>
 }
 
 impl ValidatorGenesisConfigBuilder {
@@ -130,7 +132,7 @@ impl ValidatorGenesisConfigBuilder {
 
     pub fn with_dwallet_mpc_class_groups_decryption_share(
         mut self,
-        dwallet_mpc_class_groups_public_parameters: SecretKeyShareSizedNumber,
+        dwallet_mpc_class_groups_public_parameters: HashMap<PartyID, SecretKeyShareSizedNumber>,
     ) -> Self {
         self.dwallet_mpc_class_groups_decryption_share =
             Some(dwallet_mpc_class_groups_public_parameters);

@@ -8109,6 +8109,8 @@ dependencies = [
 name = "mpc"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
+ "bcs",
  "criterion",
  "crypto-bigint 0.5.5",
  "gcd",
@@ -16194,6 +16196,7 @@ dependencies = [
  "mpc",
  "rand 0.8.5",
  "rand_core 0.6.4",
+ "rayon",
  "rstest 0.22.0",
  "serde",
  "subtle",

@@ -102,11 +102,11 @@ nonempty.workspace = true
 proof = { path = "../../../cryptography-private/proof" }
 maurer = { path = "../../../cryptography-private/maurer" , features = ["benchmarking"]}
 group.workspace = true
-tiresias = { path = "../../../cryptography-private/tiresias" }
+tiresias = { path = "../../../cryptography-private/tiresias", features = ["parallel"] }
 mpc = { path = "../../../cryptography-private/mpc", features = ["parallel"]  }
 twopc_mpc.workspace = true
 homomorphic_encryption = { path = "../../../cryptography-private/homomorphic-encryption" }
-class_groups = { path = "../../../cryptography-private/class-groups" }
+class_groups = { path = "../../../cryptography-private/class-groups", features = ["default", "threshold"] }
 commitment = { path = "../../../cryptography-private/commitment" }
 class_groups_constants = {path = "../class-groups-constants"}
 rand_core = "0.6.4"

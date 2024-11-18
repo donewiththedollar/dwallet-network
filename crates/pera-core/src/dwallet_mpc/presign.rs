@@ -10,6 +10,7 @@ use group::PartyID;
 use mpc::{Advance, Party};
 use pera_types::error::{PeraError, PeraResult};
 use std::collections::{HashMap, HashSet};
+use itertools::Itertools;
 use tracing::warn;
 use twopc_mpc::tests::setup_class_groups_secp256k1;
 use class_groups_constants::protocol_public_parameters;
@@ -180,28 +181,22 @@ impl BytesParty for FirstSignBytesParty {
     fn advance(
         self,
         messages: HashMap<PartyID, Vec<u8>>,
-        auxiliary_input: Vec<u8>,
+        auxiliary_input_bytes: Vec<u8>,
     ) -> PeraResult<AdvanceResult> {
         let mut auxiliary_input: SignAuxiliaryInput =
             // This is not a validator malicious behaviour, as the authority input is being sent by the initiating user.
             // In this case this MPC session should be cancelled.
-            bcs::from_bytes(&auxiliary_input).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
-
-        // let messages = [PARTY_1_MSG, PARTY_2_MSG, PARTY_3_MSG, PARTY_4_MSG];
+            bcs::from_bytes(&auxiliary_input_bytes).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
 
         let (parties, messages) = messages
             .into_iter()
             .map(|(party_id, message)| {
-                // println!("party_id: {:?}", party_id);
-                // println!("message: {:?}", base64::encode(&message));
-                // let message = base64::decode(&message).unwrap();
-                // let message = bcs::from_bytes(&message).unwrap();
                 let message = bincode::deserialize(&message).unwrap();
                 (party_id, (party_id, message))
             })
             .collect::<(HashSet<PartyID>, HashMap<PartyID, _>)>();
 
-        // auxiliary_input.parties = parties;
+        auxiliary_input.parties = parties;
 
         let result = self
             .party
@@ -216,11 +211,8 @@ impl BytesParty for FirstSignBytesParty {
         }
         match result.map_err(twopc_error_to_pera_error)? {
             mpc::AdvanceResult::Advance((message, new_party)) => {
-                // let a = bcs::to_bytes(&message.0).unwrap();
-                // let b = bcs::to_bytes(&message.1).unwrap();
-                // let c = bcs::to_bytes(&message.2).unwrap();
-                // let message = (a, b, c);
-                // // base64::encode(&bcs::to_bytes(&message).unwrap());
+                let res = base64::encode(&bcs::to_bytes(&message).unwrap());
+                res;
                 // println!("party id {:?}, message: {:?}", auxiliary_input.party_id, base64::encode(&bcs::to_bytes(&message).unwrap()));
                 Ok(AdvanceResult::Advance((
                     bincode::serialize(&message).unwrap(),

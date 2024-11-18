@@ -34,7 +34,7 @@ pera-protocol-config.workspace = true
 pera-types.workspace = true
 
 twopc_mpc = { path = "../../../cryptography-private/2pc-mpc", features = ["secp256k1", "bulletproofs", "paillier", "class_groups", "benchmarking"] }
-mpc = { path = "../../../cryptography-private/mpc" }
+mpc = { path = "../../../cryptography-private/mpc", features = ["parallel"] }
 
 [dev-dependencies]
 insta.workspace = true
