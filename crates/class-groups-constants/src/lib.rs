@@ -11,7 +11,7 @@ pub fn protocol_public_parameters() -> twopc_mpc::class_groups::ProtocolPublicPa
     secp256k1::GroupElement,
 > {
     // Safe to unwrap as we're using a hardcoded constant.
-    let protocol_public_parameters = hex::decode(&PROTOCOL_PUBLIC_PARAMETERS).unwrap();
+    let protocol_public_parameters = base64::decode(&PROTOCOL_PUBLIC_PARAMETERS).unwrap();
     let protocol_public_parameters = bcs::from_bytes(&protocol_public_parameters).unwrap();
 
     protocol_public_parameters

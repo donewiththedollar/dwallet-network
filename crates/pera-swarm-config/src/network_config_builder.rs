@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use std::time::Duration;
 use std::{num::NonZeroUsize, path::Path, sync::Arc};
 use group::PartyID;
-use twopc_mpc::sign::deal_blockchain_secret_shares;
+use twopc_mpc::sign::get_hardcoded_blockchain_secret_shares;
 use pera_config::genesis::{TokenAllocation, TokenDistributionScheduleBuilder};
 use pera_config::node::AuthorityOverloadConfig;
 use pera_macros::nondeterministic;
@@ -310,7 +310,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 let (_, keys) = Committee::new_simple_test_committee_of_size(size.into());
 
                 let (mut decryption_key_shares, decryption_key_share_public_parameters) =
-                    deal_blockchain_secret_shares();
+                    get_hardcoded_blockchain_secret_shares();
 
                 keys.into_iter()
                     .enumerate()
