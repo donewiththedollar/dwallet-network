@@ -311,7 +311,6 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                 // this same committee.
                 let (_, keys) = Committee::new_simple_test_committee_of_size(size.into());
 
-                let threshold_number_of_parties = ((size.get() * 2) + 2) / 3;
                 let (mut decryption_key_shares, decryption_key_share_public_parameters) =
                     deal_blockchain_secret_shares();
 
