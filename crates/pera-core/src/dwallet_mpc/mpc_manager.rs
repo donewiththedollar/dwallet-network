@@ -92,7 +92,7 @@ impl DWalletMPCManager {
         &self,
     ) -> PeraResult<twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> {
         let party_id =
-            authority_name_to_party_id(self.epoch_store()?.name.clone(), &self.epoch_store()?)?;
+            authority_name_to_party_id(self.epoch_store()?.name.clone(), &self.epoch_store()?.clone())?;
         let share = DecryptionKeyShare::new(
             party_id,
             self.node_config
@@ -108,7 +108,7 @@ impl DWalletMPCManager {
                 .clone()
                 .unwrap(),
         )
-        .map_err(twopc_error_to_pera_error)?;
+        .map_err(|e| twopc_error_to_pera_error(e.into()))?;
         Ok(share)
     }
 
