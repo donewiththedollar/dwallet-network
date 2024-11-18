@@ -103,7 +103,7 @@ proof = { git = "https://github.com/dwallet-labs/cryptography-private", subdir =
 maurer = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "maurer" , rev = "bfc9089aee4e93ae727175edbf1a98de626eb752", features = ["benchmarking"]}
 group.workspace = true
 tiresias = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "tiresias", rev = "bfc9089aee4e93ae727175edbf1a98de626eb752" }
-mpc = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "mpc", features = ["parallel"] , rev = "bfc9089aee4e93ae727175edbf1a98de626eb752" }
+mpc.workspace = true
 twopc_mpc.workspace = true
 homomorphic_encryption = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "homomorphic-encryption", rev = "bfc9089aee4e93ae727175edbf1a98de626eb752" }
 class_groups.workspace = true
