@@ -165,15 +165,17 @@ impl SecondDKGBytesParty {
         first_round_output: Vec<u8>,
         centralized_party_public_key_share: Vec<u8>,
         session_id: Vec<u8>,
-    ) -> anyhow::Result<Vec<u8>> {
-        bcs::to_bytes(&DKGSecondParty::generate_auxiliary_input(
+    ) -> PeraResult<Vec<u8>> {
+        Ok(bcs::to_bytes(&DKGSecondParty::generate_auxiliary_input(
             weighted_threshold_access_structure,
             party_id,
-            bcs::from_bytes(&first_round_output)?,
-            bcs::from_bytes(&centralized_party_public_key_share)?,
+            bcs::from_bytes(&first_round_output)
+                .map_err(|_| PeraError::DWalletMPCInvalidUserInput)?,
+            bcs::from_bytes(&centralized_party_public_key_share)
+                .map_err(|_| PeraError::DWalletMPCInvalidUserInput)?,
             session_id,
         ))
-        .map_err(|err| err.into())
+        .unwrap())
     }
 }
 

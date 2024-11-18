@@ -101,7 +101,7 @@ impl MPCParty {
         event: &Event,
         weighted_threshold_access_structure: WeightedThresholdAccessStructure,
         party_id: PartyID,
-    ) -> anyhow::Result<Option<(Self, Vec<u8>, SessionInfo)>> {
+    ) -> PeraResult<Option<(Self, Vec<u8>, SessionInfo)>> {
         if event.type_ == StartDKGFirstRoundEvent::type_() {
             let deserialized_event: StartDKGFirstRoundEvent = bcs::from_bytes(&event.contents)?;
             return Ok(Some((
