@@ -33,9 +33,9 @@ pera-keys.workspace = true
 pera-protocol-config.workspace = true
 pera-types.workspace = true
 
-twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", subdir = "2pc-mpc" }
-class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", subdir = "class-groups" }
-mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", subdir = "mpc" }
+twopc_mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "5a7a215069d97db6227aeb03ba78f97493706294", subdir = "2pc-mpc" }
+class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "5a7a215069d97db6227aeb03ba78f97493706294", subdir = "class-groups" }
+mpc = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "5a7a215069d97db6227aeb03ba78f97493706294", subdir = "mpc" }
 
 [dev-dependencies]
 insta.workspace = true

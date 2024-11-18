@@ -9,8 +9,8 @@ group.workspace = true
 serde = "1.0.210"
 bcs = "0.1.6"
 hex = "0.4.3"
-class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", subdir = "class-groups" }
-homomorphic_encryption = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", subdir = "homomorphic-encryption" }
+class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "5a7a215069d97db6227aeb03ba78f97493706294", subdir = "class-groups" }
+homomorphic_encryption = { git = "https://github.com/dwallet-labs/cryptography-private", rev = "5a7a215069d97db6227aeb03ba78f97493706294", subdir = "homomorphic-encryption" }
 anyhow = "1.0.90"
 
 [lints]

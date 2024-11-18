@@ -99,15 +99,15 @@ pera-storage.workspace = true
 pera-types.workspace = true
 zeroize.workspace = true
 nonempty.workspace = true
-proof = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "proof", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
-maurer = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "maurer" , rev = "724558dc09ec1154622c76f7490bad093dcf9ffe", features = ["benchmarking"]}
+proof = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "proof", rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
+maurer = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "maurer" , rev = "5a7a215069d97db6227aeb03ba78f97493706294", features = ["benchmarking"]}
 group.workspace = true
-tiresias = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "tiresias", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
-mpc = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "mpc", features = ["parallel"] , rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
+tiresias = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "tiresias", rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
+mpc = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "mpc", features = ["parallel"] , rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
 twopc_mpc.workspace = true
-homomorphic_encryption = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "homomorphic-encryption", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
-class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "class-groups", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
-commitment = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "commitment", rev = "724558dc09ec1154622c76f7490bad093dcf9ffe" }
+homomorphic_encryption = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "homomorphic-encryption", rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
+class_groups = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "class-groups", rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
+commitment = { git = "https://github.com/dwallet-labs/cryptography-private", subdir = "commitment", rev = "5a7a215069d97db6227aeb03ba78f97493706294" }
 class_groups_constants = {path = "../class-groups-constants"}
 rand_core = "0.6.4"
 crypto-bigint = { version = "0.5.5", features = ["rand_core", "serde"], default-features = false }
