@@ -192,7 +192,7 @@ impl MPCParty {
                 .map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
             let share = dwallet_mpc_manager.get_decryption_share()?;
             let shares: HashMap<PartyID, twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> =
-                [(1 as PartyID, share.unwrap().clone())]
+                [(1 as PartyID, share)]
                     .into_iter()
                     .collect();
             let party = SignFirstParty::from(shares);
