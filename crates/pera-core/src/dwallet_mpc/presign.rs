@@ -19,7 +19,8 @@ pub type PresignFirstParty =
     <AsyncProtocol as twopc_mpc::presign::Protocol>::EncryptionOfMaskAndMaskedNonceShareRoundParty;
 pub type PresignSecondParty = <AsyncProtocol as twopc_mpc::presign::Protocol>::NoncePublicShareAndEncryptionOfMaskedNonceShareRoundParty;
 pub type SignFirstParty = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty;
-pub type SignAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput;
+pub type SignAuxiliaryInput =
+    <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput;
 
 /// A wrapper for the first round of the Presign protocol.
 ///
@@ -204,11 +205,7 @@ impl BytesParty for FirstSignBytesParty {
 
         let result = self
             .party
-            .advance(
-                messages,
-                &auxiliary_input,
-                &mut rand_core::OsRng,
-            );
+            .advance(messages, &auxiliary_input, &mut rand_core::OsRng);
         if result.is_err() {
             let result = twopc_error_to_pera_error(result.err().unwrap());
             return Err(result);
@@ -225,13 +222,16 @@ impl BytesParty for FirstSignBytesParty {
                     bincode::serialize(&message).unwrap(),
                     // bcs::to_bytes(&message).unwrap(),
                     MPCParty::FirstSignBytesParty(Self { party: new_party }),
-                )))},
-            mpc::AdvanceResult::Finalize(output) => {
-                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap(), vec![]))
+                )))
             }
-            AdvanceResult::FinalizeAsync((output, malicious_actors)) => {
-                Ok(AdvanceResult::Finalize(bcs::to_bytes(&output).unwrap(), malicious_actors))
-            }
+            mpc::AdvanceResult::Finalize(output) => Ok(AdvanceResult::Finalize(
+                bcs::to_bytes(&output).unwrap(),
+                vec![],
+            )),
+            mpc::AdvanceResult::FinalizeAsync(output) => Ok(AdvanceResult::Finalize(
+                bcs::to_bytes(&output.output).unwrap(),
+                output.malicious_parties,
+            )),
         }
     }
 }

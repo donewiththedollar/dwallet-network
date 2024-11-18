@@ -7,7 +7,7 @@
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
 use crate::dwallet_mpc::mpc_events::{StartDKGFirstRoundEvent, StartDKGSecondRoundEvent, StartPresignFirstRoundEvent, StartPresignSecondRoundEvent, StartSignFirstRoundEvent};
-use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty};
+use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty, SignFirstParty};
 use group::PartyID;
 use mpc::WeightedThresholdAccessStructure;
 use pera_types::base_types::ObjectID;
@@ -182,9 +182,10 @@ impl MPCParty {
                 },
             )));
         } else if event.type_ == StartSignFirstRoundEvent::type_() {
-            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents)?;
+            let deserialized_event: StartSignFirstRoundEvent = bcs::from_bytes(&event.contents).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
             let share = DecryptionKeyShare::new(party_id, dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_decryption_share.unwrap(), &dwallet_mpc_manager.node_config.dwallet_mpc_class_groups_public_parameters.clone().unwrap());
-            let party = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedParty::from(share.unwrap());
+            let shares: HashMap<PartyID, twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> = [(1 as PartyID, share.unwrap().clone())].into_iter().collect();
+            let party = SignFirstParty::from(shares);
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
                 FirstSignBytesParty::generate_auxiliary_input(
