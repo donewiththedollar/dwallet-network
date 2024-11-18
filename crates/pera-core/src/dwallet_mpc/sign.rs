@@ -26,8 +26,7 @@ impl FirstSignBytesParty {
             party_id,
         );
 
-        let sign_message: &str = bcs::from_bytes(&centralized_signed_message)?;
-        let sign_message = base64::decode(&sign_message).unwrap();
+        let sign_message= bcs::from_bytes(&centralized_signed_message)?;
 
         let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput::from((
             auxiliary_auxiliary_input,
