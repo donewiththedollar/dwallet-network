@@ -16,8 +16,6 @@ use pera_types::object::Object;
 use pera_types::supported_protocol_versions::SupportedProtocolVersions;
 use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
-use tracing::error;
-use class_groups_constants::{decryption_key, protocol_public_parameters};
 
 use crate::genesis_config::{AccountConfig, ValidatorGenesisConfigBuilder, DEFAULT_GAS_AMOUNT};
 use crate::genesis_config::{GenesisConfig, ValidatorGenesisConfig};

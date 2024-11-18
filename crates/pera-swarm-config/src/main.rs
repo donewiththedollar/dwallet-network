@@ -1,7 +1,4 @@
-use group::PartyID;
 use twopc_mpc::setup_class_groups_secp256k1;
-use twopc_mpc::sign::deal_blockchain_secret_shares;
-use class_groups_constants::{decryption_key, protocol_public_parameters};
 
 fn main() {
     let (protocol_public_parameters, decryption_key) = setup_class_groups_secp256k1();

@@ -2,9 +2,7 @@ use std::collections::HashMap;
 use std::mem;
 use std::sync::{Arc, Weak};
 
-use class_groups_constants::{decryption_key, protocol_public_parameters};
 use group::PartyID;
-use tracing::error;
 use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 
 use pera_types::base_types::{AuthorityName, EpochId};
