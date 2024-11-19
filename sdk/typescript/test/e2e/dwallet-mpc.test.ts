@@ -46,20 +46,19 @@ describe('Test dwallet mpc', () => {
 		);
 		console.log('presign first round session id', presignOutput!.presignFirstRoundSessionId);
 		console.log('dwallet_id', dwallet?.dwalletID);
-		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+		const [sign_msg, _, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(dwallet?.centralizedDKGOutput!),
 			Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare),
 			Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce),
 			Uint8Array.from([1, 2, 3, 4, 5]),
-			Hash.KECCAK256,
-			dwallet?.dwalletID.slice(2)!,
+			Hash.SHA256,
+			presignOutput!.presignFirstRoundOutputId.slice(2)!,
 		);
 		let res = await signMessage(
 			toolbox.keypair,
 			toolbox.client,
 			hash_msg,
 			fullPresigns,
-			// mockedDWallet.decentralizedDKGOutput,
 			Uint8Array.from(dwallet?.decentralizedDKGOutput!),
 			sign_msg,
 			presignOutput?.presignFirstRoundSessionId!,
@@ -70,7 +69,7 @@ describe('Test dwallet mpc', () => {
 
 	it('should fetch the dwallet decentralized dkg output', async () => {
 		let output = await toolbox.client.getObject({
-			id: '0x11e7d95fb66af2613241d313415ad2b4c9fb2dd66f484f5826149a32e74a8eb4',
+			id: '0x53c0215f6e5991466cc3b82faf80cdc3eddbe5abc8fd438768d5f7ac5a94f675',
 			options: {
 				showContent: true,
 			},
@@ -85,7 +84,7 @@ describe('Test dwallet mpc', () => {
 
 	it('should sign a message successfully ', async () => {
 		console.log(toolbox.keypair.toPeraAddress());
-		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+		const [sign_msg, _, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(mockedDWallet.centralizedDKGOutput),
 			Uint8Array.from(mockedPresign.firstRoundOutput),
 			Uint8Array.from(mockedPresign.secondRoundOutput),
@@ -93,8 +92,6 @@ describe('Test dwallet mpc', () => {
 			Hash.SHA256,
 			mockedPresign.firstRoundSessionID.slice(2)!,
 		);
-
-		console.log('ok');
 
 		let res = await signMessage(
 			toolbox.keypair,
