@@ -91,22 +91,22 @@ impl DWalletMPCInstance {
         } else if advance_result.is_err() {
             self.status = MPCSessionStatus::Failed;
         }
-        match advance_result? {
+        return match advance_result? {
             AdvanceResult::Advance((message, new_party)) => {
                 self.party = new_party;
-                return Ok((
+                Ok((
                     self.new_dwallet_mpc_message(message)
                         .ok_or(PeraError::InternalDWalletMPCError)?,
                     vec![],
-                ));
+                ))
             }
             AdvanceResult::Finalize(output, malicious_parties) => {
                 self.status = MPCSessionStatus::Finalizing(output.clone().into());
-                return Ok((
+                Ok((
                     self.new_dwallet_mpc_output_message(output)
                         .ok_or(PeraError::InternalDWalletMPCError)?,
                     malicious_parties,
-                ));
+                ))
             }
         };
     }
