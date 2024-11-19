@@ -52,7 +52,7 @@ describe('Test dwallet mpc', () => {
 			Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce),
 			Uint8Array.from([1, 2, 3, 4, 5]),
 			Hash.SHA256,
-			presignOutput!.presignFirstRoundOutputId.slice(2)!,
+			presignOutput?.presignFirstRoundSessionId!.slice(2)!,
 		);
 		let res = await signMessage(
 			toolbox.keypair,
