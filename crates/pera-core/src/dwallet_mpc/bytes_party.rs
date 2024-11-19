@@ -196,6 +196,8 @@ impl MPCParty {
                     .into_iter()
                     .collect();
             let party = SignFirstParty::from(shares);
+            let party_to_virtual_parties = weighted_threshold_access_structure.party_to_virtual_parties();
+            let virtual_parties = party_to_virtual_parties.get(&party_id).cloned().unwrap();
             return Ok(Some((
                 MPCParty::FirstSignBytesParty(FirstSignBytesParty { party }),
                 FirstSignBytesParty::generate_auxiliary_input(

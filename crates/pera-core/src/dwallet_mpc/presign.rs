@@ -194,10 +194,8 @@ impl BytesParty for FirstSignBytesParty {
                  (party_id, message)
             })
             .collect::<HashMap<PartyID,_>>();
-
-        let result = self
-            .party
-            .advance(messages, &auxiliary_input, &mut rand_core::OsRng);
+        let mut rng =  rand_core::OsRng;
+        let result = self.party.advance(messages, &auxiliary_input, &mut rng);
         if result.is_err() {
             let result = twopc_error_to_pera_error(result.err().unwrap());
             return Err(result);
