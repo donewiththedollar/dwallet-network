@@ -552,8 +552,7 @@ impl PeraSystemStateTrait for PeraSystemStateInnerV1 {
                 (
                     name,
                     (
-                        1,
-                        // validator.voting_power,
+                        validator.voting_power,
                         NetworkMetadata {
                             network_address: verified_metadata.net_address.clone(),
                             narwhal_primary_address: verified_metadata.primary_address.clone(),

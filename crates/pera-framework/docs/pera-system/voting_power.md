@@ -168,7 +168,7 @@ Fixing the total voting power allows clients to hardcode the quorum threshold an
 than recomputing these.
 
 
-<pre><code><b>const</b> <a href="voting_power.md#0x3_voting_power_TOTAL_VOTING_POWER">TOTAL_VOTING_POWER</a>: <a href="../move-stdlib/u64.md#0x1_u64">u64</a> = 10000;
+<pre><code><b>const</b> <a href="voting_power.md#0x3_voting_power_TOTAL_VOTING_POWER">TOTAL_VOTING_POWER</a>: <a href="../move-stdlib/u64.md#0x1_u64">u64</a> = 4;
 </code></pre>
 
 
