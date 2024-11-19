@@ -49,13 +49,11 @@ export async function signMessage(
 		],
 	});
 
-	const result = await client.signAndExecuteTransaction({
+	return await client.signAndExecuteTransaction({
 		signer: keypair,
 		transaction: tx,
 		options: {
 			showEffects: true,
 		},
 	});
-
-	return result;
 }

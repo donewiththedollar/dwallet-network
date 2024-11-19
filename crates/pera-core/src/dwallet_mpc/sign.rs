@@ -24,9 +24,6 @@ impl FirstSignBytesParty {
             weighted_threshold_access_structure,
         );
 
-        let sign_message: &str = bcs::from_bytes(&centralized_signed_message)?;
-        let sign_message = base64::decode(&sign_message).unwrap();
-
         let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput::from((
             auxiliary_auxiliary_input,
             bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(&hashed_message)?,
@@ -38,7 +35,7 @@ impl FirstSignBytesParty {
             >(&presign)?,
             bcs::from_bytes::<
                 <AsyncProtocol as twopc_mpc::sign::Protocol>::SignMessage,
-            >(&sign_message)?,
+            >(&centralized_signed_message)?,
             decryption_key_share_public_parameters,
         ));
 
