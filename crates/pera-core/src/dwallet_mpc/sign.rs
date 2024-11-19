@@ -5,7 +5,7 @@ use twopc_mpc::dkg::Protocol;
 use pera_types::error::PeraResult;
 
 use crate::dwallet_mpc::dkg::{AsyncProtocol, DKGFirstParty, DKGFirstPartyAuxiliaryInputGenerator};
-use crate::dwallet_mpc::presign::FirstSignBytesParty;
+use crate::dwallet_mpc::presign::{FirstSignBytesParty, SignAuxiliaryInput};
 
 impl FirstSignBytesParty {
     pub(crate) fn generate_auxiliary_input(
@@ -24,7 +24,7 @@ impl FirstSignBytesParty {
             weighted_threshold_access_structure,
         );
 
-        let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput::from((
+        let auxiliary = SignAuxiliaryInput::from((
             auxiliary_auxiliary_input,
             bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(&hashed_message)?,
             bcs::from_bytes::<

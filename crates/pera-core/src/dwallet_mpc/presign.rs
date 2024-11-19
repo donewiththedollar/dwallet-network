@@ -187,21 +187,13 @@ impl BytesParty for FirstSignBytesParty {
             // In this case this MPC session should be cancelled.
             bcs::from_bytes(&auxiliary_input).map_err(|_| PeraError::DWalletMPCInvalidUserInput)?;
 
-        // let messages = [PARTY_1_MSG, PARTY_2_MSG, PARTY_3_MSG, PARTY_4_MSG];
-
-        let (parties, messages) = messages
+        let messages = messages
             .into_iter()
             .map(|(party_id, message)| {
-                // println!("party_id: {:?}", party_id);
-                // println!("message: {:?}", base64::encode(&message));
-                // let message = base64::decode(&message).unwrap();
-                // let message = bcs::from_bytes(&message).unwrap();
-                let message = bincode::deserialize(&message).unwrap();
-                (party_id, (party_id, message))
+                let message = bcs::from_bytes(&message).unwrap();
+                 (party_id, message)
             })
-            .collect::<(HashSet<PartyID>, HashMap<PartyID, _>)>();
-
-        // auxiliary_input.parties = parties;
+            .collect::<HashMap<PartyID,_>>();
 
         let result = self
             .party
@@ -212,15 +204,9 @@ impl BytesParty for FirstSignBytesParty {
         }
         match result.map_err(twopc_error_to_pera_error)? {
             mpc::AdvanceResult::Advance((message, new_party)) => {
-                // let a = bcs::to_bytes(&message.0).unwrap();
-                // let b = bcs::to_bytes(&message.1).unwrap();
-                // let c = bcs::to_bytes(&message.2).unwrap();
-                // let message = (a, b, c);
-                // // base64::encode(&bcs::to_bytes(&message).unwrap());
-                // println!("party id {:?}, message: {:?}", auxiliary_input.party_id, base64::encode(&bcs::to_bytes(&message).unwrap()));
+
                 Ok(AdvanceResult::Advance((
-                    bincode::serialize(&message).unwrap(),
-                    // bcs::to_bytes(&message).unwrap(),
+                    bcs::to_bytes(&message).unwrap(),
                     MPCParty::FirstSignBytesParty(Self { party: new_party }),
                 )))
             }
