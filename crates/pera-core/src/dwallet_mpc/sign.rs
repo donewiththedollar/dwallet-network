@@ -26,8 +26,6 @@ impl FirstSignBytesParty {
             party_id,
         );
 
-        let sign_message= bcs::from_bytes(&centralized_signed_message)?;
-
         let auxiliary: <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignDecentralizedPartyAuxiliaryInput::from((
             auxiliary_auxiliary_input,
             bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(&hashed_message)?,
@@ -39,7 +37,7 @@ impl FirstSignBytesParty {
             >(&presign)?,
             bcs::from_bytes::<
                 <AsyncProtocol as twopc_mpc::sign::Protocol>::SignMessage,
-            >(&sign_message)?,
+            >(&centralized_signed_message)?,
             decryption_key_share_public_parameters,
         ));
 
@@ -71,8 +69,7 @@ impl BytesParty for FirstSignBytesParty {
         let messages = messages
             .into_iter()
             .map(|(party_id, message)| {
-                let message = bincode::deserialize(&message).unwrap();
-                (party_id, message)
+                (party_id, bcs::from_bytes(&message).unwrap())
             })
             .collect::< HashMap<PartyID, _>>();
 
@@ -91,8 +88,7 @@ impl BytesParty for FirstSignBytesParty {
         match result.map_err(twopc_error_to_pera_error)? {
             mpc::AdvanceResult::Advance((message, new_party)) => {
                 Ok(AdvanceResult::Advance((
-                    bincode::serialize(&message).unwrap(),
-                    // bcs::to_bytes(&message).unwrap(),
+                    bcs::to_bytes(&message).unwrap(),
                     MPCParty::FirstSignBytesParty(Self { party: new_party }),
                 )))},
             mpc::AdvanceResult::Finalize(output) => {

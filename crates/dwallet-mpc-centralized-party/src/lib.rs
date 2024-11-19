@@ -102,8 +102,7 @@ pub fn create_sign_output(
         (presign_first_round_output, presign_second_round_output).into();
     let session_id = commitment::CommitmentSizedNumber::from_le_hex(&session_id);
 
-    let message = "singing!";
-    let hash_message = message_digest(&message.as_bytes(), &hash.try_into()?);
+    let hash_message = message_digest(&message, &hash.try_into()?);
     let protocol_public_parameters = protocol_public_parameters();
 
     let centralized_party_auxiliary_input = (
