@@ -112,5 +112,10 @@ pub fn create_sign_output(
         SignCentralizedParty::advance((), &centralized_party_auxiliary_input, &mut OsRng)?;
     let sign_message = bcs::to_bytes(&sign_message)?;
     let centralized_output = bcs::to_bytes(&centralized_output)?;
-    Ok((sign_message, centralized_output, bcs::to_bytes(&presign)?, bcs::to_bytes(&hashed_message)?))
+    Ok((
+        sign_message,
+        centralized_output,
+        bcs::to_bytes(&presign)?,
+        bcs::to_bytes(&hashed_message)?,
+    ))
 }

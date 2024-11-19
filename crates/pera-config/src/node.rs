@@ -8,6 +8,7 @@ use crate::transaction_deny_config::TransactionDenyConfig;
 use crate::Config;
 use anyhow::Result;
 use consensus_config::Parameters as ConsensusParameters;
+use mpc::PartyID;
 use narwhal_config::Parameters as NarwhalParameters;
 use once_cell::sync::OnceCell;
 use pera_keys::keypair_file::{read_authority_keypair_from_file, read_keypair_from_file};
@@ -29,7 +30,6 @@ use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
-use mpc::PartyID;
 
 use pera_types::crypto::{get_key_pair_from_rng, AccountKeyPair, AuthorityKeyPair};
 use pera_types::multiaddr::Multiaddr;
@@ -55,7 +55,8 @@ pub struct NodeConfig {
     #[serde(default)]
     pub dwallet_mpc_decryption_shares_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(default)]
-    pub dwallet_mpc_class_groups_decryption_shares: Option<HashMap<PartyID, class_groups::SecretKeyShareSizedNumber>>,
+    pub dwallet_mpc_class_groups_decryption_shares:
+        Option<HashMap<PartyID, class_groups::SecretKeyShareSizedNumber>>,
     /// The maximum number of active dwallet mpc instances allowed to run simultaneously
     #[serde(default = "default_max_mpc_protocol_messages_in_progress")]
     pub max_active_dwallet_mpc_instances: usize,

@@ -1297,7 +1297,7 @@ impl PeraNode {
                 Arc::new(consensus_adapter.clone()),
                 Arc::clone(&epoch_store),
                 epoch_store.epoch(),
-                config.clone()
+                config.clone(),
             )?)
             .await?;
 

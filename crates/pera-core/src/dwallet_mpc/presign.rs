@@ -191,23 +191,20 @@ impl BytesParty for FirstSignBytesParty {
             .into_iter()
             .map(|(party_id, message)| {
                 let message = bcs::from_bytes(&message).unwrap();
-                 (party_id, message)
+                (party_id, message)
             })
-            .collect::<HashMap<PartyID,_>>();
-        let mut rng =  rand_core::OsRng;
+            .collect::<HashMap<PartyID, _>>();
+        let mut rng = rand_core::OsRng;
         let result = self.party.advance(messages, &auxiliary_input, &mut rng);
         if result.is_err() {
             let result = twopc_error_to_pera_error(result.err().unwrap());
             return Err(result);
         }
         match result.map_err(twopc_error_to_pera_error)? {
-            mpc::AdvanceResult::Advance((message, new_party)) => {
-
-                Ok(AdvanceResult::Advance((
-                    bcs::to_bytes(&message).unwrap(),
-                    MPCParty::FirstSignBytesParty(Self { party: new_party }),
-                )))
-            }
+            mpc::AdvanceResult::Advance((message, new_party)) => Ok(AdvanceResult::Advance((
+                bcs::to_bytes(&message).unwrap(),
+                MPCParty::FirstSignBytesParty(Self { party: new_party }),
+            ))),
             mpc::AdvanceResult::Finalize(output) => Ok(AdvanceResult::Finalize(
                 bcs::to_bytes(&output).unwrap(),
                 vec![],

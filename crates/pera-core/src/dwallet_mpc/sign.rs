@@ -26,16 +26,16 @@ impl FirstSignBytesParty {
 
         let auxiliary = SignAuxiliaryInput::from((
             auxiliary_auxiliary_input,
-            bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(&hashed_message)?,
-            bcs::from_bytes::<
-                <AsyncProtocol as Protocol>::DecentralizedPartyDKGOutput,
-            >(&dkg_output)?,
-            bcs::from_bytes::<
-                <AsyncProtocol as twopc_mpc::presign::Protocol>::Presign,
-            >(&presign)?,
-            bcs::from_bytes::<
-                <AsyncProtocol as twopc_mpc::sign::Protocol>::SignMessage,
-            >(&centralized_signed_message)?,
+            bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::Message>(
+                &hashed_message,
+            )?,
+            bcs::from_bytes::<<AsyncProtocol as Protocol>::DecentralizedPartyDKGOutput>(
+                &dkg_output,
+            )?,
+            bcs::from_bytes::<<AsyncProtocol as twopc_mpc::presign::Protocol>::Presign>(&presign)?,
+            bcs::from_bytes::<<AsyncProtocol as twopc_mpc::sign::Protocol>::SignMessage>(
+                &centralized_signed_message,
+            )?,
             decryption_key_share_public_parameters,
         ));
 

@@ -1160,7 +1160,7 @@ mod checked {
                     CallArg::Pure(data.session_info.session_id.to_vec()),
                     CallArg::Pure(bcs::to_bytes(&data.output).unwrap()),
                 ],
-            )
+            ),
         };
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();

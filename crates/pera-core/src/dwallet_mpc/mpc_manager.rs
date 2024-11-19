@@ -91,9 +91,12 @@ impl DWalletMPCManager {
     pub fn get_decryption_share(
         &self,
     ) -> PeraResult<twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> {
-        let party_id =
-            authority_name_to_party_id(self.epoch_store()?.name.clone(), &self.epoch_store()?.clone())?;
-        let try_this = self.node_config
+        let party_id = authority_name_to_party_id(
+            self.epoch_store()?.name.clone(),
+            &self.epoch_store()?.clone(),
+        )?;
+        let try_this = self
+            .node_config
             .dwallet_mpc_class_groups_decryption_shares
             .clone()
             .ok_or(PeraError::InternalDWalletMPCError)?

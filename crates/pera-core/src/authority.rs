@@ -1561,7 +1561,9 @@ impl AuthorityState {
             let res = MPCParty::from_event(
                 &dwallet_mpc_manager,
                 event,
-                dwallet_mpc_manager.weighted_threshold_access_structure.clone(),
+                dwallet_mpc_manager
+                    .weighted_threshold_access_structure
+                    .clone(),
                 authority_name_to_party_id(epoch_store.name, &epoch_store)?,
             );
             if let Some((party, auxiliary_input, session_info)) = res? {

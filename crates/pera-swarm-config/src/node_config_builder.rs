@@ -185,8 +185,10 @@ impl ValidatorConfigBuilder {
         };
 
         NodeConfig {
-            dwallet_mpc_class_groups_decryption_shares: validator.dwallet_mpc_class_groups_decryption_shares,
-            dwallet_mpc_decryption_shares_public_parameters: validator.dwallet_mpc_class_groups_public_parameters,
+            dwallet_mpc_class_groups_decryption_shares: validator
+                .dwallet_mpc_class_groups_decryption_shares,
+            dwallet_mpc_decryption_shares_public_parameters: validator
+                .dwallet_mpc_class_groups_public_parameters,
             max_active_dwallet_mpc_instances: DEFAULT_MAX_ACTIVE_DWALLET_MPC_INSTANCES,
             protocol_key_pair: AuthorityKeyPairWithPath::new(validator.key_pair),
             network_key_pair: KeyPairWithPath::new(PeraKeyPair::Ed25519(

@@ -14,7 +14,10 @@ use crate::authority::authority_per_epoch_store::AuthorityPerEpochStore;
 use crate::consensus_adapter::SubmitToConsensus;
 use crate::dwallet_mpc::bytes_party::{AdvanceResult, MPCParty};
 use crate::dwallet_mpc::dkg::{AsyncProtocol, FirstDKGBytesParty, SecondDKGBytesParty};
-use crate::dwallet_mpc::presign::{FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty, SecondPresignBytesParty, SignFirstParty};
+use crate::dwallet_mpc::presign::{
+    FirstPresignBytesParty, FirstSignBytesParty, PresignFirstParty, PresignSecondParty,
+    SecondPresignBytesParty, SignFirstParty,
+};
 
 /// The message a validator can send to the other parties while running a dwallet MPC session.
 #[derive(Clone)]

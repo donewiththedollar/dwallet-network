@@ -1,11 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: BSD-3-Clause-Clear
 
-use std::path::PathBuf;
-use std::time::Duration;
-use std::{num::NonZeroUsize, path::Path, sync::Arc};
 use group::PartyID;
-use twopc_mpc::sign::get_hardcoded_blockchain_secret_shares;
 use pera_config::genesis::{TokenAllocation, TokenDistributionScheduleBuilder};
 use pera_config::node::AuthorityOverloadConfig;
 use pera_macros::nondeterministic;
@@ -16,6 +12,10 @@ use pera_types::object::Object;
 use pera_types::supported_protocol_versions::SupportedProtocolVersions;
 use pera_types::traffic_control::{PolicyConfig, RemoteFirewallConfig};
 use rand::rngs::OsRng;
+use std::path::PathBuf;
+use std::time::Duration;
+use std::{num::NonZeroUsize, path::Path, sync::Arc};
+use twopc_mpc::sign::get_hardcoded_blockchain_secret_shares;
 
 use crate::genesis_config::{AccountConfig, ValidatorGenesisConfigBuilder, DEFAULT_GAS_AMOUNT};
 use crate::genesis_config::{GenesisConfig, ValidatorGenesisConfig};
@@ -320,7 +320,7 @@ impl<R: rand::RngCore + rand::CryptoRng> ConfigBuilder<R> {
                                 decryption_key_share_public_parameters.clone(),
                             )
                             .with_dwallet_mpc_class_groups_decryption_shares(
-                                decryption_key_shares.clone()
+                                decryption_key_shares.clone(),
                             );
                         if let Some(rgp) = self.reference_gas_price {
                             builder = builder.with_gas_price(rgp);

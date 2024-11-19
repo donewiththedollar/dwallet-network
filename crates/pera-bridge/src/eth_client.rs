@@ -114,9 +114,12 @@ where
             self.provider
                 .request("eth_getBlockByNumber", ("finalized", false))
                 .await;
-        let block = block.map_err(anyhow::Error::from)?.ok_or(BridgeError::TransientProviderError(
-            "Provider fails to return last finalized block".into(),
-        ))?;
+        let block =
+            block
+                .map_err(anyhow::Error::from)?
+                .ok_or(BridgeError::TransientProviderError(
+                    "Provider fails to return last finalized block".into(),
+                ))?;
         let number = block.number.ok_or(BridgeError::TransientProviderError(
             "Provider returns block without number".into(),
         ))?;

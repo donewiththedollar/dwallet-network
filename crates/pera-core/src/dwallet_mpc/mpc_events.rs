@@ -12,8 +12,7 @@ pub const START_PRESIGN_FIRST_ROUND_EVENT_STRUCT_NAME: &IdentStr =
     ident_str!("StartPresignFirstRoundEvent");
 pub const START_PRESIGN_SECOND_ROUND_EVENT_STRUCT_NAME: &IdentStr =
     ident_str!("StartPresignSecondRoundEvent");
-pub const START_SIGN_FIRST_ROUND_EVENT_STRUCT_NAME: &IdentStr =
-    ident_str!("StartSignEvent");
+pub const START_SIGN_FIRST_ROUND_EVENT_STRUCT_NAME: &IdentStr = ident_str!("StartSignEvent");
 
 /// Rust version of the Move [`pera_system::dwallet::StartDKGFirstRoundEvent`] type.
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema, Eq, PartialEq)]
