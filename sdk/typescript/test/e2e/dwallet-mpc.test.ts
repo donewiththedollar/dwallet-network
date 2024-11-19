@@ -5,7 +5,7 @@ import { create_sign_centralized_output } from '@dwallet-network/dwallet-mpc-was
 import { beforeAll, describe, it } from 'vitest';
 
 import { createDWallet } from '../../src/dwallet-mpc/dkg';
-import { DKGSessionID, mockedDWallet, mockedPresign } from '../../src/dwallet-mpc/mock';
+import { mockedDWallet, mockedPresign } from '../../src/dwallet-mpc/mock';
 import { presign } from '../../src/dwallet-mpc/presign';
 import { Hash, signMessage } from '../../src/dwallet-mpc/sign';
 import { setup, TestToolbox } from './utils/setup';
