@@ -56,7 +56,7 @@ describe('Test dwallet mpc', () => {
 			Uint8Array.from(presignOutput!.noncePublicShareAndEncryptionOfMaskedNonce),
 			Uint8Array.from([1, 2, 3, 4, 5]),
 			Hash.KECCAK256,
-			dwallet?.dwalletID.slice(2)!,
+			presignOutput?.presignFirstRoundSessionId!.slice(2)!,
 		);
 		let res = await signMessage(
 			toolbox.keypair,
@@ -89,7 +89,7 @@ describe('Test dwallet mpc', () => {
 
 	it('should sign a message successfully ', async () => {
 		console.log(toolbox.keypair.toPeraAddress());
-		const [sign_msg, centralizedOutput, fullPresigns, hash_msg] = create_sign_centralized_output(
+		const [sign_msg, _, fullPresigns, hash_msg] = create_sign_centralized_output(
 			Uint8Array.from(mockedDWallet.centralizedDKGOutput),
 			Uint8Array.from(mockedPresign.firstRoundOutput),
 			Uint8Array.from(mockedPresign.secondRoundOutput),
@@ -97,8 +97,6 @@ describe('Test dwallet mpc', () => {
 			Hash.SHA256,
 			mockedPresign.firstRoundSessionID.slice(2)!,
 		);
-
-		console.log('ok');
 
 		let res = await signMessage(
 			toolbox.keypair,
