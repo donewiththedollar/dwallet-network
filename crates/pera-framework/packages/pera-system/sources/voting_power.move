@@ -26,11 +26,11 @@ module pera_system::voting_power {
 
     /// Quorum threshold for our fixed voting power--any message signed by this much voting power can be trusted
     /// up to BFT assumptions
-    const QUORUM_THRESHOLD: u64 = 6_667;
+    const QUORUM_THRESHOLD: u64 = 3;
 
     // Cap voting power of an individual validator at 10%.
     // TODO: determine what this should be
-    const MAX_VOTING_POWER: u64 = 1_000;
+    const MAX_VOTING_POWER: u64 = 1;
 
     const ETotalPowerMismatch: u64 = 1;
     const ERelativePowerMismatch: u64 = 2;
