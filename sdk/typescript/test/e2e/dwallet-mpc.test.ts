@@ -37,6 +37,10 @@ describe('Test dwallet mpc', () => {
 			encodeBase64(Uint8Array.from(dwallet?.centralizedDKGOutput!)),
 		);
 		console.log(
+			'DecentralizedDKGOutput',
+			encodeBase64(Uint8Array.from(dwallet?.decentralizedDKGOutput!)),
+		);
+		console.log(
 			'presign first output',
 			encodeBase64(Uint8Array.from(presignOutput!.encryptionOfMaskAndMaskedKeyShare)),
 		);
