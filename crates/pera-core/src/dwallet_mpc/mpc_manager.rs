@@ -7,7 +7,6 @@ use crate::dwallet_mpc::bytes_party::MPCParty;
 use crate::dwallet_mpc::mpc_instance::{
     authority_name_to_party_id, DWalletMPCInstance, DWalletMPCMessage, MPCSessionStatus,
 };
-use class_groups::DecryptionKeyShare;
 use group::PartyID;
 use homomorphic_encryption::AdditivelyHomomorphicDecryptionKeyShare;
 use mpc::{Error, WeightedThresholdAccessStructure};
@@ -20,6 +19,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::{Arc, Weak};
 use tracing::log::warn;
 use tracing::{error, info};
+use twopc_mpc::secp256k1::class_groups::DecryptionKeyShare;
 
 /// The `MPCService` is responsible for managing MPC instances:
 /// - keeping track of all MPC instances,
@@ -93,6 +93,11 @@ impl DWalletMPCManager {
     ) -> PeraResult<twopc_mpc::secp256k1::class_groups::DecryptionKeyShare> {
         let party_id =
             authority_name_to_party_id(self.epoch_store()?.name.clone(), &self.epoch_store()?.clone())?;
+        let try_this = self.node_config
+            .dwallet_mpc_class_groups_decryption_shares
+            .clone()
+            .ok_or(PeraError::InternalDWalletMPCError)?
+            .get(&party_id);
         let share = DecryptionKeyShare::new(
             party_id,
             self.node_config

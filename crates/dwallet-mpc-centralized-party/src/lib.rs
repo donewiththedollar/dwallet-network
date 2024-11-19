@@ -9,6 +9,7 @@ use twopc_mpc::secp256k1;
 
 type AsyncProtocol = twopc_mpc::secp256k1::class_groups::AsyncProtocol;
 type DKGCentralizedParty = <AsyncProtocol as twopc_mpc::dkg::Protocol>::DKGCentralizedParty;
+type SignCentralizedParty = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignCentralizedParty;
 
 /// Executes the second phase of the DKG protocol, part of a three-phase DKG flow.
 ///
@@ -41,6 +42,7 @@ pub fn create_dkg_output(
     Ok((public_key_share_and_proof, centralized_output))
 }
 
+/// Supported hash functions for message digest
 #[derive(Clone, Debug)]
 pub enum Hash {
     KECCAK256 = 0,
@@ -59,6 +61,7 @@ impl TryFrom<u8> for Hash {
     }
 }
 
+/// Computes the message digest of a given message using the specified given hash function
 pub fn message_digest(message: &[u8], hash_type: &Hash) -> secp256k1::Scalar {
     let hash = match hash_type {
         Hash::KECCAK256 => bits2field::<k256::Secp256k1>(
@@ -73,9 +76,6 @@ pub fn message_digest(message: &[u8], hash_type: &Hash) -> secp256k1::Scalar {
     let m = <elliptic_curve::Scalar<k256::Secp256k1> as Reduce<U256>>::reduce_bytes(&hash.into());
     U256::from(m).into()
 }
-
-///
-type SignCentralizedParty = <AsyncProtocol as twopc_mpc::sign::Protocol>::SignCentralizedParty;
 
 /// Executes the centralized phase of the Sign protocol, first part of the protocol
 ///

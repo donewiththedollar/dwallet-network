@@ -29,7 +29,6 @@ use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
-use class_groups::SecretKeyShareSizedNumber;
 use mpc::PartyID;
 
 use pera_types::crypto::{get_key_pair_from_rng, AccountKeyPair, AuthorityKeyPair};
@@ -56,7 +55,7 @@ pub struct NodeConfig {
     #[serde(default)]
     pub dwallet_mpc_decryption_shares_public_parameters: Option<DecryptionSharePublicParameters>,
     #[serde(default)]
-    pub dwallet_mpc_class_groups_decryption_shares: Option<HashMap<PartyID, SecretKeyShareSizedNumber>>,
+    pub dwallet_mpc_class_groups_decryption_shares: Option<HashMap<PartyID, class_groups::SecretKeyShareSizedNumber>>,
     /// The maximum number of active dwallet mpc instances allowed to run simultaneously
     #[serde(default = "default_max_mpc_protocol_messages_in_progress")]
     pub max_active_dwallet_mpc_instances: usize,
